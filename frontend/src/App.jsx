@@ -15,6 +15,7 @@ function App() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
         isVideoActive.current = true; // Set video stream status to active
+        
 
         // Listen for 'ended' event to detect when the stream is closed
         stream.getVideoTracks()[0].onended = () => {
@@ -38,7 +39,7 @@ function App() {
         const imgData = canvas.toDataURL('image/png'); // Convert canvas frame to base64 format
         socketRef.current.emit('image_frame', imgData); // Emit image only if video is active
       } else {
-        startVideo();
+        startVideo();   
       }
     };
 
