@@ -1,16 +1,17 @@
-from flask import Flask , render_template
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import cv2
 import numpy as np
 from flask_cors import CORS
 import base64
 from keras.models import model_from_json
-import os
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+
+# Set up MongoDB URI
 app.config["MONGO_URI"] = "mongodb+srv://harsh0801004:8857090609@harshkoshti.b208der.mongodb.net/ai_interview?retryWrites=true&w=majority&appName=harshkoshti"
 mongo = PyMongo(app)
 
@@ -20,10 +21,9 @@ user_collection = mongo.db.userData
 # Load the emotion detection model
 emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
-# Load json and create model
-json_file = open('model/emotion_model.json', 'r')
-loaded_model_json = json_file.read()
-json_file.close()
+# Load JSON and create model
+with open('model/emotion_model.json', 'r') as json_file:
+    loaded_model_json = json_file.read()
 emotion_model = model_from_json(loaded_model_json)
 emotion_model.load_weights("model/emotion_model.h5")
 print("Loaded model from disk")
@@ -52,16 +52,14 @@ def handle_image_frame(data):
         maxindex = int(np.argmax(emotion_prediction))
         emotion = emotion_dict[maxindex]
         results.append(emotion)
-        if maxindex>0:
-            result = user_collection.find_one_and_update(
-            {"name":'harsh'},
-            {'$inc':{f'emotion.{emotion}':1}}
-        )
+        
+        if maxindex > 0:
+            user_collection.find_one_and_update(
+                {"name": 'harsh'},
+                {'$inc': {f'emotion.{emotion}': 1}}
+            )
 
     # Prepare the final output with detected emotions
-
-
-        
     final_output = {
         "detected_faces": len(num_faces),
         "emotions": results
@@ -74,11 +72,5 @@ def handle_image_frame(data):
 def run():
     return render_template('index.html')
 
-
-
-# mongodb+srv://harsh0801004:8857090609@harshkoshti.b208der.mongodb.net/?retryWrites=true&w=majority&appName=harshkoshti
-
-
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
-    app.run()

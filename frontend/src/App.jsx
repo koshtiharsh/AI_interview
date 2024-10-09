@@ -1,11 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import io from "socket.io-client";
 import './App.css';
 
 function App() {
   const videoRef = useRef(null);
   const socketRef = useRef(null);
+  const [e, setE] = useState('')
   const isVideoActive = useRef(false); // Ref to track video stream status
+
+  // {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+
+  /*
+  facial emotion        interview emotion     facial indicators
+  Angry->               Defensiveness         Squinting, clenched jaw, crossed arms  
+  Fearful->             Nervousness/Anxietys      Furrowed brows, pursed lips, fidgeting, sweating
+  Happy->               Confidence/Excitement       Bright eyes, animated expressions, frequent smiling Relaxed facial muscles, direct eye contact, slight smile
+  Neutral->               Curiosity/normal         Slight head tilts, raised eyebrows
+  Sad->                Frustration/Disappointment     Frowning, lip biting, tense jaw
+  Surprised->               Curiosity/unknownto ans        Raised eyebrows, wide-open eyes, slightly parted lips 
+  Angry->                     
+  */
 
   useEffect(() => {
     socketRef.current = io('http://localhost:5000');
@@ -15,7 +29,7 @@ function App() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
         isVideoActive.current = true; // Set video stream status to active
-        
+
 
         // Listen for 'ended' event to detect when the stream is closed
         stream.getVideoTracks()[0].onended = () => {
@@ -39,16 +53,19 @@ function App() {
         const imgData = canvas.toDataURL('image/png'); // Convert canvas frame to base64 format
         socketRef.current.emit('image_frame', imgData); // Emit image only if video is active
       } else {
-        startVideo();   
+        startVideo();
       }
     };
 
     startVideo();
 
-    const intervalId = setInterval(captureFrame, 10000); // Capture frame every 10 seconds
+    const intervalId = setInterval(captureFrame, 5000); // Capture frame every 10 seconds
 
     socketRef.current.on('emotion_result', (data) => {
       console.log('Emotion detected:', data);
+      console.log(data.emotions[0]);
+      setE(data.emotions[0])
+
       // Handle the received data (update UI, display emotions, etc.)
     });
 
@@ -65,6 +82,7 @@ function App() {
       {/* Video element where the webcam stream will be displayed */}
       <video ref={videoRef} autoPlay muted style={{ width: '600px' }} />
       <p>Open your webcam to start emotion detection.</p>
+      <p>Emotion : {e}</p>
     </div>
   );
 }
