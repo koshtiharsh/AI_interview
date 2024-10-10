@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import io from "socket.io-client";
 import './App.css';
-
+import Face_Emotion_detection from './components/Face_Emotion_detection';
+import Voice_detection from './components/Voice_detection';
+import loader from './assets/loader.gif'
 function App() {
-  const videoRef = useRef(null);
+
   const socketRef = useRef(null);
-  const [e, setE] = useState('')
-  const isVideoActive = useRef(false); // Ref to track video stream status
+  const [check, setCheck] = useState(false)
+  const [feedback, setFeedback] = useState('');
+  const [show, setShow] = useState('off')
+  const [emotionCounts, setEmotionCounts] = useState({
+    Angry: 0,
+    Fearful: 0,
+    Happy: 0,
+    Neutral: 0,
+    Sad: 0,
+    Surprised: 0,
+  });
+  // Ref to track video stream status
 
   // {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
@@ -19,70 +31,35 @@ function App() {
   Sad->                Frustration/Disappointment     Frowning, lip biting, tense jaw
   Surprised->               Curiosity/unknownto ans        Raised eyebrows, wide-open eyes, slightly parted lips 
   Angry->                     
-  */
+  */console.log(show)
 
   useEffect(() => {
     socketRef.current = io('http://localhost:5000');
 
-    const startVideo = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoRef.current.srcObject = stream;
-        isVideoActive.current = true; // Set video stream status to active
-
-
-        // Listen for 'ended' event to detect when the stream is closed
-        stream.getVideoTracks()[0].onended = () => {
-          isVideoActive.current = false; // Update video status
-        };
-
-      } catch (error) {
-        console.log("Error in accessing webcam", error);
-      }
-    };
-
-    const captureFrame = () => {
-      if (isVideoActive.current && videoRef.current.srcObject) { // Check if video is active
-        const canvas = document.createElement('canvas');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-
-        const context = canvas.getContext('2d');
-        context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-
-        const imgData = canvas.toDataURL('image/png'); // Convert canvas frame to base64 format
-        socketRef.current.emit('image_frame', imgData); // Emit image only if video is active
-      } else {
-        startVideo();
-      }
-    };
-
-    startVideo();
-
-    const intervalId = setInterval(captureFrame, 5000); // Capture frame every 10 seconds
-
-    socketRef.current.on('emotion_result', (data) => {
-      console.log('Emotion detected:', data);
-      console.log(data.emotions[0]);
-      setE(data.emotions[0])
-
-      // Handle the received data (update UI, display emotions, etc.)
-    });
+    if (socketRef.current) {
+      setTimeout(() => {
+        setCheck(true)
+      }, 3000);
+    }
 
     return () => {
-      clearInterval(intervalId); // Stop the frame capture timer
+
       socketRef.current.disconnect(); // Disconnect the WebSocket
-      isVideoActive.current = false; // Reset video status
+
     };
   }, []);
 
   return (
     <div>
-      <h1>Emotion Detection</h1>
-      {/* Video element where the webcam stream will be displayed */}
-      <video ref={videoRef} autoPlay muted style={{ width: '600px' }} />
-      <p>Open your webcam to start emotion detection.</p>
-      <p>Emotion : {e}</p>
+      {check == false ? <div className='loaderDiv'>
+        <img className='loader' src={loader} alt="" />
+        <p>Setting Up for You...</p>
+      </div> : ''}
+      {check ? <div className='cameradiv'>
+        <Face_Emotion_detection socketRef={socketRef} feedback={feedback} setFeedback={setFeedback} show={show} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} />
+      </div> : ''}
+      {check ? <Voice_detection socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
+
     </div>
   );
 }
