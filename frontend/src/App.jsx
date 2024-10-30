@@ -13,6 +13,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App= () => {
   const router = createBrowserRouter([
     {
+      path:"/",
+      element : <Home/>
+    },
+    {
       path:"/home",
       element : <Home/>
     },
