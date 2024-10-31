@@ -1,0 +1,50 @@
+
+.header 
+{
+    position: fixed;
+    top : 0;
+    left : 0;
+    width: 100%;
+    padding : 10px 10%;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    margin: 0px;
+}
+.logo
+{
+    color: black;
+    font-size: 32px;
+    font-weight: 700;
+}
+.navbar a 
+{
+    position: relative;
+    font-weight: 500;
+    font-size: 18px;
+    margin-left: 40px;
+    color: black;
+    text-decoration: none;
+}
+.navbar a::before
+{
+    content: '';
+    position: absolute;
+    width: 0;
+    top: 100%;
+    left: 0;
+    height: 2px;
+    background: #000000;
+    transition: 0.3s;
+}
+.navbar a:hover::before
+{
+    width: 100%;
+
+}
+.navbar a:hover
+{
+    color: black;
+}
