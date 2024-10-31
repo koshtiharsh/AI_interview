@@ -66,10 +66,14 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   font-family: "Mulish", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
 }
-
