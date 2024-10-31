@@ -1,0 +1,151 @@
+/*.login{
+  
+    margin-top : 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: slateblue;
+
+}
+    */
+    .wrapper
+    {
+        margin-top : 70px;
+        margin-left : 400px;
+        position: relative;
+        width: 420px;
+        height: 450px;
+        background: transparent;
+        border : 2px solid rgba(255,255,255, .1);
+        backdrop-filter: blur(30px);
+        border-radius: 30px;
+        box-shadow: 0 0 10px rgba(0,0,0,.5);
+        color: #fff;
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+        transition: height .1s ease;
+    }
+    .wrapper.active{
+        height: 500px;
+    }
+    .wrapper .form-box
+    {
+        width: 100%;
+        padding : 25px 40px;
+    
+    
+    }
+    .wrapper .form-box.login{
+        transition: translate .18s ease;
+        translate: 0px;   
+    }
+    
+    .wrapper.active .form-box.login{
+        transition: none;
+        translate: -400px;   
+    }
+    .wrapper .form-box.register
+    {
+        position: absolute;
+        transition: none;
+        translate: 400px;
+    }
+    
+    .wrapper.active .form-box.register{
+        transition: translate .18s ease;
+        translate: 0px;   
+    }
+    
+    .lform h1{
+        font-size : 36px;
+        text-align: center;
+        color: black;
+    }
+    .lform .input-box{
+        position: relative;
+        width: 100%;
+        height: 50px;
+        border-radius: 40px ;
+        margin : 30px 0;
+        background: white;
+        border: 2px solid black;
+    
+    }
+    .input-box input{
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        border : 2px solid rgba(255,255,255, .1);
+        border-radius: 40px;
+        font-size: 16px;
+        color : black;
+        padding : 20px 45px 20px 20px; 
+    }
+    .input-box::placeholder
+    {
+        color :#fff;
+        right : 20px;
+        top : 50%;
+        
+        translate:0 -50%;
+        font-size: 16px;
+    }
+    .input-box .icon{
+        position: absolute;
+        right: 20px;
+        top : 40;
+        translate: 0 15px;
+        font-size: 16px;
+        color : black;
+    }
+    .lform .forgot{
+        display: flex;
+        justify-content: center;
+        font-size: 14.5px;
+       
+    }
+    .forgot a{
+        color: black;
+    }
+    .forgot a:hover{
+        color: black;
+    }
+    .lform button {
+        margin-top: 20px;
+        width: 100%;
+        height: 45px ;
+        background: #fff;
+        border: none;   
+        outline: none;
+        border-radius: 40px ;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1) ;
+        cursor : pointer;
+        font-size: 16px;
+        color : #333;
+        font-weight: 700;
+        border: 2px solid black       ;
+    }
+    .lform button:hover{
+        color : white;
+        background: black;
+    }
+    .lform .register-link
+    {
+        font-size : 14.5px;
+        text-align: center;
+        margin : 20px 0 15px;
+        color: black;
+    
+    }
+    .register-link p a:hover {
+        text-decoration: underline;
+       
+        color : black;
+    }
+    .register-link a {
+        color: black;
+    }
