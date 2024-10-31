@@ -196,6 +196,7 @@ const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, sho
         socketRef.current.emit('request_question'); // Request the first question
         socketRef.current.on('new_question', (data) => setHrQuestion(data.question));
         socketRef.current.on('transcript_feedback', (data) => setFeedback(data)); // Store feedback from HR model
+        console.log(feedback)
 
         return () => {
             socketRef.current.off('new_question');
@@ -219,7 +220,7 @@ const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, sho
 
     const handleStopListening = () => {
         if (!transcriptCleared) {
-            socketRef.current.emit('send_transcript', { transcript }); // Send transcript to server for analysis
+            socketRef.current.emit('send_transcript', { transcript, hrQuestion }); // Send transcript to server for analysis
         }
         setShow('feedback');
         resetTranscript();
@@ -265,6 +266,7 @@ const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, sho
         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
     }
 
+
     return (
         <>
             <div className="container">
@@ -288,10 +290,10 @@ const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, sho
                     <button onClick={handleStopListening}>Stop Listening</button>
                 </div>
 
-                {feedback && feedback.similarity < 10 && feedback.refined_answer && (
+                {feedback && (
                     <div className="feedback">
                         <h4>Feedback:</h4>
-                        <p><strong>Suggested Answer:</strong> {feedback.refined_answer}</p>
+                        <p>{feedback.feedback}</p> {/* Display the feedback from the server */}
                     </div>
                 )}
 

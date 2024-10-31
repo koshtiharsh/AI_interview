@@ -72,6 +72,9 @@ function Face_Emotion_detection({ socketRef, feedback, setFeedback, show, setEmo
                 const tracks = videoRef.current.srcObject.getTracks();
                 tracks.forEach(track => track.stop());
             }
+            if (videoRef.current) {
+                videoRef.current.srcObject = null; // Clear srcObject on unmount
+            }
             isVideoActive.current = false;
             socketRef.current.off('emotion_result', handleEmotionResult);
         };
