@@ -256,7 +256,6 @@ def handle_image_frame(data):
             user_collection.find_one_and_update({"name": 'harsh'}, {'$inc': {f'emotion.{emotion}': 1}})
 
     emit('emotion_result', {"detected_faces": len(num_faces), "emotions": results})
-
 # Predefined correct answers for the HR questions
 predefined_answers = {
     "Where do you see yourself in five years?": "In five years, I see myself in a leadership position, contributing significantly to the growth of the organization...",
@@ -268,19 +267,43 @@ predefined_answers = {
 
 # Function to compare answers and provide feedback
 def compare_answers(user_answer, correct_answer):
+    # Calculate the similarity ratio between user answer and correct answer
     similarity = difflib.SequenceMatcher(None, user_answer, correct_answer).ratio() * 100
-    return f"Your answer is good but can be improved. Suggested response: {correct_answer}" if similarity < 90 else "Your answer is well-formed and relevant."
+
+    # If similarity is below the threshold, suggest an improvement
+    if similarity < 90:
+        return f"Your answer is good but can be improved. Here's a suggested response: {correct_answer}"
+    else:
+        return "Your answer is well-formed and relevant."
 
 @socketio.on('send_transcript')
 def handle_transcript(data):
+    """
+    Handle the transcript sent from the client.
+    Compare the user's answer with the predefined correct answer.
+    """
+    
     question = data['question']
     user_answer = data['transcript']
+    print(user_answer)
+
+    print(f"Received transcript for question '{question}': {user_answer}")
+
+    # Get the predefined correct answer for the question
     correct_answer = predefined_answers.get(question)
-    feedback = compare_answers(user_answer, correct_answer) if correct_answer else "No predefined answer available."
+
+    if correct_answer:
+        # Compare user's answer with the predefined answer
+        feedback = compare_answers(user_answer, correct_answer)
+    else:
+        feedback = "No predefined answer available for this question."
+
+    # Send feedback back to the client
     socketio.emit('transcript_feedback', {"feedback": feedback})
 
 @socketio.on('request_question')
 def send_random_question():
+    # Select a random HR question
     question = random.choice(list(predefined_answers.keys()))
     socketio.emit('new_question', {'question': question})
 
