@@ -1,39 +1,61 @@
-import React from 'react'
+import React from 'react';
 import img1 from '../assets/img1.jpg'
 import img2 from '../assets/img2.jpg'
 import img3 from '../assets/img3.jpg'
-import './Cards.css'
-const Card = () => {
+const Cards = () => {
   return (
-    <div className='card-container'>
-        <div className='card'>
-            <img src={img1}/>
-            <div className='card-content'>
-            <h1 >Title one</h1>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque dolorum distinctio tempore aut pariatur minima illum voluptates saepe fugiat provident? Quas dolorem dolores rerum nostrum deserunt consequuntur. Iste, beatae! Recusandae.</p>
-            <a href="" className='card-button'>Read more</a>
-            </div>
-        </div>  
+    <div className="flex justify-center flex-wrap gap-6 mt-24">
+      
+      {/* Card 1 */}
+      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
+        <img
+          src={img1}
+          alt="Card Image"
+          className="w-full h-auto object-cover"
+        />
+        <div className="p-5">
+          <h1 className="text-xl mb-2 text-center">Card Title 1</h1>
+          <p className="text-sm text-gray-600 mb-5">Description for the first card goes here.</p>
+          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
+            Learn More
+          </a>
+        </div>
+      </div>
 
-          <div className='card'>
-            <img src={img2}/>
-            <div className='card-content'>
-            <h1 >Title one</h1>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque dolorum distinctio tempore aut pariatur minima illum voluptates saepe fugiat provident? Quas dolorem dolores rerum nostrum deserunt consequuntur. Iste, beatae! Recusandae.</p>
-            <a href="" className='card-button'>Read more</a>
-            </div>
-        </div> 
+      {/* Card 2 */}
+      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
+        <img
+          src={img2}
+          alt="Card Image"
+          className="w-full h-auto object-cover"
+        />
+        <div className="p-5">
+          <h1 className="text-xl mb-2 text-center">Card Title 2</h1>
+          <p className="text-sm text-gray-600 mb-5">Description for the second card goes here.</p>
+          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
+            Learn More
+          </a>
+        </div>
+      </div>
 
-          <div className='card'>
-            <img src={img3}/>
-            <div className='card-content'>
-            <h1>Title one</h1>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque dolorum distinctio tempore aut pariatur minima illum voluptates saepe fugiat provident? Quas dolorem dolores rerum nostrum deserunt consequuntur. Iste, beatae! Recusandae.</p>
-            <a href="" className='card-button'>Read more</a>
-            </div>
-        </div>    
+      {/* Card 3 */}
+      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
+        <img
+          src={img3}
+          alt="Card Image"
+          className="w-full h-auto object-cover"
+        />
+        <div className="p-5">
+          <h1 className="text-xl mb-2 text-center">Card Title 3</h1>
+          <p className="text-sm text-gray-600 mb-5">Description for the third card goes here.</p>
+          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
+            Learn More
+          </a>
+        </div>
+      </div>
+      
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Cards;
