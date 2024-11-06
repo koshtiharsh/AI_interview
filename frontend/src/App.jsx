@@ -6,52 +6,57 @@ import Hr from './components/Hr';
 import Resume from './components/Resume';
 import ContactUs from './components/ContactUs'
 import React from 'react';
-import {createBrowserRouter ,RouterProvider} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ResumeResult from './components/ResumeResult';
 
 
-const App= () => {
+const App = () => {
   const router = createBrowserRouter([
     {
-      path:"/",
-      element : <Home/>
+      path: "/",
+      element: <Home />
     },
     {
-      path:"/home",
-      element : <Home/>
+      path: "/home",
+      element: <Home />
     },
     {
-      path:"/login",
-      element : <Login/>
+      path: "/login",
+      element: <Login />
     },
     {
-      path:"/aboutus",
-      element : <AboutUs/>
+      path: "/aboutus",
+      element: <AboutUs />
     },
     {
-      path:"/hr",
-      element : <Hr/>
+      path: "/hr",
+      element: <Hr />
     },
     {
-      path:"/login",
-      element : <Login/>
+      path: "/login",
+      element: <Login />
     },
     {
-      path:"/contactus",
-      element : <ContactUs/>
+      path: "/contactus",
+      element: <ContactUs />
     },
     {
-      path:"/resume",
-      element: <Resume/>
-    }
-    
+      path: "/resume",
+      element: <Resume />
+    },
+    {
+      path: '/resume/result',
+      element: <ResumeResult />
+    },
+
 
   ])
   return (
     <>
-      <RouterProvider router={router}/>
-    </>  
-  
+      <RouterProvider router={router} />
+    </>
+
   );
 }
 

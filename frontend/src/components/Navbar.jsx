@@ -3,30 +3,30 @@ import React from 'react'
 const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 w-full p-4 bg-transparent flex justify-between items-center z-50">
-      <a href="/" className="text-2xl font-bold text-black">logo</a>
+      <a href="/" className="text-2xl font-bold text-white">logo</a>
 
       <nav className="hidden md:flex space-x-10">
-        <a href="/home" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/home" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           Home
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
-        <a href="/contactus" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/contactus" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           Contact us
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
-        <a href="/aboutus" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/aboutus" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           About us
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
-        <a href="/login" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/login" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           Login
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
-        <a href="/hr" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/hr" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           Hr Interview
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
-        <a href="/resume" className="relative font-medium text-lg text-black hover:text-black transition duration-300">
+        <a href="/resume" className="relative font-medium text-lg text-white hover:text-white transition duration-300">
           Upload Resume
           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
         </a>
