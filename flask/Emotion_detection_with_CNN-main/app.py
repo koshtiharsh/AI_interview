@@ -259,11 +259,15 @@ def handle_image_frame(data):
 
 # Predefined correct answers for the HR questions
 predefined_answers = {
-    "Where do you see yourself in five years?": "In five years, I see myself in a leadership position, contributing significantly to the growth of the organization...",
-    "What are your greatest strengths?": "My greatest strengths are my problem-solving ability, leadership skills, and being a great team player...",
-    "What is your greatest weakness?": "One of my weaknesses is over-committing, but I've been working on time management...",
-    "Why do you want to work here?": "I want to work here because this company’s mission aligns with my values and career goals...",
-    "Tell me about yourself.": "I am a dedicated professional with experience in X and Y, always seeking opportunities for growth..."
+    "Where do you see yourself in five years?": "In five years, I see myself taking on a senior role within the tech team, perhaps leading projects that involve emerging technologies like AI or machine learning. My goal is to advance both my technical and leadership skills, becoming someone the team can rely on for innovative solutions and mentorship. I hope to be someone who not only drives the company’s technical success but also inspires and empowers my team to reach new heights.  NOTE: Aim for 45-60 seconds. Long enough to outline your goals, but brief enough to keep it engaging.",
+
+    "What are your greatest strengths?": "My greatest strengths include a strong aptitude for problem-solving, adaptability to new technologies, and a collaborative approach to teamwork. I excel at breaking down complex issues, developing efficient solutions, and staying updated with the latest industry trends. Being a team player, I actively contribute to group discussions and ensure that we work towards solutions that are both technically sound and aligned with business goals.  NOTE:Around 45-60 seconds. Mention 2-3 key strengths and give a brief example if possible.",
+
+    "What is your greatest weakness?": "One of my weaknesses is that I sometimes get deeply focused on perfecting technical details, which can impact time management on larger projects. However, I've been addressing this by prioritizing tasks based on their impact and learning to balance thoroughness with deadlines. I’m consistently working on improving my time management skills to ensure that I deliver high-quality work efficiently. NOTE: Keep it to 30-45 seconds. Be honest but solution-focused, showing that you’re actively working to improve. ",
+
+    "Why do you want to work here?": "I want to work here because your company is at the forefront of technological innovation and places a high value on continuous learning and growth. I’m inspired by the projects your team is working on, especially in areas like cloud computing and AI, which align with my career interests. I believe that working here will allow me to apply my skills in a meaningful way while also offering opportunities to deepen my expertise in cutting-edge technology.  NOTE: 45-60 seconds. Highlight what excites you about the company and how it aligns with your skills and goals.",
+
+    "Tell me about yourself.": "I am a software engineer with a background in .... and ..... development, and I have hands-on experience with frameworks like .... . I’m passionate about creating efficient, scalable systems and enjoy solving complex technical challenges. In my last role, TELL ABOUT YOUR PROJECTS HERE. I’m always eager to expand my knowledge in emerging technologies, and I’m excited about the opportunity to contribute my skills to a team that values innovation and collaboration.  You can also include your hobbies,some other experiences,etc.  NOTE: Keep a bit longer, around 60-90 seconds. Cover your professional background, relevant skills, and what you’re aiming for in your next role "
 }
 
 # Function to compare answers and provide feedback
