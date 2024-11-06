@@ -3,7 +3,7 @@ import { context } from '../context/Context'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import loader from '../assets/loader-1.gif'
-
+import photo from '../assets/rmphoto.png'
 const Resume = () => {
 
 
@@ -21,7 +21,7 @@ const Resume = () => {
 
   const handleSubmit = async (e) => {
 
-    if (subRole.length == 0 && file==null) return;
+    if (subRole.length == 0 && file == null) return;
     setIsLoading(true)
     e.preventDefault();
 
@@ -52,10 +52,12 @@ const Resume = () => {
         <Navbar />
       </div>
 
-      <div className="flex justify-center items-center h-[50vh] w-full">
-        <div className="h-[300px] flex flex-col items-center justify-center">
+      <div className="flex justify-around items-center flex-row-reverse w-[700px]  h-[50vh]  m-auto border rounded-md ">
 
+        <img src={photo} className='w-[50%] h-full flex-1' alt="" />
+        <div className="h-[300px] flex flex-col items-center justify-center flex-1 relative">
 
+          <h1 className='font-bold text-xl absolute top-0' >Resume Analysis</h1>
           <input id='fileselect' type="file" onChange={(e) => setFile(e.target.files[0])} hidden />
           <label htmlFor='fileselect' className='rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]'>Select Pdf or Doc</label>
           {file && <p>{file.name}</p>}
