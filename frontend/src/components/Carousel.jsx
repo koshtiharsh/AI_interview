@@ -8,7 +8,7 @@ const CarouselPage = () => {
   return (
     <div className="w-full">
       <Carousel>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           <img
             className="w-full h-[90vh] object-cover"
             src={image1}
@@ -29,7 +29,7 @@ const CarouselPage = () => {
             <h3 className="text-xl font-semibold"></h3>
             <p className="text-sm"></p>
           </Carousel.Caption>
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           <img
             className="w-full h-[90vh] object-cover"
