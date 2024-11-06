@@ -52,9 +52,9 @@ const Resume = () => {
         <Navbar />
       </div>
 
-      <div className="flex justify-around items-center flex-row-reverse w-[700px]  h-[50vh]  m-auto border rounded-md ">
+      <div className="flex justify-around items-center flex-row-reverse md:w-[700px]  h-[50vh]  m-auto border rounded-md mt-5 w-[80%]">
 
-        <img src={photo} className='w-[50%] h-full flex-1' alt="" />
+        <img src={photo} className='w-[50%] h-full flex-1 hidden md:block' alt="" />
         <div className="h-[300px] flex flex-col items-center justify-center flex-1 relative">
 
           <h1 className='font-bold text-xl absolute top-0' >Resume Analysis</h1>
