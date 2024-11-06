@@ -318,10 +318,11 @@ def allowed_file(filename):
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
+    print(request)
     if "file" not in request.files:
         return redirect(request.url)
     file = request.files["file"]
-    desc = request.form["jobDescription"]
+    role = request.form["role"]
     if file.filename == "":
         return redirect(request.url)
     print(file.filename)
@@ -342,7 +343,7 @@ def upload_file():
             ss,
             wc,
             sc,
-        ) = ats.processing(file.filename, 1, desc)
+        ) = ats.processing(file.filename, 1, role)
         struct = str(int(sc)) + "%"
         hsp = str(int(hs)) + "%"
         ssp = str(int(ss)) + "%"
