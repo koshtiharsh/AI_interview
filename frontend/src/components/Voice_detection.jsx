@@ -166,8 +166,306 @@
 // export default Voice_detection;
 
 
+// import React, { useEffect, useState } from "react";
+// import '../App.css';
+// import 'regenerator-runtime/runtime';
+// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+// import useClipboard from "react-use-clipboard";
+// import { io } from 'socket.io-client';
+
+// const feedbackMap = new Map([
+//     ["Angry", "You seem to be feeling defensive..."],
+//     ["Fearful", "It looks like you're experiencing some nervousness..."],
+//     ["Happy", "Fantastic! Your expressions show confidence..."],
+//     ["Neutral", "Your expressions indicate curiosity or calmness..."],
+//     ["Sad", "It seems you might be feeling frustration..."],
+//     ["Surprised", "You appear to be curious about the unknown..."],
+// ]);
+
+// const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
+//     const [textToCopy, setTextToCopy] = useState();
+//     const [isCopied, setCopied] = useClipboard(textToCopy, { successDuration: 1000 });
+//     const [hrQuestion, setHrQuestion] = useState("");
+//     const [feedback, setFeedback] = useState(null); // Store feedback from HR model
+//     const [transcriptCleared, setTranscriptCleared] = useState(false);
+
+//     const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+//     const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+
+//     useEffect(() => {
+//         socketRef.current.emit('request_question'); // Request the first question
+//         socketRef.current.on('new_question', (data) => setHrQuestion(data.question));
+//         socketRef.current.on('transcript_feedback', (data) => setFeedback(data)); // Store feedback from HR model
+//         console.log(feedback)
+
+//         return () => {
+//             socketRef.current.off('new_question');
+//             socketRef.current.off('transcript_feedback');
+//         };
+//     }, []);
+
+//     useEffect(() => {
+//         if (socketRef.current) {
+//             socketRef.current.on('hr_response', (data) => {
+//                 setFeedback(data);  // Update feedback with server response
+//             });
+//         }
+
+//         return () => {
+//             if (socketRef.current) {
+//                 socketRef.current.off('hr_response');
+//             }
+//         };
+//     }, []);
+
+//     const handleStopListening = () => {
+//         if (!transcriptCleared) {
+//             socketRef.current.emit('send_transcript', { transcript, hrQuestion }); // Send transcript to server for analysis
+//         }
+//         setShow('feedback');
+//         resetTranscript();
+//         setTranscriptCleared(true);
+//         socketRef.current.emit('request_question'); // Request new question
+
+//         setFeedback(null);
+//         let most;
+//         let mostc = 0;
+//         Object.keys(emotionCounts).forEach((key) => {
+//             if (emotionCounts[key] > mostc) {
+//                 most = key;
+//                 mostc = emotionCounts[key];
+//             }
+//         });
+
+//         setEmotionCounts({ ...emotionCounts, [most]: 0 });
+//         setFeedback_emotion('Most of the time ' + feedbackMap.get(most));
+//         Object.keys(emotionCounts).forEach((key) => {
+//             if (emotionCounts[key] > 0 && feedbackMap.has(key)) {
+//                 setFeedback_emotion(prevFeedback => prevFeedback + ' ' + feedbackMap.get(key));
+//             }
+//         });
+
+//         SpeechRecognition.stopListening();
+//     };
+
+//     const handleStartListening = () => {
+//         startListening();
+//         setTranscriptCleared(false);
+//         setEmotionCounts({
+//             Angry: 0,
+//             Fearful: 0,
+//             Happy: 0,
+//             Neutral: 0,
+//             Sad: 0,
+//             Surprised: 0,
+//         });
+//         setShow('start');
+//     };
+
+//     if (!browserSupportsSpeechRecognition) {
+//         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
+//     }
+
+
+//     return (
+//         <>
+//             <div className="container">
+//                 <br />
+//                 <h2>{hrQuestion && (
+//                     <div className="hr-question">
+//                         <h3>HR Question:</h3>
+//                         <p>{hrQuestion}</p>
+//                     </div>
+//                 )}</h2>
+
+//                 <div className="main-content" onClick={() => setTextToCopy(transcript)}>
+//                     {transcriptCleared ? '' : transcript}
+//                 </div>
+
+//                 <div className="btn-style">
+//                     <button onClick={setCopied}>
+//                         {isCopied ? 'Copied!' : 'Copy to clipboard'}
+//                     </button>
+//                     <button onClick={handleStartListening}>Start Listening</button>
+//                     <button onClick={handleStopListening}>Stop Listening</button>
+//                 </div>
+
+//                 {feedback && (
+//                     <div className="feedback">
+//                         <h4>Feedback:</h4>
+//                         <p>{feedback.feedback}</p> {/* Display the feedback from the server */}
+//                     </div>
+//                 )}
+
+//                 <div className="feedback-card">
+//                     <div className="feedback-icon"></div>
+//                     <div className="feedback-content">
+//                         <p className="feedback-text" id="feed">
+//                             {feedback_emotion}
+//                         </p>
+//                     </div>
+//                 </div>
+//             </div>
+//         </>
+//     );
+// };
+
+// export default Voice_detection;
+
+
+// import React, { useEffect, useState } from "react";
+// import '../App.css';
+// import 'regenerator-runtime/runtime';
+// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+// import useClipboard from "react-use-clipboard";
+// import { io } from 'socket.io-client';
+
+// const feedbackMap = new Map([
+//     ["Angry", "You seem to be feeling defensive..."],
+//     ["Fearful", "It looks like you're experiencing some nervousness..."],
+//     ["Happy", "Fantastic! Your expressions show confidence..."],
+//     ["Neutral", "Your expressions indicate curiosity or calmness..."],
+//     ["Sad", "It seems you might be feeling frustration..."],
+//     ["Surprised", "You appear to be curious about the unknown..."],
+// ]);
+
+// const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
+//     const [textToCopy, setTextToCopy] = useState();
+//     const [isCopied, setCopied] = useClipboard(textToCopy, { successDuration: 1000 });
+//     const [hrQuestion, setHrQuestion] = useState("");
+//     const [feedback, setFeedback] = useState(null);
+//     const [transcriptCleared, setTranscriptCleared] = useState(false);
+
+//     const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+//     const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+
+//     useEffect(() => {
+//         socketRef.current.emit('request_question');
+//         socketRef.current.on('new_question', (data) => setHrQuestion(data.question));
+//         socketRef.current.on('transcript_feedback', (data) => setFeedback(data));
+
+//         return () => {
+//             socketRef.current.off('new_question');
+//             socketRef.current.off('transcript_feedback');
+//         };
+//     }, []);
+
+//     useEffect(() => {
+//         if (socketRef.current) {
+//             socketRef.current.on('hr_response', (data) => setFeedback(data));
+//         }
+
+//         return () => {
+//             if (socketRef.current) {
+//                 socketRef.current.off('hr_response');
+//             }
+//         };
+//     }, []);
+
+//     const handleStopListening = () => {
+//         if (!transcriptCleared) {
+//             socketRef.current.emit('send_transcript', { transcript, hrQuestion });
+//         }
+//         setShow('feedback');
+//         resetTranscript();
+//         setTranscriptCleared(true);
+//         socketRef.current.emit('request_question');
+//         setFeedback(null);
+
+//         let most;
+//         let mostc = 0;
+//         Object.keys(emotionCounts).forEach((key) => {
+//             if (emotionCounts[key] > mostc) {
+//                 most = key;
+//                 mostc = emotionCounts[key];
+//             }
+//         });
+
+//         setEmotionCounts({ ...emotionCounts, [most]: 0 });
+//         setFeedback_emotion('Most of the time ' + feedbackMap.get(most));
+//         Object.keys(emotionCounts).forEach((key) => {
+//             if (emotionCounts[key] > 0 && feedbackMap.has(key)) {
+//                 setFeedback_emotion(prevFeedback => prevFeedback + ' ' + feedbackMap.get(key));
+//             }
+//         });
+
+//         SpeechRecognition.stopListening();
+//     };
+
+//     const handleStartListening = () => {
+//         startListening();
+//         setTranscriptCleared(false);
+//         setEmotionCounts({
+//             Angry: 0,
+//             Fearful: 0,
+//             Happy: 0,
+//             Neutral: 0,
+//             Sad: 0,
+//             Surprised: 0,
+//         });
+//         setShow('start');
+//     };
+
+//     if (!browserSupportsSpeechRecognition) {
+//         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
+//     }
+
+//     return (
+//         <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
+//             <div className="text-center mb-8">
+//                 <h2 className="text-2xl font-bold text-gray-700">HR Interview Assistant</h2>
+//             </div>
+            
+//             <div className="rounded-lg shadow-lg p-6 bg-white">
+//                 {hrQuestion && (
+//                     <div className="mb-4">
+//                         <h3 className="text-lg font-semibold text-gray-600">HR Question:</h3>
+//                         <p className="text-gray-700">{hrQuestion}</p>
+//                     </div>
+//                 )}
+
+//                 <div
+//                     className="mb-4 p-4 border border-gray-200 rounded-lg bg-gray-100 text-gray-800 cursor-pointer"
+//                     onClick={() => setTextToCopy(transcript)}
+//                 >
+//                     {transcriptCleared ? 'Transcript cleared' : transcript || 'Start speaking to see the transcript here...'}
+//                 </div>
+
+//                 <div className="flex justify-center gap-4 mb-4">
+//                     <button onClick={setCopied} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+//                         {isCopied ? 'Copied!' : 'Copy to clipboard'}
+//                     </button>
+//                     <button onClick={handleStartListening} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+//                         Start Listening
+//                     </button>
+//                     <button onClick={handleStopListening} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+//                         Stop Listening
+//                     </button>
+//                 </div>
+
+//                 {feedback && (
+//                     <div className="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+//                         <h4 className="text-lg font-semibold text-gray-600">Feedback:</h4>
+//                         <p className="text-gray-700">{feedback.feedback}</p>
+//                     </div>
+//                 )}
+
+//                 <div className="mt-6 p-4 border border-gray-200 rounded-lg bg-indigo-50">
+//                     <div className="flex items-center">
+//                         <div className="mr-4 w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
+//                             😊
+//                         </div>
+//                         <p className="text-gray-700">{feedback_emotion}</p>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default Voice_detection;
+
 import React, { useEffect, useState } from "react";
-import '../App.css';
 import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import useClipboard from "react-use-clipboard";
@@ -182,52 +480,47 @@ const feedbackMap = new Map([
     ["Surprised", "You appear to be curious about the unknown..."],
 ]);
 
-const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
+const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
     const [textToCopy, setTextToCopy] = useState();
     const [isCopied, setCopied] = useClipboard(textToCopy, { successDuration: 1000 });
     const [hrQuestion, setHrQuestion] = useState("");
-    const [feedback, setFeedback] = useState(null); // Store feedback from HR model
+    const [feedback, setFeedback] = useState(null);
     const [transcriptCleared, setTranscriptCleared] = useState(false);
 
     const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
     const { transcript, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
     useEffect(() => {
-        socketRef.current.emit('request_question'); // Request the first question
-        socketRef.current.on('new_question', (data) => setHrQuestion(data.question));
-        socketRef.current.on('transcript_feedback', (data) => setFeedback(data)); // Store feedback from HR model
-        console.log(feedback)
-
+        // Request the first question on component mount
+        socketRef.current.emit('request_question');
+        
+        // Listen for new questions and feedback from the server
+        socketRef.current.on('new_question', (data) => {
+            setHrQuestion(data.question);
+            setTranscriptCleared(false); // Reset transcriptCleared for the new question
+        });
+        
+        socketRef.current.on('transcript_feedback', (data) => setFeedback(data));
+        
         return () => {
+            // Clean up event listeners on component unmount
             socketRef.current.off('new_question');
             socketRef.current.off('transcript_feedback');
         };
     }, []);
 
-    useEffect(() => {
-        if (socketRef.current) {
-            socketRef.current.on('hr_response', (data) => {
-                setFeedback(data);  // Update feedback with server response
-            });
-        }
-
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.off('hr_response');
-            }
-        };
-    }, []);
-
     const handleStopListening = () => {
         if (!transcriptCleared) {
-            socketRef.current.emit('send_transcript', { transcript, hrQuestion }); // Send transcript to server for analysis
+            socketRef.current.emit('send_transcript', { transcript, hrQuestion });
         }
+        
         setShow('feedback');
-        resetTranscript();
         setTranscriptCleared(true);
-        socketRef.current.emit('request_question'); // Request new question
-
-        setFeedback(null);
+        resetTranscript(); // Clear the transcript for the next question
+        socketRef.current.emit('request_question'); // Request the next question
+        setFeedback(null); // Reset feedback for the new question
+        
+        // Analyze emotions and update feedback
         let most;
         let mostc = 0;
         Object.keys(emotionCounts).forEach((key) => {
@@ -237,77 +530,49 @@ const Voice_detection = ({ feedback_emotion, socketRef, setFeedback_emotion, sho
             }
         });
 
-        setEmotionCounts({ ...emotionCounts, [most]: 0 });
+        setEmotionCounts({ ...emotionCounts, [most]: 0 }); // Reset the count for the most detected emotion
         setFeedback_emotion('Most of the time ' + feedbackMap.get(most));
-        Object.keys(emotionCounts).forEach((key) => {
-            if (emotionCounts[key] > 0 && feedbackMap.has(key)) {
-                setFeedback_emotion(prevFeedback => prevFeedback + ' ' + feedbackMap.get(key));
-            }
-        });
 
         SpeechRecognition.stopListening();
-    };
-
-    const handleStartListening = () => {
-        startListening();
-        setTranscriptCleared(false);
-        setEmotionCounts({
-            Angry: 0,
-            Fearful: 0,
-            Happy: 0,
-            Neutral: 0,
-            Sad: 0,
-            Surprised: 0,
-        });
-        setShow('start');
     };
 
     if (!browserSupportsSpeechRecognition) {
         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
     }
 
-
     return (
-        <>
-            <div className="container">
-                <br />
-                <h2>{hrQuestion && (
-                    <div className="hr-question">
-                        <h3>HR Question:</h3>
-                        <p>{hrQuestion}</p>
-                    </div>
-                )}</h2>
-
-                <div className="main-content" onClick={() => setTextToCopy(transcript)}>
-                    {transcriptCleared ? '' : transcript}
+        <div className="p-4 mx-auto max-w-2xl text-center bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold text-gray-800">HR Interview Question</h2>
+            {hrQuestion && (
+                <div className="bg-gray-100 p-3 rounded-lg mt-2 text-lg">
+                    <p>{hrQuestion}</p>
                 </div>
+            )}
 
-                <div className="btn-style">
-                    <button onClick={setCopied}>
-                        {isCopied ? 'Copied!' : 'Copy to clipboard'}
-                    </button>
-                    <button onClick={handleStartListening}>Start Listening</button>
-                    <button onClick={handleStopListening}>Stop Listening</button>
-                </div>
-
-                {feedback && (
-                    <div className="feedback">
-                        <h4>Feedback:</h4>
-                        <p>{feedback.feedback}</p> {/* Display the feedback from the server */}
-                    </div>
-                )}
-
-                <div className="feedback-card">
-                    <div className="feedback-icon"></div>
-                    <div className="feedback-content">
-                        <p className="feedback-text" id="feed">
-                            {feedback_emotion}
-                        </p>
-                    </div>
-                </div>
+            <div className="mt-4 p-3 bg-gray-50 border rounded-lg cursor-pointer" onClick={() => setTextToCopy(transcript)}>
+                {transcriptCleared ? '' : transcript}
             </div>
-        </>
+
+            <div className="flex justify-center space-x-4 mt-4">
+                <button onClick={setCopied} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                    {isCopied ? 'Copied!' : 'Copy to clipboard'}
+                </button>
+                <button onClick={startListening} className="px-4 py-2 bg-green-500 text-white rounded-lg">Start Listening</button>
+                <button onClick={handleStopListening} className="px-4 py-2 bg-red-500 text-white rounded-lg">Stop Listening</button>
+            </div>
+
+            {feedback && (
+                <div className="mt-4 bg-yellow-100 p-3 rounded-lg text-yellow-800">
+                    <h4 className="font-semibold">Feedback:</h4>
+                    <p>{feedback.feedback}</p>
+                </div>
+            )}
+
+            <div className="mt-4 p-3 bg-gray-100 border rounded-lg">
+                <p className="text-gray-700">{feedback_emotion}</p>
+            </div>
+        </div>
     );
 };
 
-export default Voice_detection;
+export default VoiceDetection;
