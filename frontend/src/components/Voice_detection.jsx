@@ -568,7 +568,7 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
 
             </div> */}
 
-            <div className={`p-4 mx-auto w-[90%] text-center bg-gray-100 ${styles} mt-4 rounded-lg`}>
+            <div className={`p-4 mx-auto w-[90%] text-center bg-gray-100 ${styles} mt-4 rounded-lg `}>
 
 
                 <div className="flex justify-center space-x-4 mt-4">

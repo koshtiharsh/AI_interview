@@ -103,7 +103,7 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
     const videoRef = useRef(null);
 
     const isVideoActive = useRef(false);
-    const { hrQuestion, transcriptCleared, ts,emotion, setEmotion } = useContext(context)
+    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion } = useContext(context)
 
 
     useEffect(() => {
@@ -170,12 +170,12 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
 
     return (
         <>
-            <div className={`${styles}  h-[450px] bg-gray-100 rounded-lg p-2 ml-5 flex flex-col items-center justify-center mt-4 wful`}>
+            <div className={`${styles}  h-[450px] bg-gray-100 rounded-lg p-2 ml-5 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
                 <video ref={videoRef} className=" h-auto rounded-md p-2 overflow-hidden" autoPlay muted />
                 <p className="text-white text-center mt-2">Emotion: {emotion}</p>
 
             </div>
-            <div className={` ml-5 ${styles} rounded-lg mt-4 bg-gray-100`}>
+            <div className={` ml-5 ${styles} rounded-lg mt-4 bg-gray-100 border-l-[6px]  border-blue-500 p-4`}>
                 <h2 className="text-2xl font-semibold text-gray-800"> Question:</h2>
                 {hrQuestion && (
                     <div className={`bg-gray-300 text-center  text-white p-3 rounded-lg mt-2 text-lg ${styles}  rounded-lg`}>
