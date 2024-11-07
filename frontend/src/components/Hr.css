@@ -111,7 +111,7 @@
   
   
   .cameradiv {
-    position: absolute;
+    /* position: absolute; */
     width: 300px;
     right: 10px;
   }

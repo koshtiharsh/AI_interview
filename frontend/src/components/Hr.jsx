@@ -4,6 +4,7 @@ import './Hr.css';
 import Face_Emotion_detection from './Face_Emotion_detection';
 import Voice_detection from './Voice_detection';
 import loader from '../assets/loader.gif'
+import Navbar from './Navbar';
 function Hr() {
 
   const socketRef = useRef(null);
@@ -51,15 +52,19 @@ function Hr() {
 
   return (
     <div>
+      <Navbar />
       {check == false ? <div className='loaderDiv'>
         <img className='loader' src={loader} alt="" />
         <p>Setting Up for You...</p>
       </div> : ''}
-      {check ? <div className='cameradiv'>
+
+      <div className=" grid grid-cols-[1.5fr_1fr] gap-4 ">
+      {check ? <div className='relative'>
         <Face_Emotion_detection socketRef={socketRef} feedback={feedback} setFeedback={setFeedback} show={show} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} />
       </div> : ''}
       {check ? <Voice_detection socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
 
+      </div>
     </div>
   );
 }

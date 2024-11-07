@@ -96,12 +96,15 @@
 
 // export default Face_Emotion_detection;
 
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { context } from '../context/Context';
 
-function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmotionCounts, emotionCounts }) {
+function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmotionCounts, emotionCounts, }) {
     const videoRef = useRef(null);
-    const [emotion, setEmotion] = useState('');
+
     const isVideoActive = useRef(false);
+    const { hrQuestion, transcriptCleared, ts,emotion, setEmotion } = useContext(context)
+
 
     useEffect(() => {
         const startVideo = async () => {
@@ -162,11 +165,32 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
         };
     }, [socketRef, setEmotionCounts]);
 
+    const styles = "shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-2  "
+
+
     return (
-        <div className="fixed bottom-4 right-4 w-32 h-32 bg-gray-900 rounded-lg p-2 shadow-lg">
-            <video ref={videoRef} className="w-full h-full rounded-lg" autoPlay muted />
-            <p className="text-white text-center mt-2">Emotion: {emotion}</p>
-        </div>
+        <>
+            <div className={`${styles}  h-[450px] bg-gray-100 rounded-lg p-2 ml-5 flex flex-col items-center justify-center mt-4 wful`}>
+                <video ref={videoRef} className=" h-auto rounded-md p-2 overflow-hidden" autoPlay muted />
+                <p className="text-white text-center mt-2">Emotion: {emotion}</p>
+
+            </div>
+            <div className={` ml-5 ${styles} rounded-lg mt-4 bg-gray-100`}>
+                <h2 className="text-2xl font-semibold text-gray-800"> Question:</h2>
+                {hrQuestion && (
+                    <div className={`bg-gray-300 text-center  text-white p-3 rounded-lg mt-2 text-lg ${styles}  rounded-lg`}>
+                        <p className='text-slate-800 font-bold text-xl' >{hrQuestion}</p>
+                    </div>
+                )}
+                <h2 className="text-xl font-semibold text-gray-600 mt-4 "> Your Answer:</h2>
+
+                <div className="p-3 bg-gray-300 border rounded-lg cursor-pointer" >
+                    {transcriptCleared ? '' : ts}
+                </div>
+
+            </div>
+
+        </>
     );
 }
 
