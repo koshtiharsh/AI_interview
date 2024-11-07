@@ -170,16 +170,16 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
 
     return (
         <>
-            <div className={`${styles}  h-[450px] bg-gray-100 rounded-lg p-2 ml-5 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
+            <div className={`${styles}  h-[370px] bg-gray-100 rounded-lg p-2 ml-10 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
                 <video ref={videoRef} className=" h-auto rounded-md p-2 overflow-hidden" autoPlay muted />
-                <p className="text-white text-center mt-2">Emotion: {emotion}</p>
+                {/* <p className="text-white text-center mt-2">Emotion: {emotion}</p> */}
 
             </div>
-            <div className={` ml-5 ${styles} rounded-lg mt-4 bg-gray-100 border-l-[6px]  border-blue-500 p-4`}>
-                <h2 className="text-2xl font-semibold text-gray-800"> Question:</h2>
+            <div className={` ml-10 ${styles} rounded-lg mt-4 bg-gray-100 border-l-[6px]  border-blue-500 p-4`}>
+                <h2 className="text-xl font-semibold text-gray-800"> Question:</h2>
                 {hrQuestion && (
-                    <div className={`bg-gray-300 text-center  text-white p-3 rounded-lg mt-2 text-lg ${styles}  rounded-lg`}>
-                        <p className='text-slate-800 font-bold text-xl' >{hrQuestion}</p>
+                    <div className={`bg-gray-300 text-center  text-white p-2 rounded-lg mt-2 text-xl ${styles}  rounded-lg`}>
+                        <p className='text-slate-800 font-bold text-lg' >{hrQuestion}</p>
                     </div>
                 )}
                 <h2 className="text-xl font-semibold text-gray-600 mt-4 "> Your Answer:</h2>
