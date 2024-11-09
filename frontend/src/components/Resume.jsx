@@ -39,8 +39,14 @@ const Resume = () => {
         throw new Error('server error')
       }
     }).then((res) => {
+
+      const data = { html: res }
+      localStorage.setItem('resumeresult', JSON.stringify(data))
+
       setHtmlContent(res)
-      navigate('/resume/result')
+      // navigate('/resume/result')
+      window.location.href = '/resume/result';
+
     })
 
   }

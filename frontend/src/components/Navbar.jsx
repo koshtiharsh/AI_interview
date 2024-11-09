@@ -78,6 +78,12 @@ const Navbar = () => {
               Upload Resume
               <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
             </a>
+            {
+              localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-lg text-black hover:text-white transition duration-300">
+                Resume Report
+                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+              </a> : ''
+            }
           </nav>
 
           {/* Responsive Hamburger Menu */}

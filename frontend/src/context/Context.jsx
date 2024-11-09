@@ -6,7 +6,11 @@ export default function Context({ children }) {
 
 
 
-  const [htmlContent, setHtmlContent] = useState('');
+  const [htmlContent, setHtmlContent] = useState(()=>{
+      const saveData = localStorage.getItem('resumeresult')
+      return saveData ? JSON.parse(saveData) : '';
+      
+  });
   const [transcriptCleared, setTranscriptCleared] = useState(false);
   const [hrQuestion, setHrQuestion] = useState("");
 

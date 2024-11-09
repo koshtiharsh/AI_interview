@@ -580,7 +580,7 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
                 {feedback && (
                     <div className="mt-4 bg-yellow-100 p-3 rounded-lg text-yellow-800">
                         <h4 className="font-semibold">Feedback:</h4>
-                        <p>{feedback.feedback}</p>
+                        <p className="text-justify">{feedback.feedback}</p>
                     </div>
                 )}
 
