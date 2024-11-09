@@ -18,7 +18,7 @@ const ResumeResult = () => {
 
     return (
 
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        <div dangerouslySetInnerHTML={{ __html: htmlContent.html }} />
     );
 };
 
