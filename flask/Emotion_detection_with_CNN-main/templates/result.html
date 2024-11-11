@@ -392,6 +392,42 @@ span img{
 
             <div class="keypoint" onclick="openDropdown(this)">
               <div class="lb">
+                <h2>Gramatical Mistakes</h2>
+                <span
+                  style="font-size: 2.5rem"
+                  class="material-symbols-outlined"
+                >
+                  arrow_drop_down
+                </span>
+              </div>
+              <div class="points">
+                <ul>
+                  {% set unique_corrections = corrections|unique %}
+                  {% for item in unique_corrections %}
+                      {% if ' to ' in item %}
+                          {% set parts = item.split(' to ') %}
+                          {% if parts[0].strip()|length > 0 and parts[1].strip()|length > 0 and (parts[0].strip() != '.' and parts[0].strip() != ',') and (parts[1].strip() != '.' and parts[1].strip() != ',') %}
+                              <span>
+                                  <span style="color: red; display: inline-block;">{{ parts[0].strip() }}</span>
+                                  <span style="display: inline-block;"> --to-- </span>
+                                  <span style="color: green; display: inline-block;">{{ parts[1].strip() }}</span>
+                              </span>
+                          {% endif %}
+                      {% endif %}
+                  {% endfor %}
+              
+              
+                  <!-- <li><span>Summary</span></li>
+                  <hr />
+                  <li><span>Summary</span></li>
+                  <hr />
+                  <li><span>Summary</span></li> -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="keypoint" onclick="openDropdown(this)">
+              <div class="lb">
                 <h2>Structure</h2>
                 <span
                   style="font-size: 2.5rem"

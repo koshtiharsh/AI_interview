@@ -10,10 +10,12 @@ import nltk
 import spacy
 import string
 import re
+import os
 from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import word_tokenize
+from grammarcheck.ats_grammar_check import check_and_correct_pdf
 
 # nltk.download('punkt')
 # nltk.download('stopwords')
@@ -680,8 +682,13 @@ def processing(resume_copy, choice, role):
         soft_skill_score = no_match_soft / desc_skill_soft * 100
     # print("skill score", soft_skill_score)
     # print("count score", word_count_score)
+    base_name, extension = os.path.splitext(resume_copy)
 
+# Append "-1" to the base name
+    new_file_name = f"{base_name}-1{extension}"
     # Now you can use the soft_skills_list in your Python code
+    corrections= check_and_correct_pdf("./static/uploads/" + resume_copy, './static/uploads/'+new_file_name)
+
 
     final_score = (
         skill_score + section_score + word_count_score + soft_skill_score
@@ -700,6 +707,7 @@ def processing(resume_copy, choice, role):
         soft_skill_score,
         word_count_score,
         section_score,
+        corrections
     )
 
 
