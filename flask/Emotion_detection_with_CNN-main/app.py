@@ -343,12 +343,17 @@ def upload_file():
             ss,
             wc,
             sc,
+            corrections
         ) = ats.processing(file.filename, 1, role)
         struct = str(int(sc)) + "%"
         hsp = str(int(hs)) + "%"
         ssp = str(int(ss)) + "%"
         wcp = str(int(wc)) + "%"
         pdfFileName = file.filename
+        base_name, extension = os.path.splitext(pdfFileName)
+
+# Append "-1" to the base name
+        pdfFileName = f"{base_name}-1{extension}"
 
         print(word_count)
         return render_template(
@@ -365,6 +370,7 @@ def upload_file():
             missing_soft=missing_soft,
             word_count=word_count,
             pdfFileName=pdfFileName,
+            corrections =corrections
         )
     else:
         return "Invalid file format! Allowed formats: pdf, docx"
