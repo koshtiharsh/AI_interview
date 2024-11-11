@@ -20,14 +20,23 @@ const Resume = () => {
 
 
   const handleSubmit = async (e) => {
-
-    if (subRole.length == 0 && file == null) return;
-    setIsLoading(true)
     e.preventDefault();
+    if (subRole.length == 0 && file == null) return;
+    // filename.split('.').pop().toLowerCase();
+    let name = file.name
+    let arr = name.split('.')
+    if (arr[1] !== 'pdf') {
+      alert("Pdf file supported Only")
+      setFile(null)
+      return;
+    }
+    setIsLoading(true)
+
 
     const formData = new FormData()
     formData.append('role', subRole)
     formData.append('file', file)
+
 
     fetch('http://localhost:5000/upload', {
       method: 'post',
