@@ -59,10 +59,10 @@ function Hr() {
       </div> : ''}
 
       <div className=" grid grid-cols-[1.5fr_1fr] gap-4 ">
-      {check ? <div className='relative'>
-        <Face_Emotion_detection socketRef={socketRef} feedback={feedback} setFeedback={setFeedback} show={show} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} />
-      </div> : ''}
-      {check ? <Voice_detection socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
+        {check ? <div className='relative'>
+          <Face_Emotion_detection socketRef={socketRef} feedback={feedback} setFeedback={setFeedback} show={show} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} />
+        </div> : ''}
+        {check ? <Voice_detection socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
 
       </div>
     </div>
