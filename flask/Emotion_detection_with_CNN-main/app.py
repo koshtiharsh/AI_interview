@@ -226,7 +226,7 @@ app = Flask(__name__, static_url_path="/static")
 CORS(app, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# MongoDB setup
+# # MongoDB setup
 app.config["MONGO_URI"] = "mongodb+srv://harsh0801004:8857090609@harshkoshti.b208der.mongodb.net/ai_interview?retryWrites=true&w=majority&appName=harshkoshti"
 mongo = PyMongo(app)
 user_collection = mongo.db.userData
@@ -261,16 +261,20 @@ def handle_image_frame(data):
 
 # Predefined correct answers for the HR questions
 predefined_answers = {
-    "Where do you see yourself in five years?": "In five years, I see myself taking on a senior role within the tech team, perhaps leading projects that involve emerging technologies like AI or machine learning. My goal is to advance both my technical and leadership skills, becoming someone the team can rely on for innovative solutions and mentorship. I hope to be someone who not only drives the company’s technical success but also inspires and empowers my team to reach new heights.  NOTE: Aim for 45-60 seconds. Long enough to outline your goals, but brief enough to keep it engaging.",
+     "Tell me about yourself.": "I am a software engineer with a background in .... and ..... development, and I have hands-on experience with frameworks like .... . I’m passionate about creating efficient, scalable systems and enjoy solving complex technical challenges. In my last role, TELL ABOUT YOUR PROJECTS HERE. I’m always eager to expand my knowledge in emerging technologies, and I’m excited about the opportunity to contribute my skills to a team that values innovation and collaboration.  You can also include your hobbies,some other experiences,etc.  NOTE: Keep a bit longer, around 60-90 seconds. Cover your professional background, relevant skills, and what you’re aiming for in your next role ",
+
+    "Where do you see yourself in next five years?": "In five years, I see myself taking on a senior role within the tech team, perhaps leading projects that involve emerging technologies like AI or machine learning. My goal is to advance both my technical and leadership skills, becoming someone the team can rely on for innovative solutions and mentorship. I hope to be someone who not only drives the company’s technical success but also inspires and empowers my team to reach new heights.  NOTE: Aim for 45-60 seconds. Long enough to outline your goals, but brief enough to keep it engaging.",
 
     "What are your greatest strengths?": "My greatest strengths include a strong aptitude for problem-solving, adaptability to new technologies, and a collaborative approach to teamwork. I excel at breaking down complex issues, developing efficient solutions, and staying updated with the latest industry trends. Being a team player, I actively contribute to group discussions and ensure that we work towards solutions that are both technically sound and aligned with business goals.  NOTE:Around 45-60 seconds. Mention 2-3 key strengths and give a brief example if possible.",
 
     "What is your greatest weakness?": "One of my weaknesses is that I sometimes get deeply focused on perfecting technical details, which can impact time management on larger projects. However, I've been addressing this by prioritizing tasks based on their impact and learning to balance thoroughness with deadlines. I’m consistently working on improving my time management skills to ensure that I deliver high-quality work efficiently. NOTE: Keep it to 30-45 seconds. Be honest but solution-focused, showing that you’re actively working to improve. ",
 
-    "Why do you want to work here?": "I want to work here because your company is at the forefront of technological innovation and places a high value on continuous learning and growth. I’m inspired by the projects your team is working on, especially in areas like cloud computing and AI, which align with my career interests. I believe that working here will allow me to apply my skills in a meaningful way while also offering opportunities to deepen my expertise in cutting-edge technology.  NOTE: 45-60 seconds. Highlight what excites you about the company and how it aligns with your skills and goals.",
-
-    "Tell me about yourself.": "I am a software engineer with a background in .... and ..... development, and I have hands-on experience with frameworks like .... . I’m passionate about creating efficient, scalable systems and enjoy solving complex technical challenges. In my last role, TELL ABOUT YOUR PROJECTS HERE. I’m always eager to expand my knowledge in emerging technologies, and I’m excited about the opportunity to contribute my skills to a team that values innovation and collaboration.  You can also include your hobbies,some other experiences,etc.  NOTE: Keep a bit longer, around 60-90 seconds. Cover your professional background, relevant skills, and what you’re aiming for in your next role "
+    "Why do you want to work here?": "I want to work here because your company is at the forefront of technological innovation and places a high value on continuous learning and growth. I’m inspired by the projects your team is working on, especially in areas like cloud computing and AI, which align with my career interests. I believe that working here will allow me to apply my skills in a meaningful way while also offering opportunities to deepen my expertise in cutting-edge technology.  NOTE: 45-60 seconds. Highlight what excites you about the company and how it aligns with your skills and goals."
 }
+
+total_len = len(predefined_answers)
+
+users ={}
 
 # Function to compare answers and provide feedback
 def compare_answers(user_answer, correct_answer):
@@ -284,12 +288,44 @@ def handle_transcript(data):
     correct_answer = predefined_answers.get(question)
     feedback = compare_answers(user_answer, correct_answer) if correct_answer else "No predefined answer available."
     print(feedback)
+
     socketio.emit('transcript_feedback', {"feedback": feedback})
 
+    userId = data['userId']
+
+    newObject ={"$push":{"hrQuestions":{question:feedback}}}
+    if correct_answer:
+        result = user_collection.find_one_and_update({'userId':userId},newObject)
+
 @socketio.on('request_question')
-def send_random_question():
-    question = random.choice(list(predefined_answers.keys()))
-    socketio.emit('new_question', {'question': question})
+def send_random_question(data):
+    try:
+        userId = data['userId']
+       
+        if userId in users:
+            # Check if the user has reached the total length and reset if necessar
+            if users[userId] == total_len - 1:
+                users[userId] = 0
+            else:
+                users[userId] += 1
+        else:
+            newObject ={"$set":{"hrQuestions":[]}}
+            result = user_collection.find_one_and_update({'userId':userId},newObject)
+            users[userId] = 0
+        
+        # Make sure the index doesn't go out of bounds
+        question_index = min(users[userId], total_len - 1)
+        keys_list = list(predefined_answers.keys())
+        question = keys_list[question_index]
+        
+        # Emit the question to the user
+        socketio.emit('new_question', {'question': question})
+    
+    except KeyError:
+        print("Error: 'userId' not found in data.")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
 
 # Route for testing
 @app.route('/')

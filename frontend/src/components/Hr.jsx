@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import io from "socket.io-client";
 import './Hr.css';
 import Face_Emotion_detection from './Face_Emotion_detection';
 import Voice_detection from './Voice_detection';
 import loader from '../assets/loader.gif'
 import Navbar from './Navbar';
+import { context } from '../context/Context';
+import Alert from './Alert';
 function Hr() {
 
   const socketRef = useRef(null);
@@ -19,6 +21,10 @@ function Hr() {
     Sad: 0,
     Surprised: 0,
   });
+
+
+
+  const [model, setModel] = useState(true)
   // Ref to track video stream status
 
   // {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
@@ -51,7 +57,8 @@ function Hr() {
   }, []);
 
   return (
-    <div>
+    <div className='relative'>
+     {model? <Alert  setModel={setModel}/> :''}
       <Navbar />
       {check == false ? <div className='loaderDiv'>
         <img className='loader' src={loader} alt="" />
@@ -62,7 +69,7 @@ function Hr() {
         {check ? <div className='relative'>
           <Face_Emotion_detection socketRef={socketRef} feedback={feedback} setFeedback={setFeedback} show={show} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} />
         </div> : ''}
-        {check ? <Voice_detection socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
+        {check ? <Voice_detection setModel={setModel} model={model} socketRef={socketRef} show={show} setShow={setShow} feedback_emotion={feedback} setFeedback_emotion={setFeedback} emotionCounts={emotionCounts} setEmotionCounts={setEmotionCounts} /> : ''}
 
       </div>
     </div>

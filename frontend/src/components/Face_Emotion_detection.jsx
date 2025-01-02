@@ -103,7 +103,11 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
     const videoRef = useRef(null);
 
     const isVideoActive = useRef(false);
-    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion } = useContext(context)
+    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion, } = useContext(context)
+
+
+
+
 
 
     useEffect(() => {
@@ -164,6 +168,11 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
             socketRef.current.off('emotion_result', handleEmotionResult);
         };
     }, [socketRef, setEmotionCounts]);
+
+
+
+
+
 
     const styles = "shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] p-2  "
 

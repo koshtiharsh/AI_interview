@@ -480,23 +480,94 @@ const feedbackMap = new Map([
     ["Sad", "It seems you might be feeling frustration or disappointment. Acknowledging these feelings is the first step to overcoming them. Consider reflecting on what may have caused these emotions and think about actions you can take to improve your situation."],
     ["Surprised", "You appear to be curious about the unknown, which is a great mindset for learning! Embrace this curiosity and use it to explore new topics or ask questions. Consider keeping a journal to document your thoughts and discoveries."],
 ]);
-const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
+const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedback_emotion, show, setShow, setEmotionCounts, emotionCounts }) => {
     const [textToCopy, setTextToCopy] = useState();
     const [isCopied, setCopied] = useClipboard(textToCopy, { successDuration: 1000 });
 
     const [feedback, setFeedback] = useState(null);
-    const { transcript, resetTranscript, browserSupportsSpeechRecognition, } = useSpeechRecognition();
-    const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+    const { transcript, resetTranscript, browserSupportsSpeechRecognition, stopListening, interimTranscript, listening } = useSpeechRecognition();
+    // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
 
-    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion } = useContext(context)
 
+    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns } = useContext(context)
+
+
+    const [silenceDetected, setSilenceDetected] = useState(false);
+
+
+    useEffect(() => {
+        const silenceDuration = 5000; // 10 seconds of silence
+        let silenceTimeout;
+
+        if (listening) {
+            if (!interimTranscript) {
+                // If there's no interim transcript for 10 seconds, trigger operation
+                silenceTimeout = setTimeout(() => {
+                    setSilenceDetected(true);
+                    setModel(true)
+
+                }, silenceDuration);
+            } else {
+                // If speech is being detected, clear the timeout
+                setSilenceDetected(false);
+                setModel(false)
+                clearTimeout(silenceTimeout);
+            }
+        }
+
+        return () => clearTimeout(silenceTimeout); // Clean up timeout when component unmounts
+    }, [interimTranscript, listening,silenceDetected]);
+
+
+
+
+    // useEffect(() => {
+    //     // Set the timeout when the component mounts
+    //     const timer = setTimeout(() => {
+    //         SpeechRecognition.startListening({ continuous: true, language: 'en-IN' })
+    //     }, 3000); // Waits for 5 seconds
+
+    //     // Cleanup function to clear the timeout when the component unmounts
+    //     return () => {
+    //         clearTimeout(timer);
+    //     };
+    // }, [hrQuestion]);
 
     useEffect(() => {
         setTs(transcript)
     }, [transcript])
+
+    useEffect(() => {
+        if (hrQuestion) {
+            let prePend = "";
+            if (hrQuestion != "Tell me about yourself.") {
+                prePend = "Lets Move to next question , , ,"
+
+            }
+            SpeechRecognition.stopListening()
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(prePend + hrQuestion);
+
+            // Customize settings if needed
+            utterance.lang = 'en-US'; // Language
+            utterance.pitch = 1;      // Pitch (0 to 2)
+            utterance.rate = 1;       // Rate (0.1 to 10)
+
+            synth.speak(utterance);
+
+            setTimeout(() => {
+                SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+            }, 3000);
+        }
+
+
+    }, [hrQuestion])
+
+
+
     useEffect(() => {
         // Request the first question on component mount
-        socketRef.current.emit('request_question');
+
 
         // Listen for new questions and feedback from the server
         socketRef.current.on('new_question', (data) => {
@@ -514,14 +585,20 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
     }, []);
 
     const handleStopListening = () => {
+        const userId = 1;
+        SpeechRecognition.stopListening();
+
+        setPrevTs(0)
+
         if (!transcriptCleared) {
-            socketRef.current.emit('send_transcript', { transcript, hrQuestion });
+            socketRef.current.emit('send_transcript', { transcript, hrQuestion, userId });
         }
+
 
         setShow('feedback');
         setTranscriptCleared(true);
         resetTranscript(); // Clear the transcript for the next question
-        socketRef.current.emit('request_question'); // Request the next question
+        socketRef.current.emit('request_question', { userId: userId }); // Request the next question
         setFeedback(null); // Reset feedback for the new question
 
         // Analyze emotions and update feedback
@@ -537,8 +614,35 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
         setEmotionCounts({ ...emotionCounts, [most]: 0 }); // Reset the count for the most detected emotion
         setFeedback_emotion('Most of the time ' + feedbackMap.get(most));
 
-        SpeechRecognition.stopListening();
+
     };
+
+    useEffect(() => {
+        console.log("the state checking ", ans)
+        if (ans == 'no') {
+            handleStopListening();
+            setModel(false)
+            setAns('notset')
+        } // Call the function when `state` changes
+    }, [ans]);
+
+
+    useEffect(() => {
+        let silenceTimeout;
+        if (silenceDetected) {
+            silenceTimeout = setTimeout(() => {
+                handleStopListening();
+                setModel(false)
+                setAns('notset')
+            }, 5000)
+        }else{
+            setSilenceDetected(false);
+            clearTimeout(silenceTimeout)
+        }
+
+        return () => clearTimeout(silenceTimeout);
+
+    }, [silenceDetected])
 
     if (!browserSupportsSpeechRecognition) {
         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
@@ -551,7 +655,7 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
             <div className={`p-4 mx-auto w-[90%]  bg-blue-400 ${styles} mt-4 rounded-lg`}>
 
                 <div className="emotion ">
-                    <span className="text-white  font-bold text-xl">Detected Emotion :</span> <span className="text-slate-600 inline-block font-bold text-xl p-1 ml-3 text-center w-[180px] bg-amber-200 rounded-lg"> {emotion}</span>
+                    <span className="text-white  font-bold text-xl">Detected Emotion :</span> <span className="text-slate-600 inline-block font-bold text-xl p-1 ml-3 text-center w-[180px] bg-amber-200 rounded-lg"> {emotion}{silenceDetected ? '   silence' : "false silence"}</span>
                 </div>
             </div>
             {/* <div className={`p-4 mx-auto w-[90%] r bg-gray-100 ${styles} mt-4 rounded-lg`}>
@@ -573,14 +677,14 @@ const VoiceDetection = ({ feedback_emotion, socketRef, setFeedback_emotion, show
 
                 <div className="flex justify-center space-x-4 mt-4">
 
-                    <button onClick={startListening} className="px-4 py-2 bg-green-500 text-white rounded-lg">Start Listening</button>
+                    {/* <button onClick={startListening} className="px-4 py-2 bg-green-500 text-white rounded-lg">Start Listening</button> */}
                     <button onClick={handleStopListening} className="px-4 py-2 bg-red-500 text-white rounded-lg">Stop Listening</button>
                 </div>
 
                 {feedback && (
                     <div className="mt-4 bg-yellow-100 p-3 rounded-lg text-yellow-800">
                         <h4 className="font-semibold">Feedback:</h4>
-                        <p className="text-justify">{feedback.feedback}</p>
+                        <p className="text-justify">{feedback.feedback} </p>
                     </div>
                 )}
 

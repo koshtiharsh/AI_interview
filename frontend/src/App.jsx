@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ResumeResult from './components/ResumeResult';
 
 import "regenerator-runtime/runtime";
+import Test from './components/Test';
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const App = () => {
     {
       path: '/resume/result',
       element: <ResumeResult />
+    },
+    {
+      path: '/test',
+      element: <Test />
     },
 
 
