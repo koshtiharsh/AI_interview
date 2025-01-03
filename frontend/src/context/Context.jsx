@@ -20,7 +20,7 @@ export default function Context({ children }) {
   const [ts, setTs] = useState('')
 
   const [emotion, setEmotion] = useState('');
-  const values = { htmlContent, setHtmlContent, transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns }
+  const values = { htmlContent, setHtmlContent, transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns,start,setStart }
 
 
   return (
