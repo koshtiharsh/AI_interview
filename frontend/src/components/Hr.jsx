@@ -5,7 +5,7 @@ import Face_Emotion_detection from './Face_Emotion_detection';
 import Voice_detection from './Voice_detection';
 import loader from '../assets/loader.gif'
 import Navbar from './Navbar';
-import { context } from '../context/Context';
+import  { context } from '../context/Context';
 import Alert from './Alert';
 function Hr() {
 
@@ -23,8 +23,9 @@ function Hr() {
   });
 
 
+  const {start, setStart} = useContext(context)
 
-  const [model, setModel] = useState(true)
+  const [model, setModel] = useState(false)
   // Ref to track video stream status
 
   // {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
@@ -59,6 +60,12 @@ function Hr() {
   return (
     <div className='relative'>
      {model? <Alert  setModel={setModel}/> :''}
+
+     {check && start==false &&  <div className='fixed h-[100%] w-[100%] bg-gray-500 bg-opacity-20 z-50 backdrop-blur-sm'>
+      <div className="start fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1000] ">
+        <button className='bg-green-600 text-white px-3 py-2 rounded-md hover:bg-green-800' onClick={()=>setStart(true)}>Start Interview</button>
+      </div>
+      </div>}
       <Navbar />
       {check == false ? <div className='loaderDiv'>
         <img className='loader' src={loader} alt="" />

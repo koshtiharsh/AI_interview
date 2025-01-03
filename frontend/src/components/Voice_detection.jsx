@@ -489,14 +489,14 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
 
 
-    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns } = useContext(context)
+    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns ,start} = useContext(context)
 
 
     const [silenceDetected, setSilenceDetected] = useState(false);
 
 
     useEffect(() => {
-        const silenceDuration = 5000; // 10 seconds of silence
+        const silenceDuration = 3000; // 10 seconds of silence
         let silenceTimeout;
 
         if (listening) {
@@ -516,7 +516,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         }
 
         return () => clearTimeout(silenceTimeout); // Clean up timeout when component unmounts
-    }, [interimTranscript, listening,silenceDetected]);
+    }, [interimTranscript, listening, silenceDetected]);
 
 
 
@@ -635,7 +635,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
                 setModel(false)
                 setAns('notset')
             }, 5000)
-        }else{
+        } else {
             setSilenceDetected(false);
             clearTimeout(silenceTimeout)
         }
@@ -643,6 +643,15 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         return () => clearTimeout(silenceTimeout);
 
     }, [silenceDetected])
+
+    //start trigger 
+
+    useEffect(()=>{
+
+        if(start){
+            handleStopListening();
+        }
+    },[start])
 
     if (!browserSupportsSpeechRecognition) {
         return <p>Speech Recognition is not supported in this browser. Please try using Chrome.</p>;
@@ -652,10 +661,12 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     return (
         <div>
 
+          
+
             <div className={`p-4 mx-auto w-[90%]  bg-blue-400 ${styles} mt-4 rounded-lg`}>
 
                 <div className="emotion ">
-                    <span className="text-white  font-bold text-xl">Detected Emotion :</span> <span className="text-slate-600 inline-block font-bold text-xl p-1 ml-3 text-center w-[180px] bg-amber-200 rounded-lg"> {emotion}{silenceDetected ? '   silence' : "false silence"}</span>
+                    <span className="text-white  font-bold text-xl">Detected Emotion :</span> <span className="text-slate-600 inline-block font-bold text-xl p-1 ml-3 text-center w-[180px] bg-amber-200 rounded-lg"> {emotion}</span>
                 </div>
             </div>
             {/* <div className={`p-4 mx-auto w-[90%] r bg-gray-100 ${styles} mt-4 rounded-lg`}>
@@ -678,7 +689,8 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
                 <div className="flex justify-center space-x-4 mt-4">
 
                     {/* <button onClick={startListening} className="px-4 py-2 bg-green-500 text-white rounded-lg">Start Listening</button> */}
-                    <button onClick={handleStopListening} className="px-4 py-2 bg-red-500 text-white rounded-lg">Stop Listening</button>
+                    <button onClick={handleStopListening} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700">Next Question</button>
+
                 </div>
 
                 {feedback && (
