@@ -10,7 +10,10 @@ export default function Alert({ setModel }) {
                 <h1>Do you want add something ?</h1>
                 <div
                     className='flex justify-evenly gap-5'>
-                    <button className='bg-blue-400 p-1 font-medium text-white rounded-md px-2' onClick={() => setModel(false)}>Yes</button>
+                    <button className='bg-blue-400 p-1 font-medium text-white rounded-md px-2' onClick={() => {
+                        setModel(false)
+                        setAns('yes')
+                    }}>Yes</button>
                     <button className='bg-blue-400 p-1 font-medium text-white rounded-md px-2' onClick={() => setAns('no')}>No</button>
                 </div>
             </div>
