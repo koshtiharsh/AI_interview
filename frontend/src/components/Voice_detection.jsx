@@ -54,6 +54,11 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
                 setAns('notset')
                 clearTimeout(silenceTimeout);
             }
+            if (ans == 'no') {
+                setSilenceDetected(false);
+                setModel(false)
+                clearTimeout(silenceTimeout);
+            }
         }
 
         return () => clearTimeout(silenceTimeout); // Clean up timeout when component unmounts
