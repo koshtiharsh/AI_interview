@@ -381,6 +381,7 @@ def upload_file():
             sc,
             corrections
         ) = ats.processing(file.filename, 1, role)
+        
         struct = str(int(sc)) + "%"
         hsp = str(int(hs)) + "%"
         ssp = str(int(ss)) + "%"
