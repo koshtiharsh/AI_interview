@@ -402,7 +402,7 @@ span img{
               </div>
               <div class="points">
                 <ul>
-                  {% set unique_corrections = corrections|unique %}
+                  {% set unique_corrections = corrections| unique %}
                   {% for item in unique_corrections %}
                       {% if ' to ' in item %}
                           {% set parts = item.split(' to ') %}

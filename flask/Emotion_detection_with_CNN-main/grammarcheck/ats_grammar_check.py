@@ -22,6 +22,7 @@ def is_all_caps(text):
     return text.isupper() and len(text) >= 2 and text.isalpha()
 
 def apply_corrections_to_pdf(pdf_path, matches, output_path):
+    corrections.clear()
     doc = fitz.open(pdf_path)
     
     filtered_matches = []

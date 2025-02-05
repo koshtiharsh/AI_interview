@@ -24,41 +24,59 @@ from grammarcheck.ats_grammar_check import check_and_correct_pdf
 # nltk.download('words')
 # nltk.download('punkt_tab')
 
-jobDesc = { 'mern':'''We are looking for a highly skilled MERN Stack Developer to join our development team. The ideal candidate will have experience building scalable web applications using MongoDB, Express.js, React, and Node.js. You will be responsible for developing and maintaining full-stack applications, from designing database architecture to implementing the frontend and backend logic.
+jobDesc = { 'mern':'''We are seeking a passionate and motivated Junior MERN Stack Developer to join our dynamic development team. This entry-level position is perfect for fresh graduates or early-career developers who are eager to learn and grow in a supportive environment.
+Required Technical Skills
 
-Responsibilities:
+Basic proficiency in MongoDB, Express.js, React.js, and Node.js
+Understanding of JavaScript/ES6+ fundamentals
+Knowledge of HTML5 and CSS3
+Basic understanding of RESTful APIs
+Version control using Git
+Basic command line familiarity
 
-Design, develop, and maintain robust, scalable web applications using the MERN stack (MongoDB, Express.js, React, Node.js).
-Build and manage APIs, microservices, and RESTful services.
-Collaborate with the UI/UX team to create user-friendly, visually appealing interfaces.
-Write clean, maintainable, and efficient code, following best practices and industry standards.
-Manage databases and optimize application performance.
-Debug and resolve technical issues and identify areas for improvement.
-Work closely with project managers and other team members to meet deadlines and deliver high-quality features.
-Test and deploy applications using CI/CD pipelines.
-Ensure the security of web applications by implementing secure coding practices.
-Stay updated with the latest technologies and best practices in web development.
-Requirements:
+Nice to Have
 
-Proven experience as a MERN Stack Developer or similar role.
-Strong proficiency in JavaScript, with hands-on experience in React.js, Node.js, Express.js, and MongoDB.
-Experience with front-end development using React, including hooks, state management, and component lifecycles.
-Knowledge of back-end technologies and RESTful API development using Node.js and Express.js.
-Familiarity with database management, especially MongoDB, including database schema design and performance optimization.
-Strong understanding of HTML5, CSS3, and modern JavaScript (ES6+).
-Experience with version control tools such as Git.
-Knowledge of API integration (e.g., third-party APIs, authentication).
-Familiarity with testing frameworks such as Jest, Mocha, or similar.
-Experience with deployment on cloud platforms like AWS, Azure, or Heroku is a plus.
-Good problem-solving skills and attention to detail.
-Ability to work in a fast-paced, collaborative environment.
-Preferred Qualifications:
+Understanding of TypeScript basics
+Familiarity with responsive design principles
+Knowledge of testing frameworks (Jest, React Testing Library)
+Basic understanding of AWS or similar cloud platforms
+Experience with Agile methodologies
 
-Experience with state management libraries like Redux or Context API.
-Familiarity with Next.js and SSR (Server-Side Rendering) is a plus.
-Understanding of Agile methodologies and tools like Jira.
-Knowledge of WebSockets and real-time data handling.
-Prior experience with CI/CD pipelines and DevOps practices.'''}
+Responsibilities
+
+Assist in developing and maintaining web applications using the MERN stack
+Write clean, maintainable code following team standards
+Collaborate with senior developers to learn best practices
+Participate in code reviews to enhance learning
+Help with basic debugging and troubleshooting
+Document code and maintain technical documentation
+Assist in testing and quality assurance
+
+Required Education & Experience
+
+Bachelor's degree in Computer Science, Software Engineering, or related field
+OR equivalent practical experience through bootcamps/self-learning
+Portfolio demonstrating basic MERN stack projects
+0-1 year of professional experience
+
+Soft Skills
+
+Strong eagerness to learn and grow
+Good problem-solving abilities
+Excellent communication skills
+Ability to work well in a team
+Open to feedback and coaching
+Self-motivated and proactive
+
+What We Offer
+
+Structured mentorship program
+Regular training and learning opportunities
+Collaborative and supportive work environment
+Opportunity to work on real projects from day one
+Competitive salary for entry-level position
+Health insurance and other benefits
+Flexible work arrangements'''}
 
 def processing(resume_copy, choice, role):
     # preprocessing
@@ -83,10 +101,8 @@ def processing(resume_copy, choice, role):
 
     def match_skills(job_description, skills_list):
         job_keywords = set(word_tokenize(job_description.lower()))
-        matched_skills = [
-            skill for skill in skills_list if skill.lower() in job_keywords
-        ]
-        return matched_skills
+        matched_skills = {skill for skill in skills_list if skill.lower() in job_keywords}  # Using a set to ensure uniqueness
+        return list(matched_skills)  # Converting back to a list if needed
 
     def find_matching_skills_web(text, skills_list):
         text_keywords = set(word_tokenize(text.lower()))
@@ -252,183 +268,202 @@ def processing(resume_copy, choice, role):
     nltk.download("punkt")
 
     skills_list = [
-        "html",
-        "css",
-        "javascript",
-        "react.js",
-        "reactjs",
-        "angular",
-        "vue.js",
-        "node.js",
-        "nodejs",
-        "expressjs",
-        "express.js",
-        "django",
-        "flask",
-        "ruby on rails",
-        "php",
-        "laravel",
-        "java",
-        "spring boot",
-        "python",
-        "asp.net",
-        "asp.net core",
-        "mysql",
-        "postgresql",
-        "mongodb",
-        "firebase",
-        "restful apis",
-        "graphql",
-        "git",
-        "responsive design",
-        "web performance optimization",
-        "web security",
-        "command line/shell scripting",
-        "ui/ux design",
-        "adobe creative suite (photoshop, illustrator)",
-        "sketch",
-        "figma",
-        "invision",
-        "prototyping",
-        "wireframing",
-        "typography",
-        "color theory",
-        "wordpress",
-        "drupal",
-        "joomla",
-        "content management",
-        "theme development",
-        "plugin development",
-        "customization",
-        "cms security",
-        "sass",
-        "less",
-        "bootstrap",
-        "material-ui",
-        "redux",
-        "webpack",
-        "gatsby.js",
-        "next.js",
-        "nextjs",
-        "nuxt.js",
-        "jquery",
-        "handlebars.js",
-        "ejs",
-        "websockets",
-        "ci/cd",
-        "docker",
-        "kubernetes",
-        "jest",
-        "mocha",
-        "chai",
-        "cypress",
-        "junit",
-        "rspec",
-        "cucumber",
-        "swagger",
-        "postman",
-        "graphql yoga",
-        "apollo client",
-        "axios",
-        "socket.io",
-        "heroku",
-        "netlify",
-        "aws",
-        "azure",
-        "google cloud platform",
-        "jenkins",
-        "travis ci",
-        "circleci",
-        "nginx",
-        "apache",
-        "oauth",
-        "jwt",
-        "oauth2",
-        "oauth2.0",
-        "openid connect",
-        "webassembly",
-        "pwa (progressive web apps)",
-        "webrtc",
-        "tensorflow",
-        "keras",
-        "pytorch",
-        "scikit-learn",
-        "matplotlib",
-        "seaborn",
-        "plotly",
-        "tableau",
-        "power bi",
-        "d3.js",
-        "natural language toolkit (nltk)",
-        "spacy",
-        "scrapy",
-        "beautiful soup",
-        "feature engineering",
-        "time series analysis",
-        "reinforcement learning",
-        "data visualization",
-        "a/b testing",
-        "git",
-        "docker",
-        "ci/cd",
-        "jupyter notebooks",
-        "linux/unix",
-        "shell scripting",
-        "apis",
-        "big data analytics",
-        "predictive modeling",
-        "neural networks",
-        "dimensionality reduction",
-        "ensemble learning",
-        "cross-validation",
-        "optimization techniques",
-        "quantitative analysis",
-        "feature selection",
-        "distributed computing",
-        "apache kafka",
-        "restful apis",
-        "data warehousing",
-        "etl (extract, transform, load)",
-        "version control",
-        "data governance",
-        "cybersecurity",
-        "blockchain",
-        "iot (internet of things)",
-        "quantum computing",
-        "perl",
-        "c/c++",
-        "sql",
-        "java",
-        "sas",
-        "hadoop",
-        "spark",
-        "hive",
-        "pig",
-        "machine learning",
-        "artificial intelligence",
-        "deep learning",
-        "probability",
-        "statistics",
-        "web scraping",
-        "natural language processing (nlp)",
-        "multivariate calculus",
-        "linear algebra",
-        "database management",
-        "mongodb",
-        "cloud computing",
-        "excel",
-        "devops",
-        "data extraction",
-        "transformation",
-        "loading",
-        "data collection",
-        "cleansing",
-        "data preparation",
-        "business intelligence",
-        "model deployment",
-        "data structures",
-        "algorithms",
+        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
+        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
+        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
+        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
+        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
+        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
+        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
+        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
+        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue", 
+        "Flask-Login", "Flask-WTF", "Flask-SQLAlchemy", "Flask-Mail", "Flask-Admin", "Celery-Beat", 
+        "Flask-RESTful", "Flask-CORS", "Flask-User", "Docker Compose", "Django REST", "Django Channels", 
+        "Django ORM", "Django Forms", "Django Signals", "Django Migrations", "Django Celery", "Django Admin", 
+        "Django Templates", "Django Authentication", "Django Middleware", "Django Views", "Django Filters", 
+        "Django Caching", "Django Templating", "Uvicorn", "Selenium", "Scrapy", "BeautifulSoup", 
+        "Requests", "HTML Parsing", "Web Scraping", "Flask-RESTPlus", "Flask-Caching", "Flask-Uploads", 
+        "Flask-HTTPAuth", "Flask-Mail", "PythonAnywhere", "Gunicorn", "Pytest-Django", "Pytest-FactoryBoy", 
+        "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
     ]
+
+    # skills_list = [
+    #     "html",
+    #     "css",
+    #     "javascript",
+    #     "react.js",
+    #     "reactjs",
+    #     "angular",
+    #     "vue.js",
+    #     "node.js",
+    #     "nodejs",
+    #     "expressjs",
+    #     "express.js",
+    #     "django",
+    #     "flask",
+    #     "ruby on rails",
+    #     "php",
+    #     "laravel",
+    #     "java",
+    #     "spring boot",
+    #     "python",
+    #     "asp.net",
+    #     "asp.net core",
+    #     "mysql",
+    #     "postgresql",
+    #     "mongodb",
+    #     "firebase",
+    #     "restful apis",
+    #     "graphql",
+    #     "git",
+    #     "responsive",
+    #     "web performance optimization",
+    #     "web security",
+    #     "command line/shell scripting",
+    #     "ui/ux",
+    #     "adobe creative suite (photoshop, illustrator)",
+    #     "sketch",
+    #     "figma",
+    #     "invision",
+    #     "prototyping",
+    #     "wireframing",
+    #     "typography",
+    #     "color theory",
+    #     "wordpress",
+    #     "drupal",
+    #     "joomla",
+    #     "theme development",
+    #     "plugin development",
+    #     "customization",
+    #     "cms security",
+    #     "sass",
+    #     "less",
+    #     "bootstrap",
+    #     "material-ui",
+    #     "redux",
+    #     "webpack",
+    #     "gatsby.js",
+    #     "next.js",
+    #     "nextjs",
+    #     "nuxt.js",
+    #     "jquery",
+    #     "handlebars.js",
+    #     "ejs",
+    #     "websockets",
+    #     "ci/cd",
+    #     "docker",
+    #     "kubernetes",
+    #     "jest",
+    #     "mocha",
+    #     "chai",
+    #     "cypress",
+    #     "junit",
+    #     "rspec",
+    #     "cucumber",
+    #     "swagger",
+    #     "postman",
+    #     "graphql yoga",
+    #     "apollo client",
+    #     "axios",
+    #     "socket.io",
+    #     "heroku",
+    #     "netlify",
+    #     "aws",
+    #     "azure",
+    #     "google cloud platform",
+    #     "jenkins",
+    #     "travis ci",
+    #     "circleci",
+    #     "nginx",
+    #     "apache",
+    #     "oauth",
+    #     "jwt",
+    #     "oauth2",
+    #     "oauth2.0",
+    #     "openid connect",
+    #     "webassembly",
+    #     "pwa (progressive web apps)",
+    #     "webrtc",
+    #     "tensorflow",
+    #     "keras",
+    #     "pytorch",
+    #     "scikit-learn",
+    #     "matplotlib",
+    #     "seaborn",
+    #     "plotly",
+    #     "tableau",
+    #     "power bi",
+    #     "d3.js",
+    #     "natural language toolkit (nltk)",
+    #     "spacy",
+    #     "scrapy",
+    #     "beautiful soup",
+    #     "feature engineering",
+    #     "time series analysis",
+    #     "reinforcement learning",
+    #     "data visualization",
+    #     "a/b testing",
+    #     "git",
+    #     "docker",
+    #     "ci/cd",
+    #     "jupyter notebooks",
+    #     "linux/unix",
+    #     "shell scripting",
+    #     "apis",
+    #     "big data analytics",
+    #     "predictive modeling",
+    #     "neural networks",
+    #     "dimensionality reduction",
+    #     "ensemble learning",
+    #     "cross-validation",
+    #     "optimization techniques",
+    #     "quantitative analysis",
+    #     "feature selection",
+    #     "distributed computing",
+    #     "apache kafka",
+    #     "restful apis",
+    #     "data warehousing",
+    #     "etl (extract, transform, load)",
+    #     "version control",
+    #     "data governance",
+    #     "cybersecurity",
+    #     "blockchain",
+    #     "iot (internet of things)",
+    #     "quantum computing",
+    #     "perl",
+    #     "c/c++",
+    #     "sql",
+    #     "java",
+    #     "sas",
+    #     "hadoop",
+    #     "spark",
+    #     "hive",
+    #     "pig",
+    #     "machine learning",
+    #     "artificial intelligence",
+    #     "deep learning",
+    #     "probability",
+    #     "statistics",
+    #     "web scraping",
+    #     "natural language processing (nlp)",
+    #     "multivariate calculus",
+    #     "linear algebra",
+    #     "database",
+    #     "mongodb",
+    #     "cloud computing",
+    #     "excel",
+    #     "devops",
+    #     "data extraction",
+    #     "transformation",
+    #     "loading",
+    #     "data collection",
+    #     "cleansing",
+    #     "data preparation",
+    #     "business intelligence",
+    #     "model deployment",
+    #     "data structures",
+    #     "algorithms",
+    # ]
 
     # print(skills_list)
 
@@ -497,167 +532,12 @@ def processing(resume_copy, choice, role):
     # print("count score", word_count_score)
 
     # soft skills scoring
-    soft_skills_list = [
-        "Communication",
-        "Listening",
-        "Negotiation",
-        "Nonverbal communication",
-        "Persuasion",
-        "Presentation",
-        "Public speaking",
-        "Reading body language",
-        "Social skills",
-        "Storytelling",
-        "Verbal communication",
-        "Visual communication",
-        "Writing reports and proposals",
-        "Writing skills",
-        "Critical Thinking",
-        "Adaptability",
-        "Artistic aptitude",
-        "Creativity",
-        "Critical observation",
-        "Critical thinking",
-        "Design aptitude",
-        "Desire to learn",
-        "Flexibility",
-        "Innovation",
-        "Logical thinking",
-        "Problem-solving",
-        "Research skills",
-        "Resourcefulness",
-        "Thinking outside the box",
-        "Tolerance of change and uncertainty",
-        "Troubleshooting skills",
-        "Value education",
-        "Willingness to learn",
-        "Leadership",
-        "Conflict management",
-        "Conflict resolution",
-        "Deal-making",
-        "Decision-making",
-        "Delegation",
-        "Dispute resolution",
-        "Facilitation",
-        "Giving clear feedback",
-        "Inspiring people",
-        "Leadership",
-        "Management",
-        "Managing difficult conversations",
-        "Managing remote/virtual teams",
-        "Meeting management",
-        "Mentoring",
-        "Motivating",
-        "Project management",
-        "Resolving issues",
-        "Successful coaching",
-        "Supervising",
-        "Talent management",
-        "Positive Attitude",
-        "Confidence",
-        "Cooperation",
-        "Courtesy",
-        "Energy",
-        "Enthusiasm",
-        "Friendliness",
-        "Honesty",
-        "Humor",
-        "Patience",
-        "Respectability",
-        "Respectfulness",
-        "Teamwork",
-        "Accepting feedback",
-        "Collaboration",
-        "Customer service",
-        "Dealing with difficult situations",
-        "Dealing with office politics",
-        "Disability awareness",
-        "Diversity awareness",
-        "Emotional intelligence",
-        "Empathy",
-        "Establishing interpersonal relationships",
-        "Dealing with difficult personalities",
-        "Intercultural competence",
-        "Interpersonal skills",
-        "Influence",
-        "Networking",
-        "Persuasion",
-        "Self-awareness",
-        "Selling skills",
-        "Social skills",
-        "Team building",
-        "Teamwork",
-        "Work Ethic",
-        "Attentiveness",
-        "Business ethics",
-        "Competitiveness",
-        "Dedication",
-        "Dependability",
-        "Following direction",
-        "Independence",
-        "Meeting deadlines",
-        "Motivation",
-        "Multitasking",
-        "Organization",
-        "Perseverance",
-        "Persistence",
-        "Planning",
-        "Proper business etiquette",
-        "Punctuality",
-        "Reliability",
-        "Resilience",
-        "Results-oriented",
-        "Scheduling",
-        "Self-directed",
-        "Self-monitoring",
-        "Self-supervising",
-        "Staying on task",
-        "Strategic planning",
-        "Time management",
-        "Trainability",
-        "Working well under pressure",
-        "Assertiveness",
-        "Business ethics",
-        "Business storytelling",
-        "Business trend awareness",
-        "Customer service",
-        "Effective communicator",
-        "Emotion management",
-        "Ergonomic sensitivity",
-        "Follows instructions",
-        "Follows regulations",
-        "Follows rules",
-        "Functions well under pressure",
-        "Good attitude",
-        "Highly recommended",
-        "Independent",
-        "Interviewing",
-        "Knowledge management",
-        "Meets deadlines",
-        "Motivating",
-        "Performs effectively in a deadline environment",
-        "Performance management",
-        "Positive work ethic",
-        "Problem-solving",
-        "Process improvement",
-        "Quick-witted",
-        "Results-oriented",
-        "Safety conscious",
-        "Scheduling",
-        "Self-awareness",
-        "Self-supervising",
-        "Stress management",
-        "Team player",
-        "Technology savvy",
-        "Technology trend awareness",
-        "Tolerant",
-        "Trainable",
-        "Training",
-        "Troubleshooting",
-        "Willing to accept feedback",
-        "Willingness to learn",
-        "Work-life balance",
-        "Works well under pressure",
+    soft_skills_list =  [
+    "Communication", "Adaptability", "Teamwork", "Problem-solving", "Time-management",
+    "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
+    "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
+    "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
+    "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
     ]
     cleaned_soft = clean_skills(soft_skills_list)
 
@@ -685,6 +565,21 @@ def processing(resume_copy, choice, role):
     base_name, extension = os.path.splitext(resume_copy)
 
 # Append "-1" to the base name
+
+    print("tech_skills ", no_match_soft)
+    print("tech_skills ", no_match_soft)
+    print("tech_skills ", desc_skill_soft)
+    print("tech_skills ", desc_skill_soft)
+    print("available ", matched_soft)
+    print("tech_skills ", matching_soft)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
+    print("tech_skills ", soft_skill_score)
     new_file_name = f"{base_name}-1{extension}"
     # Now you can use the soft_skills_list in your Python code
     corrections= check_and_correct_pdf("./static/uploads/" + resume_copy, './static/uploads/'+new_file_name)
