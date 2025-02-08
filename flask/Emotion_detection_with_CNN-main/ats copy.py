@@ -287,8 +287,7 @@ def processing(resume_copy, choice, role):
         "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
     ]
 
-   
-    # print(skills_list)
+
 
     cleaned_skills = clean_skills(skills_list)
     # print(cleaned_skills)
