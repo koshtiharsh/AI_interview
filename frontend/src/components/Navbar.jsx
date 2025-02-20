@@ -31,6 +31,10 @@ const Navbar = () => {
             About us
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
+          <a href="/technical" className="relative font-medium text-lg text-black hover:text-white transition duration-300">
+            technical
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+          </a>
           <a href="/login" className="relative font-medium text-lg text-black hover:text-white transition duration-300">
             Login
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
@@ -64,4 +68,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;
