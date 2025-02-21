@@ -1,8 +1,4 @@
-# !pip install docx2txt
-
-# !pip install PyPDF2
-# All packages required for ats
-
+# All required imports
 from typing import List
 from PyPDF2 import PdfReader
 import docx2txt
@@ -13,16 +9,22 @@ import re
 import os
 from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from nltk.tokenize import word_tokenize
 from grammarcheck.ats_grammar_check import check_and_correct_pdf
+from collections import defaultdict
+import en_core_web_sm
 
-# nltk.download('punkt')
-# nltk.download('stopwords')
-# nltk.download('averaged_perceptron_tagger')
-# nltk.download('maxent_ne_chunker')
-# nltk.download('words')
-# nltk.download('punkt_tab')
+# Download required NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
+nltk.download('punkt_tab')
+
+# Load spaCy model
+nlp = en_core_web_sm.load()
 
 jobDesc = { 'mern':'''We are seeking a passionate and motivated Junior MERN Stack Developer to join our dynamic development team. This entry-level position is perfect for fresh graduates or early-career developers who are eager to learn and grow in a supportive environment.
 Required Technical Skills
@@ -78,8 +80,80 @@ Competitive salary for entry-level position
 Health insurance and other benefits
 Flexible work arrangements'''}
 
+# ML/NLP Functions
+def extract_skills_nlp(text):
+    doc = nlp(text.lower())
+    
+    # Custom skill patterns
+    skill_patterns = [
+        [{'LOWER': 'machine'}, {'LOWER': 'learning'}],
+        [{'LOWER': 'deep'}, {'LOWER': 'learning'}],
+        [{'LOWER': 'natural'}, {'LOWER': 'language'}, {'LOWER': 'processing'}],
+        [{'LOWER': 'data'}, {'LOWER': 'science'}],
+        [{'LOWER': 'artificial'}, {'LOWER': 'intelligence'}],
+        [{'LOWER': 'computer'}, {'LOWER': 'vision'}],
+        [{'LOWER': 'full'}, {'LOWER': 'stack'}],
+        [{'LOWER': 'front'}, {'LOWER': 'end'}],
+        [{'LOWER': 'back'}, {'LOWER': 'end'}],
+    ]
+    
+    matcher = spacy.matcher.Matcher(nlp.vocab)
+    for i, pattern in enumerate(skill_patterns):
+        matcher.add(f"Skill_{i}", [pattern])
+    
+    matches = matcher(doc)
+    pattern_skills = [doc[start:end].text for _, start, end in matches]
+    
+    technical_terms = []
+    for chunk in doc.noun_chunks:
+        if any(token.pos_ in ['PROPN', 'NOUN'] for token in chunk):
+            technical_terms.append(chunk.text)
+    
+    return list(set(pattern_skills + technical_terms))
+
+def score_skills_ml(resume_text, job_description):
+    tfidf = TfidfVectorizer(stop_words='english')
+    documents = [resume_text, job_description]
+    tfidf_matrix = tfidf.fit_transform(documents)
+    
+    similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
+    return similarity * 100
+
+def extract_technical_skills(text):
+    doc = nlp(text)
+    technical_skills = []
+    
+    for token in doc:
+        if token.dep_ in ['compound', 'amod'] and token.head.pos_ == 'NOUN':
+            skill = ' '.join([token.text, token.head.text])
+            technical_skills.append(skill)
+    
+    return list(set(technical_skills))
+
+def extract_experience_details(text):
+    doc = nlp(text)
+    experience = []
+    
+    for ent in doc.ents:
+        if ent.label_ in ['DATE', 'ORG']:
+            experience.append((ent.text, ent.label_))
+    
+    return experience
+
+def calculate_skill_weights(skills, context):
+    weights = defaultdict(float)
+    doc = nlp(context)
+    
+    for skill in skills:
+        skill_doc = nlp(skill)
+        similarity = skill_doc.similarity(doc)
+        weights[skill] = similarity
+    
+    return dict(weights)
+
+# Main Processing Function
 def processing(resume_copy, choice, role):
-    # preprocessing
+    # Preprocessing functions
     def clean_text(text):
         text = re.sub(r"[^a-zA-Z\s]", "", text)
         tokens = text.split()
@@ -101,8 +175,8 @@ def processing(resume_copy, choice, role):
 
     def match_skills(job_description, skills_list):
         job_keywords = set(word_tokenize(job_description.lower()))
-        matched_skills = {skill for skill in skills_list if skill.lower() in job_keywords}  # Using a set to ensure uniqueness
-        return list(matched_skills)  # Converting back to a list if needed
+        matched_skills = {skill for skill in skills_list if skill.lower() in job_keywords}
+        return list(matched_skills)
 
     def find_matching_skills_web(text, skills_list):
         text_keywords = set(word_tokenize(text.lower()))
@@ -112,224 +186,70 @@ def processing(resume_copy, choice, role):
         missing_skills = [
             skill for skill in skills_list if skill not in matching_skills
         ]
-
         return matching_skills, missing_skills
 
-    def find_matching_skills_data(text, skill_for_DS):
-        text_keywords = set(word_tokenize(text.lower()))
-        matching_skills = [
-            skill for skill in skill_for_DS if skill.lower() in text_keywords
-        ]
-        missing_skills = [
-            skill for skill in skill_for_DS if skill not in matching_skills
-        ]
-
-        return matching_skills, missing_skills
-
-    # taking the user input and resume #pg
-    ch = choice
-    # print("Choose Your file format")
-    # print("1. PDF")
-    # print("2. Docx")
-    # ch = int(input("Enter the number: "))
-    # job_des = input("Enter Job Description: ")
-    job_des = jobDesc.get(role)
-    job_des = job_des.lower()
+    # Initialize variables
     error = False
-
-    if ch == 1:
-
-        def extract_text_from_pdf(pdf_file: str) -> List[str]:
-            try:
-                with open(pdf_file, "rb") as pdf:
-                    reader = PdfReader(pdf)
-                    pdf_text = []
-                    for page in reader.pages:
-                        content = page.extract_text()
-                        pdf_text.append(content)
-                    return pdf_text
-            except FileNotFoundError:
-                # print(f"The file '{pdf_file}' was not found.")
-                return []
-
-        extract_txt = extract_text_from_pdf("./static/uploads/" + resume_copy)
-        fin_txt = []  # Initialize an empty list outside the loop
-        for txt in extract_txt:
-            txt = txt.lower()
-            # print(txt)
-            fin_txt.append(txt)
-
-    elif ch == 2:
-        resume = docx2txt.process(".static/uploads/" + resume_copy)
-        resume = resume.lower()
-        # print(resume)
-
+    resume_text = ""
+    
+    # Extract text from resume
+    if choice == 1:
+        try:
+            with open("./static/uploads/" + resume_copy, "rb") as pdf:
+                reader = PdfReader(pdf)
+                resume_text = " ".join([page.extract_text() for page in reader.pages])
+                fin_txt = [resume_text.lower()]
+                ok = resume_text.lower()
+        except FileNotFoundError:
+            error = True
+            return None
+    elif choice == 2:
+        resume_text = docx2txt.process("./static/uploads/" + resume_copy)
+        resume = resume_text.lower()
+        ok = resume
     else:
         error = True
+        return None
 
-    # converting the array in string $pg
-    ok = " ".join(fin_txt)
+    # Get job description
+    job_des = jobDesc.get(role, "").lower()
 
-    # Checking the sections: #pg
-
-    pdf_sections_found = []
-    docx_sections_found = []
+    # Section Analysis
     section_found = []
     section_score = 0
-    if ch == 1:
-        if "professional experience" in ok or "projects" in ok or "experience" in ok:
-            pdf_sections_found.append("Professional experience section found")
+    
+    sections_to_check = {
+        "experience": ["professional experience", "projects", "experience"],
+        "education": ["education", "qualification"],
+        "skills": ["skills"],
+        "achievement": ["achievement"],
+        "summary": ["summary"]
+    }
 
-        if "education" in ok or "qualification" in ok:
-            pdf_sections_found.append("Education section found")
+    for section_type, keywords in sections_to_check.items():
+        if any(keyword in ok for keyword in keywords):
+            section_found.append(f"{section_type.title()} section found")
 
-        if "skills" in ok:
-            pdf_sections_found.append("Skills section found")
-
-        if "achievement" in ok:
-            pdf_sections_found.append("Achievement section found")
-
-        if "summary" in ok:
-            pdf_sections_found.append("Summary section Found")
-        section_found = pdf_sections_found
-
-    elif ch == 2:
-        if (
-            "professional experience" in resume
-            or "projects" in resume
-            or "experience" in resume
-        ):
-            docx_sections_found.append("Professional experience section found")
-
-        if "education" in resume or "qualification" in resume:
-            docx_sections_found.append("Education section found")
-
-        if "skills" in resume:
-            docx_sections_found.append("Skills section found")
-
-        if "achievement" in resume:
-            docx_sections_found.append("Achievement section found")
-
-        if "summary" in resume:
-            docx_sections_found.append("Summary section Found")
-        section_found = docx_sections_found
-
-    # storing length of resume #hk
-    resume_length = 0
-    word_count = 0
-    if ch == 1:
-        resume_length = ok.split()
-        word_count = len(resume_length)
-
-    elif ch == 2:
-        resume_length = resume.split()
-        word_count = len(resume_length)
-
-    # print(word_count)
-
-    nltk.download("stopwords")  # hk
-
-    # using the preprocessing function so that the stop words are removed
-    if ch == 1:
-        ok = clean_text(ok)
-
-    elif ch == 2:
-        resume = clean_text(resume)
-        # print(resume)
-        doc = [resume, job_des]
-
-    job_des = clean_text(job_des)
-
-    # print(job_des)
-    z = [ok, job_des]
-
-    a = CountVectorizer()
-
-    # finding the similar key words
-
-    if ch == 1:
-        # print("pdf")
-        c_at = a.fit_transform(z)
-        # print(cosine_similarity(c_at))
-        match = cosine_similarity(c_at)[0][1]
-        match = match * 100
-        match = round(match, 2)
-        # print(match)
-
-    elif ch == 2:
-        # print("doc")
-        c_mat = a.fit_transform(doc)
-        # print(cosine_similarity(c_mat))
-        match = cosine_similarity(c_mat)[0][1]
-        match = match * 100
-        match = round(match, 2)
-        # print(match)
-
-    nltk.download("punkt")
-
-    skills_list = [
-        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
-        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
-        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
-        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
-        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
-        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
-        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
-        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
-        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue", 
-        "Flask-Login", "Flask-WTF", "Flask-SQLAlchemy", "Flask-Mail", "Flask-Admin", "Celery-Beat", 
-        "Flask-RESTful", "Flask-CORS", "Flask-User", "Docker Compose", "Django REST", "Django Channels", 
-        "Django ORM", "Django Forms", "Django Signals", "Django Migrations", "Django Celery", "Django Admin", 
-        "Django Templates", "Django Authentication", "Django Middleware", "Django Views", "Django Filters", 
-        "Django Caching", "Django Templating", "Uvicorn", "Selenium", "Scrapy", "BeautifulSoup", 
-        "Requests", "HTML Parsing", "Web Scraping", "Flask-RESTPlus", "Flask-Caching", "Flask-Uploads", 
-        "Flask-HTTPAuth", "Flask-Mail", "PythonAnywhere", "Gunicorn", "Pytest-Django", "Pytest-FactoryBoy", 
-        "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
-    ]
-
-
-
-    cleaned_skills = clean_skills(skills_list)
-    # print(cleaned_skills)
-
-    # Example job description
-    job_description = job_des
-
-    # Example usage
-    matched_skills = match_skills(job_description, cleaned_skills)
-    # print("Matched Skills:")
-    # print(matched_skills)
-
-    # Example text
-    another_text = ok
-
-    # Example usage
-    matching_skills, missing_skills = find_matching_skills_web(
-        another_text, matched_skills
-    )
-
-    # print("Matching Skills:")
-    # print(matching_skills)
-    # print("\nMissing Skills:")
-    # print(missing_skills)
-
+    # Word Count Analysis
+    word_count = len(ok.split())
     word_count_score = 0
-    if 500 < word_count and word_count < 700:
+    
+    if 500 < word_count <= 700:
         word_count_score = 80
-    elif 300 < word_count and word_count < 500:
+    elif 300 < word_count <= 500:
         word_count_score = 60
-    elif 200 < word_count and word_count < 300:
+    elif 200 < word_count <= 300:
         word_count_score = 50
-    elif 100 < word_count and word_count < 200:
+    elif 100 < word_count <= 200:
         word_count_score = 35
-    elif 701 < word_count and word_count < 800:
+    elif 701 < word_count <= 800:
         word_count_score = 70
-    elif 800 < word_count and word_count < 100:
+    elif 800 < word_count <= 1000:
         word_count_score = 65
-    elif word_count > 1001:
+    elif word_count > 1000:
         word_count_score = 60
 
-    # sectionwise scoring
+    # Section Score
     section_count = len(section_found)
     if section_count == 5:
         section_score = 70
@@ -339,78 +259,72 @@ def processing(resume_copy, choice, role):
         section_score = 50
     elif section_count < 3:
         section_score = 45
-    # scoring for skills
 
-    skill_score = 0
-    desc_skill = len(matched_skills)
-    no_match = len(matching_skills)
-    no_miss = len(missing_skills)
-
-    if no_match == 0:
-        skill_score = 20
-    else:
-        skill_score = no_match / desc_skill * 100
-    # print("skill score", skill_score)
-    # print("count score", word_count_score)
-
-    # soft skills scoring
-    soft_skills_list =  [
-    "Communication", "Adaptability", "Teamwork", "Problem-solving", "Time-management",
-    "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
-    "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
-    "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
-    "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
+    # Skills Analysis
+    skills_list = [
+        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
+        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
+        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
+        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
+        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
+        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
+        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
+        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
+        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue"
     ]
+
+    soft_skills_list = [
+        "Communication", "Adaptability", "Teamwork", "Problem-solving", "Time-management",
+        "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
+        "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
+        "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
+        "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
+    ]
+
+    # Clean and match skills
+    cleaned_skills = clean_skills(skills_list)
     cleaned_soft = clean_skills(soft_skills_list)
-
-    # Example job description
-
-    # Example usage
+    
+    job_description = clean_text(job_des)
+    matched_skills = match_skills(job_description, cleaned_skills)
     matched_soft = match_skills(job_description, cleaned_soft)
-    # print("Matched Skills:")
+    
+    matching_skills, missing_skills = find_matching_skills_web(ok, matched_skills)
+    matching_soft, missing_soft = find_matching_skills_web(ok, matched_soft)
 
-    # Example text
+    # Calculate skill scores
+    skill_score = (len(matching_skills) / len(matched_skills) * 100) if matched_skills else 20
+    soft_skill_score = (len(matching_soft) / len(matched_soft) * 100) if matched_soft else 20
 
-    # Example usage
-    matching_soft, missing_soft = find_matching_skills_web(another_text, matched_soft)
-    soft_skill_score = 0
-    desc_skill_soft = len(matched_soft)
-    no_match_soft = len(matching_soft)
-    no_miss_soft = len(missing_soft)
+    # Enhanced ML/NLP Analysis
+    nlp_skills = extract_skills_nlp(resume_text)
+    ml_skill_score = score_skills_ml(resume_text, job_des)
+    technical_skills = extract_technical_skills(resume_text)
+    experience_details = extract_experience_details(resume_text)
+    skill_weights = calculate_skill_weights(matching_skills + nlp_skills, job_des)
 
-    if no_match_soft == 0:
-        soft_skill_score = 20
-    else:
-        soft_skill_score = no_match_soft / desc_skill_soft * 100
-    # print("skill score", soft_skill_score)
-    # print("count score", word_count_score)
-    base_name, extension = os.path.splitext(resume_copy)
-
-# Append "-1" to the base name
-
-    print("tech_skills ", no_match_soft)
-    print("tech_skills ", no_match_soft)
-    print("tech_skills ", desc_skill_soft)
-    print("tech_skills ", desc_skill_soft)
-    print("available ", matched_soft)
-    print("tech_skills ", matching_soft)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    new_file_name = f"{base_name}-1{extension}"
-    # Now you can use the soft_skills_list in your Python code
-    corrections= check_and_correct_pdf("./static/uploads/" + resume_copy, './static/uploads/'+new_file_name)
-
-
+    # Calculate enhanced final score
     final_score = (
-        skill_score + section_score + word_count_score + soft_skill_score
-    ) / 4
-    # print("final score", final_score)
+        skill_score + 
+        section_score + 
+        word_count_score + 
+        soft_skill_score + 
+        ml_skill_score
+    ) / 5
+
+    # Grammar check
+    base_name, extension = os.path.splitext(resume_copy)
+    new_file_name = f"{base_name}-1{extension}"
+    corrections = check_and_correct_pdf("./static/uploads/" + resume_copy, './static/uploads/'+new_file_name)
+
+    # Prepare enhanced results
+    enhanced_results = {
+        'nlp_extracted_skills': nlp_skills,
+        'technical_skills': technical_skills,
+        'experience_details': experience_details,
+        'skill_weights': skill_weights,
+        'ml_skill_score': ml_skill_score
+    }
 
     return (
         final_score,
@@ -424,8 +338,6 @@ def processing(resume_copy, choice, role):
         soft_skill_score,
         word_count_score,
         section_score,
-        corrections
+        corrections,
+        enhanced_results
     )
-
-
-# processing("pt.pdf", 1, "html ,angular")
