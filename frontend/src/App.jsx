@@ -13,6 +13,7 @@ import Technical from './components/Technical';
 
 import "regenerator-runtime/runtime";
 import Test from './components/Test';
+import CandidateFeedbackUI from './components/Feedback';
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -53,7 +54,7 @@ const App = () => {
     },
     {
       path: '/test',
-      element: <Test />
+      element: <CandidateFeedbackUI />
     },
     {
       path: '/technical',
