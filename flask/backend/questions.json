@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "Question text": "What is Python used for?",
+        "Ideal answer(s)": "Python is used for web development, data analysis, AI, machine learning, and more.",
+        "Skills": "python",
+        "Difficulty level": "easy"
+    },
+    {
+        "id": 2,
+        "Question text": "Explain Flask.",
+        "Ideal answer(s)": "Flask is a micro web framework for Python that is lightweight and easy to use.",
+        "Skills": "flask",
+        "Difficulty level": "medium"
+    }
+]

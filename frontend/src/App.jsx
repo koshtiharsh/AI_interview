@@ -9,6 +9,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ResumeResult from './components/ResumeResult';
+import Technical from './components/Technical';
 
 import "regenerator-runtime/runtime";
 import Test from './components/Test';
@@ -55,7 +56,11 @@ const App = () => {
       path: '/test',
       element: <CandidateFeedbackUI />
     },
-
+    {
+      path: '/technical',
+      element: <Technical />
+    }
+    
 
   ])
   return (
