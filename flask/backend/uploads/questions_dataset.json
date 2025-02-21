@@ -1,0 +1,1200 @@
+ [
+    {
+      
+      "Question text": "What is the difference between stack and heap memory in C++?",
+      "Ideal answer(s)": "Stack memory is used for static memory allocation, storing local variables and function calls, while heap memory is used for dynamic memory allocation. Stack memory is faster and has a limited size, while heap memory is slower but can grow dynamically during runtime.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the use of pointers in C++.",
+      "Ideal answer(s)": "Pointers in C++ are variables that store the memory address of another variable. They allow direct access to memory, enabling efficient manipulation of large data structures like arrays and linked lists. They are also used for dynamic memory allocation.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `new` and `malloc` in C++?",
+      "Ideal answer(s)": "The `new` operator in C++ is used to allocate memory dynamically and returns a pointer to the allocated memory, while `malloc` is a C function used to allocate memory in a similar manner. The main difference is that `new` calls a constructor for object initialization, while `malloc` does not.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of a constructor in C++?",
+      "Ideal answer(s)": "A constructor is a special member function in C++ that initializes an object when it is created. It has the same name as the class and is used to set initial values for the object's data members. Constructors can be parameterized or default.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `ArrayList` and `LinkedList` in Java?",
+      "Ideal answer(s)": "An `ArrayList` in Java provides faster access to elements via indexing but slower insertions and deletions due to array resizing. A `LinkedList`, on the other hand, provides faster insertions and deletions but slower access to elements as it uses pointers for traversing the list.",
+      "Domain": "Software Development",
+      "Skills": "Java",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of the `final` keyword in Java?",
+      "Ideal answer(s)": "In Java, the `final` keyword is used to define constants, prevent method overriding, and prevent inheritance. When applied to a variable, it ensures the variable cannot be changed once assigned. When applied to a method, it prevents method overriding in subclasses.",
+      "Domain": "Software Development",
+      "Skills": "Java",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are the differences between Python lists and tuples?",
+      "Ideal answer(s)": "Python lists are mutable, meaning their elements can be changed, while tuples are immutable, meaning their elements cannot be changed once defined. Tuples also consume less memory than lists, making them more efficient for storage in certain cases.",
+      "Domain": "Software Development",
+      "Skills": "python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "How do you handle exceptions in Python?",
+      "Ideal answer(s)": "In Python, exceptions are handled using `try`, `except`, `else`, and `finally` blocks. The `try` block contains code that may throw an exception, the `except` block catches the exception, and the `finally` block contains code that will always execute, whether an exception was raised or not.",
+      "Domain": "Software Development",
+      "Skills": "python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `deepcopy` and `shallow copy` in Python?",
+      "Ideal answer(s)": "A shallow copy of an object creates a new object, but does not recursively copy nested objects, meaning changes to mutable objects inside the original affect the copy. A deep copy creates a new object along with recursively copying all objects, resulting in no shared references between the original and the copy.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are Python decorators and how do they work?",
+      "Ideal answer(s)": "A decorator in Python is a function that wraps another function to modify or extend its behavior. Decorators are used to add functionality to functions or methods without changing their code, often used for logging, access control, caching, and validation.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `null` and `undefined` in JavaScript?",
+      "Ideal answer(s)": "`null` is an assignment value that represents no value or no object, explicitly assigned to variables. `undefined` is the default value of a variable that has been declared but not yet assigned a value.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain closures in JavaScript.",
+      "Ideal answer(s)": "A closure in JavaScript is a function that retains access to its lexical scope, even when executed outside that scope. This allows functions to 'remember' the environment in which they were created, providing powerful ways to maintain state in asynchronous programming.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is event delegation in JavaScript?",
+      "Ideal answer(s)": "Event delegation in JavaScript is the practice of using a single event listener to manage events for multiple elements, typically by taking advantage of the event bubbling mechanism. By listening on a parent element, you can handle events for dynamically added child elements efficiently.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are promises in JavaScript and how do they work?",
+      "Ideal answer(s)": "Promises in JavaScript are objects that represent the eventual completion (or failure) of an asynchronous operation. They have three states: pending, resolved (fulfilled), and rejected. Promises help manage asynchronous code, making it easier to handle success or failure through `.then()` and `.catch()` methods.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `let`, `const`, and `var` in JavaScript?",
+      "Ideal answer(s)": "`let` is block-scoped, meaning it is only accessible within the block it is defined. `const` is also block-scoped but is used for variables that cannot be reassigned after initialization. `var` is function-scoped and can be accessed before its declaration due to hoisting, which can lead to unintended behavior.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `inline`, `block`, and `inline-block` display properties in CSS?",
+      "Ideal answer(s)": "`inline` elements do not start a new line and only take up as much width as necessary. `block` elements take up the full width available and always start a new line. `inline-block` elements are similar to `inline`, but they can have width and height set like `block` elements.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of CSS Flexbox?",
+      "Ideal answer(s)": "CSS Flexbox is a layout model that allows for flexible and responsive design by distributing space dynamically between elements in a container. It simplifies aligning and distributing space in one-dimensional layouts, both horizontally and vertically.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of CSS Grid.",
+      "Ideal answer(s)": "CSS Grid is a two-dimensional layout system that allows for both rows and columns to be defined in a container. It provides greater control over positioning and alignment, enabling complex layouts with fewer lines of code compared to traditional methods like `float` or `position`.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of the `box-sizing` property in CSS?",
+      "Ideal answer(s)": "The `box-sizing` property defines how the width and height of an element are calculated. With `box-sizing: border-box`, padding and border are included in the width and height, whereas with `box-sizing: content-box` (the default), padding and border are added outside the width and height.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of media queries in CSS?",
+      "Ideal answer(s)": "Media queries in CSS are used to apply different styles based on the device characteristics such as screen width, height, and resolution. They enable responsive design by allowing web pages to adjust their layout and appearance depending on the screen size or device type.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of the `async` and `await` keywords in JavaScript?",
+      "Ideal answer(s)": "`async` and `await` are used in JavaScript to simplify the syntax for working with promises. An `async` function always returns a promise, and within an `async` function, `await` can be used to pause execution until the promise resolves, improving the readability of asynchronous code.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between stack and heap memory in C++?",
+      "Ideal answer(s)": "Stack memory is used for static memory allocation, storing local variables and function calls, while heap memory is used for dynamic memory allocation. Stack memory is faster and has a limited size, while heap memory is slower but can grow dynamically during runtime.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the use of pointers in C++.",
+      "Ideal answer(s)": "Pointers in C++ are variables that store the memory address of another variable. They allow direct access to memory, enabling efficient manipulation of large data structures like arrays and linked lists. They are also used for dynamic memory allocation.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `new` and `malloc` in C++?",
+      "Ideal answer(s)": "The `new` operator in C++ is used to allocate memory dynamically and returns a pointer to the allocated memory, while `malloc` is a C function used to allocate memory in a similar manner. The main difference is that `new` calls a constructor for object initialization, while `malloc` does not.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of a constructor in C++?",
+      "Ideal answer(s)": "A constructor is a special member function in C++ that initializes an object when it is created. It has the same name as the class and is used to set initial values for the object's data members. Constructors can be parameterized or default.",
+      "Domain": "Software Development",
+      "Skills": "C++",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `ArrayList` and `LinkedList` in Java?",
+      "Ideal answer(s)": "An `ArrayList` in Java provides faster access to elements via indexing but slower insertions and deletions due to array resizing. A `LinkedList`, on the other hand, provides faster insertions and deletions but slower access to elements as it uses pointers for traversing the list.",
+      "Domain": "Software Development",
+      "Skills": "Java",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of the `final` keyword in Java?",
+      "Ideal answer(s)": "In Java, the `final` keyword is used to define constants, prevent method overriding, and prevent inheritance. When applied to a variable, it ensures the variable cannot be changed once assigned. When applied to a method, it prevents method overriding in subclasses.",
+      "Domain": "Software Development",
+      "Skills": "Java",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are the differences between Python lists and tuples?",
+      "Ideal answer(s)": "Python lists are mutable, meaning their elements can be changed, while tuples are immutable, meaning their elements cannot be changed once defined. Tuples also consume less memory than lists, making them more efficient for storage in certain cases.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "How do you handle exceptions in Python?",
+      "Ideal answer(s)": "In Python, exceptions are handled using `try`, `except`, `else`, and `finally` blocks. The `try` block contains code that may throw an exception, the `except` block catches the exception, and the `finally` block contains code that will always execute, whether an exception was raised or not.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `deepcopy` and `shallow copy` in Python?",
+      "Ideal answer(s)": "A shallow copy of an object creates a new object, but does not recursively copy nested objects, meaning changes to mutable objects inside the original affect the copy. A deep copy creates a new object along with recursively copying all objects, resulting in no shared references between the original and the copy.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are Python decorators and how do they work?",
+      "Ideal answer(s)": "A decorator in Python is a function that wraps another function to modify or extend its behavior. Decorators are used to add functionality to functions or methods without changing their code, often used for logging, access control, caching, and validation.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `null` and `undefined` in JavaScript?",
+      "Ideal answer(s)": "`null` is an assignment value that represents no value or no object, explicitly assigned to variables. `undefined` is the default value of a variable that has been declared but not yet assigned a value.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain closures in JavaScript.",
+      "Ideal answer(s)": "A closure in JavaScript is a function that retains access to its lexical scope, even when executed outside that scope. This allows functions to 'remember' the environment in which they were created, providing powerful ways to maintain state in asynchronous programming.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is event delegation in JavaScript?",
+      "Ideal answer(s)": "Event delegation in JavaScript is the practice of using a single event listener to manage events for multiple elements, typically by taking advantage of the event bubbling mechanism. By listening on a parent element, you can handle events for dynamically added child elements efficiently.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are promises in JavaScript and how do they work?",
+      "Ideal answer(s)": "Promises in JavaScript are objects that represent the eventual completion (or failure) of an asynchronous operation. They have three states: pending, resolved (fulfilled), and rejected. Promises help manage asynchronous code, making it easier to handle success or failure through `.then()` and `.catch()` methods.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `let`, `const`, and `var` in JavaScript?",
+      "Ideal answer(s)": "`let` is block-scoped, meaning it is only accessible within the block it is defined. `const` is also block-scoped but is used for variables that cannot be reassigned after initialization. `var` is function-scoped and can be accessed before its declaration due to hoisting, which can lead to unintended behavior.",
+      "Domain": "Software Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `inline`, `block`, and `inline-block` display properties in CSS?",
+      "Ideal answer(s)": "`inline` elements do not start a new line and only take up as much width as necessary. `block` elements take up the full width available and always start a new line. `inline-block` elements are similar to `inline`, but they can have width and height set like `block` elements.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of CSS Flexbox?",
+      "Ideal answer(s)": "CSS Flexbox is a layout model that allows for flexible and responsive design by distributing space dynamically between elements in a container. It simplifies aligning and distributing space in one-dimensional layouts, both horizontally and vertically.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of CSS Grid.",
+      "Ideal answer(s)": "CSS Grid is a two-dimensional layout system that allows for both rows and columns to be defined in a container. It provides greater control over positioning and alignment, enabling complex layouts with fewer lines of code compared to traditional methods like `float` or `position`.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of the `box-sizing` property in CSS?",
+      "Ideal answer(s)": "The `box-sizing` property defines how the width and height of an element are calculated. With `box-sizing: border-box`, padding and border are included in the width and height, whereas with `box-sizing: content-box` (the default), padding and border are added outside the width and height.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of media queries in CSS?",
+      "Ideal answer(s)": "Media queries in CSS are used to apply different styles based on the device characteristics such as screen width, height, and resolution. They enable responsive design by allowing web pages to adjust their layout and appearance depending on the screen size or device type.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between a Software Developer and a Software Engineer?",
+      "Ideal answer(s)": "A Software Developer primarily focuses on building and coding software applications, while a Software Engineer applies engineering principles to design, develop, and maintain software systems, emphasizing scalability, reliability, and performance. Software Engineers often work with architecture, system design, and problem-solving for large systems.",
+      "Domain": "Software Developer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a closure in JavaScript and how does it work?",
+      "Ideal answer(s)": "A closure in JavaScript is a function that retains access to its lexical scope, even after the function that created it has finished executing. This allows the closure to reference variables from its outer function, which is crucial for creating private variables and functions in JavaScript.",
+      "Domain": "Frontend Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `let`, `const`, and `var` in JavaScript?",
+      "Ideal answer(s)": "`let` and `const` are block-scoped, while `var` is function-scoped. `let` allows for variable reassignment, whereas `const` is used for variables that should not be reassigned after initialization. `var` has function scope, and its use is generally discouraged in favor of `let` and `const`.",
+      "Domain": "Frontend Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are promises in JavaScript and how do they work?",
+      "Ideal answer(s)": "A promise in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. It has three states: pending, resolved, and rejected. Promises allow for chaining asynchronous operations and error handling using `.then()` and `.catch()` methods.",
+      "Domain": "Frontend Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between synchronous and asynchronous code execution in JavaScript?",
+      "Ideal answer(s)": "Synchronous code is executed line by line in the order it appears, blocking the execution of subsequent code until the current operation is completed. Asynchronous code allows other code to run while waiting for an operation (like I/O) to complete, enabling non-blocking behavior and improved performance.",
+      "Domain": "Frontend Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a React component lifecycle and why is it important?",
+      "Ideal answer(s)": "The React component lifecycle refers to the sequence of methods that are invoked during the lifespan of a component, such as `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount`. These methods allow developers to run code at specific points in a component's life, such as initializing state or cleaning up resources.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of state and props in React.",
+      "Ideal answer(s)": "State refers to data that is local to a component and can change over time, affecting the rendering of the component. Props (short for properties) are used to pass data from a parent component to a child component and are immutable within the child component.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are hooks in React and how are they used?",
+      "Ideal answer(s)": "Hooks are functions in React that allow developers to use state and other React features without writing a class component. `useState` and `useEffect` are the most commonly used hooks, where `useState` is for managing state in functional components, and `useEffect` is for performing side effects like fetching data or manipulating the DOM.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a higher-order component (HOC) in React?",
+      "Ideal answer(s)": "A higher-order component is a pattern in React that allows you to reuse component logic. It is a function that takes a component and returns a new component with additional props or functionality, helping to abstract common behavior across multiple components.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What is the Virtual DOM in React?",
+      "Ideal answer(s)": "The Virtual DOM is a lightweight representation of the actual DOM in memory. React uses it to optimize rendering by updating only the parts of the DOM that need to change, rather than re-rendering the entire DOM, which improves performance.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of Redux and how it works with React.",
+      "Ideal answer(s)": "Redux is a state management library that allows you to manage the state of an entire application in a centralized store. It provides a predictable way to update state via actions and reducers, and it integrates with React using the `react-redux` library to connect the React components with the Redux store.",
+      "Domain": "Frontend Development",
+      "Skills": "React",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What is the difference between `class` and `id` in HTML?",
+      "Ideal answer(s)": "In HTML, `id` is a unique identifier used to refer to a single element, whereas `class` is used to apply styles or behaviors to multiple elements. An `id` must be unique within a document, while a `class` can be reused across multiple elements.",
+      "Domain": "Frontend Development",
+      "Skills": "HTML",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the purpose of `z-index` in CSS?",
+      "Ideal answer(s)": "`z-index` is used in CSS to control the stacking order of elements that overlap. Elements with higher `z-index` values will appear above elements with lower `z-index` values, allowing you to control the layering of content.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `display: none` and `visibility: hidden` in CSS?",
+      "Ideal answer(s)": "`display: none` removes the element from the document flow, meaning it no longer takes up space in the layout, while `visibility: hidden` keeps the element in the layout but makes it invisible. The element with `visibility: hidden` still affects the layout.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of `flexbox` in CSS?",
+      "Ideal answer(s)": "Flexbox is a layout model in CSS that allows you to create flexible, responsive layouts. It provides an efficient way to distribute space and align items within a container, even when the item sizes are unknown or dynamic.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of `position: absolute` in CSS?",
+      "Ideal answer(s)": "`position: absolute` positions an element relative to its closest positioned ancestor (not static). It removes the element from the document flow and allows it to be positioned anywhere within its containing element.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the CSS `box model`?",
+      "Ideal answer(s)": "The CSS box model describes the rectangular boxes generated for elements, consisting of content, padding, border, and margin. The content is the actual content of the box, padding is the space around the content, the border wraps the padding, and the margin separates the box from other elements.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `position: relative` and `position: absolute` in CSS?",
+      "Ideal answer(s)": "`position: relative` positions an element relative to its normal position in the document flow, without removing it, whereas `position: absolute` positions an element relative to its nearest positioned ancestor or the viewport and removes it from the document flow.",
+      "Domain": "Frontend Development",
+      "Skills": "CSS",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a RESTful API?",
+      "Ideal answer(s)": "A RESTful API is an architectural style for designing networked applications. It relies on stateless communication, uses HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations, and typically returns data in JSON format.",
+      "Domain": "Backend Development",
+      "Skills": "Node.js",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of middleware in Express.js?",
+      "Ideal answer(s)": "Middleware in Express.js is a function that receives the request and response objects and can modify them, or terminate the request-response cycle. It allows you to add functionality like logging, authentication, or error handling to your Express app.",
+      "Domain": "Backend Development",
+      "Skills": "Node.js",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `var`, `let`, and `const` in JavaScript?",
+      "Ideal answer(s)": "`var` is function-scoped and allows re-assignment, while `let` is block-scoped and also allows re-assignment. `const` is block-scoped but does not allow re-assignment after initialization, and is used to declare constant values.",
+      "Domain": "Frontend Development",
+      "Skills": "JavaScript",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the purpose of version control in Software Development?",
+      "Ideal answer(s)": "Version control allows multiple developers to collaborate on code, track changes, and manage different versions of the software. Tools like Git enable rollback to previous versions, branch creation, and merging, facilitating coordination and preventing conflicts in team-based development.",
+      "Domain": "Software Developer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the significance of OOP concepts in software development.",
+      "Ideal answer(s)": "Object-Oriented Programming (OOP) is fundamental to modern software development, promoting code reusability and modularity. Core concepts like inheritance, polymorphism, encapsulation, and abstraction enable efficient design of scalable, maintainable systems by organizing code into logical objects and structures.",
+      "Domain": "Software Developer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do Software Engineers approach software design patterns?",
+      "Ideal answer(s)": "Software Engineers leverage design patterns like Singleton, Factory, and Observer to solve common design problems in a standardized way. These patterns promote code reusability, flexibility, and maintainability by providing proven solutions to recurring issues in object-oriented design and system architecture.",
+      "Domain": "Software Engineer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the importance of clean code principles in Software Engineering?",
+      "Ideal answer(s)": "Clean code principles emphasize readability, simplicity, and maintainability in software design. Key practices such as meaningful naming conventions, avoiding redundant code, and breaking functions into small, single-purpose methods help reduce complexity, improve collaboration, and enhance long-term code quality.",
+      "Domain": "Software Engineer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of a RESTful API in Full Stack Development.",
+      "Ideal answer(s)": "A RESTful API is a web service architecture that adheres to the principles of Representational State Transfer (REST). It uses standard HTTP methods (GET, POST, PUT, DELETE) to enable communication between the client and server, exchanging data in a lightweight format like JSON, making it scalable and flexible for Full Stack applications.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Full Stack Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Node.js in Full Stack Development?",
+      "Ideal answer(s)": "Node.js is a JavaScript runtime that allows Full Stack developers to build server-side applications with JavaScript. It enables asynchronous, event-driven I/O, making it ideal for handling scalable, real-time applications like chat servers, APIs, and single-page applications (SPAs). Its non-blocking nature enhances performance for I/O-heavy tasks.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Full Stack Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of MongoDB in the MERN stack?",
+      "Ideal answer(s)": "MongoDB is a NoSQL database used in the MERN stack to store data in a flexible, JSON-like format. It allows for rapid prototyping and scalability, as it can handle unstructured or semi-structured data. MongoDB pairs seamlessly with Express.js, React, and Node.js to build high-performance, dynamic web applications.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MERN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do you implement authentication in a MERN stack application?",
+      "Ideal answer(s)": "Authentication in a MERN stack is typically implemented using JSON Web Tokens (JWT) or session-based authentication. In this approach, Node.js (with Express) handles user login, JWT tokens are issued to the client (React), and these tokens are stored securely in the client for validating further API requests on the server.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MERN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does React’s Virtual DOM improve web application performance?",
+      "Ideal answer(s)": "React’s Virtual DOM enhances performance by minimizing direct manipulations of the actual DOM. Instead of updating the real DOM with each state change, React creates a Virtual DOM and only updates the real DOM with the necessary changes. This optimization reduces the number of expensive reflows and repaints, improving responsiveness.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of 'props' and 'state' in React.",
+      "Ideal answer(s)": "In React, 'props' are immutable properties passed from a parent component to a child component, allowing data flow across components. 'State' is mutable and managed within a component, representing dynamic data that can change over time. State changes trigger re-renders, while props facilitate component reuse and communication.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between functional and class components in React?",
+      "Ideal answer(s)": "Class components in React are ES6 classes that support local state and lifecycle methods, whereas functional components are stateless by default but can now leverage hooks like useState and useEffect to manage state and lifecycle behavior in a more concise way.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are React hooks, and why are they important?",
+      "Ideal answer(s)": "React hooks allow developers to use state and lifecycle features in functional components, making it possible to manage component logic in a simpler and more reusable way. Hooks like useState, useEffect, and useContext enable cleaner code, reduce boilerplate, and enhance performance with less code compared to class components.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Express.js in the MEAN stack?",
+      "Ideal answer(s)": "Express.js is a lightweight web framework used in the MEAN stack for building backend services. It provides a robust set of features for building APIs, handling HTTP requests, and managing middleware, enabling seamless integration with MongoDB, Angular, and Node.js for full-stack JavaScript applications.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MEAN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is two-way data binding in Angular?",
+      "Ideal answer(s)": "Two-way data binding in Angular synchronizes the model and the view, so that any changes to the model automatically update the view and vice versa. This is achieved using Angular's `ngModel` directive, making it easier to manage forms and user input without manual DOM manipulation.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MEAN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does Angular's dependency injection work?",
+      "Ideal answer(s)": "Angular’s dependency injection (DI) system allows for the automatic provisioning of services and other dependencies to components and other services. DI helps decouple code, making it modular, testable, and easier to maintain by injecting dependencies via constructors rather than manually instantiating objects.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MEAN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the use of the 'useEffect' hook in React?",
+      "Ideal answer(s)": "The `useEffect` hook in React is used to perform side effects like fetching data, updating the DOM, or subscribing to external resources in a function component. It runs after the component renders and can be configured to run on specific state or prop changes.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Webpack in modern web development?",
+      "Ideal answer(s)": "Webpack is a module bundler used to bundle JavaScript, CSS, images, and other assets for the web. It helps optimize performance by splitting code into smaller chunks, enabling efficient lazy loading and reducing the size of the final bundle. Webpack can also transpile code using Babel and process styles with loaders.",
+      "Domain": "Software Development",
+      "Skills": "Full Stack Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the differences between SQL and NoSQL databases?",
+      "Ideal answer(s)": "SQL databases are relational, use structured query language (SQL) for querying, and store data in tables with predefined schemas. NoSQL databases, like MongoDB, are non-relational, flexible, and allow for unstructured or semi-structured data, making them more scalable and suitable for modern applications that require agility and high availability.",
+      "Domain": "Software Development",
+      "Skills": "Database Management",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a 'callback' in JavaScript, and how is it used?",
+      "Ideal answer(s)": "A callback in JavaScript is a function that is passed as an argument to another function and is executed when that function completes. Callbacks are commonly used for handling asynchronous operations like reading files or making API requests, ensuring that code executes in the correct order without blocking the main thread.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does React’s one-way data flow work?",
+      "Ideal answer(s)": "React’s one-way data flow means that data flows in a single direction, from parent to child components through props. This ensures predictable behavior and makes debugging easier, as each component is responsible for managing its own state and only receives props from its parent.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between 'var', 'let', and 'const' in JavaScript?",
+      "Ideal answer(s)": "'var' is function-scoped and can be redeclared, while 'let' and 'const' are block-scoped. 'const' defines immutable variables, which cannot be reassigned after initialization, whereas 'let' allows reassignment.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are promises in JavaScript, and how are they used?",
+      "Ideal answer(s)": "A promise is an object that represents the eventual completion or failure of an asynchronous operation. Promises are used to handle asynchronous code by chaining `.then()` for success and `.catch()` for errors, avoiding callback hell and making the code more readable and maintainable.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of an API in a Full Stack application?",
+      "Ideal answer(s)": "APIs (Application Programming Interfaces) facilitate communication between the frontend and backend in Full Stack applications. They define the endpoints and methods for exchanging data, ensuring that client requests are processed by the server and results are returned in a structured format like JSON.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Full Stack Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between synchronous and asynchronous operations in JavaScript?",
+      "Ideal answer(s)": "Synchronous operations block the execution until they complete, while asynchronous operations allow the program to continue executing without waiting for the operation to finish. Asynchronous operations use callbacks, promises, or async/await to handle delayed tasks such as network requests.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of the `this` keyword in JavaScript?",
+      "Ideal answer(s)": "'this' refers to the context in which a function is executed. It points to the object that owns the method when used inside a method, or to the global object in regular functions. In arrow functions, 'this' refers to the enclosing lexical context, helping maintain the expected context.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do you handle cross-origin requests in a Full Stack application?",
+      "Ideal answer(s)": "Cross-Origin Resource Sharing (CORS) headers are used to allow or restrict requests from different domains. On the server side, setting appropriate CORS headers enables secure access to resources, preventing unauthorized cross-origin requests that might lead to security issues.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Full Stack Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the main advantages of using MongoDB in a MERN stack?",
+      "Ideal answer(s)": "MongoDB is a NoSQL database that allows for flexible schema design and horizontal scaling. It stores data in JSON-like documents, making it a natural fit for JavaScript applications like MERN, where the data structures in MongoDB align closely with JavaScript objects, improving developer productivity and scalability.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MERN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are RESTful services and how are they different from SOAP?",
+      "Ideal answer(s)": "RESTful services follow the principles of REST (Representational State Transfer) and are stateless, lightweight, and use standard HTTP methods (GET, POST, PUT, DELETE). SOAP (Simple Object Access Protocol) is more rigid and uses XML for messaging, typically requiring more bandwidth and overhead.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Software Development",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of 'callback hell' in JavaScript.",
+      "Ideal answer(s)": "Callback hell refers to the situation where multiple nested callbacks make the code difficult to read and maintain. This problem arises when handling asynchronous operations with callbacks, especially in complex tasks like multiple API calls. Promises and async/await syntax were introduced to solve this issue.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between 'null' and 'undefined' in JavaScript?",
+      "Ideal answer(s)": "'null' is an assignment value representing no value or an empty object reference, while 'undefined' indicates that a variable has been declared but has not yet been assigned a value. Both are falsy values but serve different purposes in the language.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is a closure in JavaScript?",
+      "Ideal answer(s)": "A closure is a function that retains access to its lexical environment, even after the outer function has returned. This allows closures to 'remember' variables from their scope, enabling powerful patterns like data encapsulation and function factories.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between a stack and a queue data structure?",
+      "Ideal answer(s)": "A stack is a LIFO (Last In First Out) data structure where the last element added is the first one to be removed. A queue is a FIFO (First In First Out) data structure where the first element added is the first one to be removed.",
+      "Domain": "Data Structures",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a binary search tree (BST)?",
+      "Ideal answer(s)": "A binary search tree (BST) is a tree data structure where each node has at most two children, and the left child is smaller than the parent node while the right child is larger. This property allows for efficient searching, insertion, and deletion operations.",
+      "Domain": "Data Structures",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is dynamic programming and when is it used?",
+      "Ideal answer(s)": "Dynamic programming is a method for solving problems by breaking them down into simpler subproblems and storing the results of subproblems to avoid redundant computation. It is used in optimization problems like the Fibonacci sequence or the knapsack problem.",
+      "Domain": "Algorithms",
+      "Skills": "General Programming",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What is the difference between depth-first search (DFS) and breadth-first search (BFS)?",
+      "Ideal answer(s)": "DFS explores as far as possible along each branch before backtracking, while BFS explores all nodes at the present depth level before moving on to nodes at the next depth level. DFS is typically implemented using a stack, while BFS uses a queue.",
+      "Domain": "Algorithms",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are hash tables, and how do they work?",
+      "Ideal answer(s)": "A hash table is a data structure that stores key-value pairs and uses a hash function to compute an index where the value is stored. Hash tables provide fast access to data with average O(1) time complexity for lookups, inserts, and deletions.",
+      "Domain": "Data Structures",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a graph data structure, and what types of graphs exist?",
+      "Ideal answer(s)": "A graph is a collection of nodes (vertices) and edges that connect pairs of nodes. Graphs can be directed or undirected, weighted or unweighted, and can represent relationships in various applications like social networks or routes in maps.",
+      "Domain": "Data Structures",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a heap, and how is it used in algorithms?",
+      "Ideal answer(s)": "A heap is a complete binary tree where the parent node is ordered with respect to its children. In a max-heap, the parent node is greater than or equal to its children; in a min-heap, the parent node is smaller. Heaps are commonly used in priority queues and sorting algorithms like heap sort.",
+      "Domain": "Data Structures",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of recursion in programming?",
+      "Ideal answer(s)": "Recursion is a technique where a function calls itself to solve smaller instances of a problem. It is useful for problems that can be broken down into smaller subproblems, like tree traversals or calculating factorials.",
+      "Domain": "General Programming",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between synchronous and asynchronous programming?",
+      "Ideal answer(s)": "Synchronous programming executes tasks sequentially, blocking further execution until the current task is completed. Asynchronous programming allows other tasks to run while waiting for an operation (e.g., file I/O or network requests) to complete.",
+      "Domain": "General Programming",
+      "Skills": "General Programming",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are lambda functions in Python?",
+      "Ideal answer(s)": "Lambda functions in Python are anonymous functions defined using the `lambda` keyword. They can have any number of arguments but only one expression. They are often used for short-term, throwaway functions, such as in map, filter, or reduce.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the differences between Python 2 and Python 3?",
+      "Ideal answer(s)": "Python 3 introduced several changes, such as better Unicode support, a print function, integer division behavior, and more consistent syntax. Python 2, however, is no longer supported, and Python 3 is now the preferred version for new projects.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are decorators in Python?",
+      "Ideal answer(s)": "Decorators in Python are functions that modify the behavior of other functions or methods. They are typically used to add functionality to an existing function, such as logging, caching, or access control, without modifying the function itself.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What are the differences between `deepcopy` and `shallow copy` in Python?",
+      "Ideal answer(s)": "A shallow copy creates a new object but does not create copies of nested objects, meaning nested references are shared. A deep copy creates a completely independent copy of the entire object, including all nested objects, ensuring no shared references.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of `__init__` in Python classes?",
+      "Ideal answer(s)": "The `__init__` method is the constructor in Python. It is automatically called when a new instance of a class is created and is used to initialize the instance's attributes and perform any setup required for the object.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `is` and `==` in Python?",
+      "Ideal answer(s)": "`is` checks if two variables point to the same object in memory, while `==` checks if the values of the variables are equal. `is` is used for identity comparison, while `==` is used for equality comparison.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the purpose of the `map()` function in Python?",
+      "Ideal answer(s)": "The `map()` function applies a given function to all items in an input list (or any iterable) and returns a map object, which can be converted into a list or other iterable. It is useful for applying operations to each element in a collection.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the `self` keyword in Python classes?",
+      "Ideal answer(s)": "The `self` keyword in Python refers to the instance of the class. It is used to access attributes and methods of the current object. It must be the first parameter in all instance methods within a class.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `__str__` and `__repr__` in Python?",
+      "Ideal answer(s)": "`__str__` is used to define a user-friendly string representation of an object, while `__repr__` is used to define an unambiguous string representation of the object, often for debugging purposes. If `__str__` is not defined, Python will use `__repr__` as a fallback.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of a class method in Python?",
+      "Ideal answer(s)": "A class method in Python is bound to the class and not the instance. It is used to modify class-level attributes and is defined using the `@classmethod` decorator. The first parameter of a class method is `cls`, which refers to the class itself.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between `append()` and `extend()` methods in Python lists?",
+      "Ideal answer(s)": "`append()` adds a single element to the end of a list, while `extend()` adds all elements from an iterable (e.g., another list) to the end of the list.",
+      "Domain": "Software Development",
+      "Skills": "Python",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between `str()` and `repr()` functions in Python?",
+      "Ideal answer(s)": "`str()` is used to return a user-friendly string representation of an object, intended for display. `repr()` is used to return a more formal or developer-friendly string representation of the object, often used for debugging.",
+      "Domain": "Software Development",
+      "Skills": "python",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the key differences between Angular and React?",
+      "Ideal answer(s)": "Angular is a full-fledged MVC framework, providing more built-in functionality such as dependency injection, two-way data binding, and routing. React is a library focused on building user interfaces, offering a component-based approach, with one-way data flow and requiring external libraries for routing and state management.",
+      "Domain": "Full Stack Developer",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Redux in React applications?",
+      "Ideal answer(s)": "Redux is a state management library used with React to manage the application's global state in a predictable manner. It follows the principles of a unidirectional data flow and centralizes state management, making it easier to handle state changes across complex applications.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of the `useState` hook in React?",
+      "Ideal answer(s)": "The `useState` hook allows functional components in React to maintain local state. It returns an array with the current state value and a function to update that state, enabling dynamic rendering when the state changes and making components interactive.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does React's reconciliation process work?",
+      "Ideal answer(s)": "React's reconciliation process is responsible for updating the UI efficiently by comparing the Virtual DOM with the previous state. It uses an algorithm called the 'diffing algorithm' to determine the minimal number of changes needed to update the real DOM, improving performance.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a higher-order component (HOC) in React?",
+      "Ideal answer(s)": "A higher-order component (HOC) is a function that takes a component and returns a new component with enhanced functionality. HOCs are used for code reuse, allowing common logic (like authentication or data fetching) to be shared between components without modifying the original component.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does the 'context' API work in React?",
+      "Ideal answer(s)": "The React Context API allows data to be passed through the component tree without manually passing props at each level. It provides a way to share state or methods globally, useful for managing application-wide state like themes, authentication, or user preferences.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the significance of webpack in React applications?",
+      "Ideal answer(s)": "Webpack is a bundler that compiles, bundles, and optimizes the assets (JavaScript, CSS, images) used in React applications. It enables module bundling, transforms modern JavaScript with Babel, supports hot module replacement, and improves load times by minifying and splitting bundles.",
+      "Domain": "Full Stack Developer",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the main differences between a functional component and a class component in React?",
+      "Ideal answer(s)": "Functional components are stateless and simpler, using hooks for managing state and side effects. Class components, on the other hand, are stateful and can use lifecycle methods. React encourages the use of functional components due to their simplicity and the power of hooks.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do you handle routing in a MERN stack application?",
+      "Ideal answer(s)": "In a MERN stack, routing is handled by React Router on the frontend, allowing for client-side routing and navigation between different components. On the backend, Express.js handles server-side routing for API endpoints, ensuring seamless interaction between the client and server.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MERN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Express.js in the MERN stack?",
+      "Ideal answer(s)": "Express.js is the web framework for Node.js that simplifies the process of handling HTTP requests, middleware, and routing. In the MERN stack, it provides the backend API services, connecting the front-end React application with MongoDB for data handling and CRUD operations.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MERN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between SQL joins (INNER JOIN, LEFT JOIN, RIGHT JOIN)?",
+      "Ideal answer(s)": "INNER JOIN returns records that have matching values in both tables, LEFT JOIN returns all records from the left table and the matching records from the right, and RIGHT JOIN returns all records from the right table and the matching records from the left. LEFT JOIN and RIGHT JOIN are particularly useful for ensuring that no data is lost from one of the tables.",
+      "Domain": "Software Developer",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the key features of the MEAN stack?",
+      "Ideal answer(s)": "The MEAN stack consists of MongoDB (NoSQL database), Express.js (backend framework), Angular (frontend framework), and Node.js (JavaScript runtime). It allows full-stack JavaScript development, enabling developers to use a single language, JavaScript, for both frontend and backend development.",
+      "Domain": "Full Stack Developer",
+      "Skills": "MEAN",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between 'var', 'let', and 'const' in JavaScript?",
+      "Ideal answer(s)": "'var' is function-scoped, and its value can be re-assigned and redeclared. 'let' is block-scoped, allowing reassignment but not redeclaration in the same scope. 'const' is block-scoped and cannot be reassigned or redeclared once initialized, making it ideal for constants.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the event loop in JavaScript.",
+      "Ideal answer(s)": "The event loop in JavaScript is a mechanism that allows non-blocking, asynchronous execution. It constantly checks the message queue and moves callbacks from the queue to the call stack when the stack is empty, ensuring the program remains responsive.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the use of 'useEffect' hook in React?",
+      "Ideal answer(s)": "'useEffect' is a hook in React that allows side effects to be performed in function components. It can be used to fetch data, interact with the DOM, or perform cleanup when the component unmounts or updates.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do you manage state in React applications?",
+      "Ideal answer(s)": "State in React can be managed using the 'useState' hook for local component state, and more complex state management can be handled using the Context API or third-party libraries like Redux for global application state.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the advantages of using Node.js?",
+      "Ideal answer(s)": "Node.js allows developers to use JavaScript on both the frontend and backend, leading to a unified development stack. It is lightweight, highly scalable, and suitable for handling I/O-heavy applications due to its non-blocking, event-driven architecture.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Node.js",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain how the 'map' function works in JavaScript.",
+      "Ideal answer(s)": "'map' is an array method in JavaScript that creates a new array by applying a provided function to each element of the original array. It does not modify the original array, and it returns a new array containing the results of the function.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a promise in JavaScript?",
+      "Ideal answer(s)": "A promise in JavaScript is an object representing the eventual completion (or failure) of an asynchronous operation. It can be in one of three states: pending, resolved (fulfilled), or rejected, and it provides methods like 'then' and 'catch' to handle success or failure.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How can you handle errors in asynchronous JavaScript?",
+      "Ideal answer(s)": "Errors in asynchronous JavaScript can be handled using 'try-catch' blocks inside async functions, or by using the 'catch' method on a promise to handle rejected promises, ensuring the application doesn't crash and can recover gracefully.",
+      "Domain": "JavaScript",
+      "Skills": "JavaScript",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between SQL JOIN types: INNER JOIN, LEFT JOIN, and RIGHT JOIN?",
+      "Ideal answer(s)": "An INNER JOIN returns rows when there is a match in both tables. A LEFT JOIN returns all rows from the left table and matched rows from the right table, with NULLs for unmatched rows. A RIGHT JOIN returns all rows from the right table and matched rows from the left table, with NULLs for unmatched rows.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between DELETE and TRUNCATE in SQL?",
+      "Ideal answer(s)": "DELETE removes rows one by one and can be rolled back, while TRUNCATE removes all rows in a table and cannot be rolled back. TRUNCATE is faster but doesn't fire triggers and resets identity columns.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain normalization and denormalization in databases.",
+      "Ideal answer(s)": "Normalization is the process of organizing data to minimize redundancy and dependency by dividing a database into smaller tables and ensuring relationships between them. Denormalization is the process of combining tables to reduce the complexity of queries, typically for performance optimization.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What is the difference between NoSQL and SQL databases?",
+      "Ideal answer(s)": "SQL databases are relational, structured, and use tables, while NoSQL databases are non-relational, flexible, and often store data in JSON, key-value, or graph formats. SQL databases are used for structured data with complex queries, whereas NoSQL is more suited for unstructured or semi-structured data and high scalability.",
+      "Domain": "Database Management",
+      "Skills": "MongoDB",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the use of indexing in databases?",
+      "Ideal answer(s)": "Indexing in databases improves the speed of data retrieval operations by creating an optimized data structure that allows faster search, lookup, and sorting of rows. However, it can reduce the performance of data modification operations like INSERT, UPDATE, and DELETE.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a foreign key in a relational database?",
+      "Ideal answer(s)": "A foreign key is a field in a table that uniquely identifies a row of another table. It creates a relationship between two tables, ensuring referential integrity by restricting the values in the foreign key column to values that exist in the referenced primary key column.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are the advantages of using MongoDB over traditional SQL databases?",
+      "Ideal answer(s)": "MongoDB provides flexibility in schema design, scalability, and performance with large datasets. It stores data in JSON-like documents, which allows handling unstructured data and dynamic schema changes without requiring rigid table structures.",
+      "Domain": "Database Management",
+      "Skills": "MongoDB",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of Sharding in MongoDB.",
+      "Ideal answer(s)": "Sharding is the process of distributing data across multiple servers to ensure horizontal scalability. MongoDB splits the data into smaller chunks and stores them across different servers, ensuring that no single server is overloaded and improving read/write performance.",
+      "Domain": "Database Management",
+      "Skills": "MongoDB",
+      "Difficulty level": "Hard"
+    },
+    {
+      "Question text": "What is a transaction in SQL, and why is it important?",
+      "Ideal answer(s)": "A transaction in SQL is a set of operations performed as a single unit of work. Transactions ensure data integrity, consistency, isolation, and durability (ACID properties). If one operation fails, the entire transaction can be rolled back, preventing partial data updates.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How would you improve the performance of a slow SQL query?",
+      "Ideal answer(s)": "To optimize a slow SQL query, you can add appropriate indexes, rewrite the query to reduce complexity, avoid SELECT *, analyze query execution plans, and optimize joins. Partitioning large tables and caching results can also help improve performance.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between the `INNER JOIN` and `OUTER JOIN` in SQL?",
+      "Ideal answer(s)": "An INNER JOIN returns only the rows where there is a match in both tables, while an OUTER JOIN returns all rows from one table and the matched rows from the other. OUTER JOINS can be further divided into LEFT, RIGHT, and FULL OUTER JOIN.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does indexing impact the performance of database queries?",
+      "Ideal answer(s)": "Indexing improves the speed of retrieval operations by creating quick lookup paths. However, it can slow down data modification operations like inserts, updates, and deletes, as the index needs to be updated along with the data.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a primary key in a database?",
+      "Ideal answer(s)": "A primary key is a unique identifier for a record in a database table. It ensures that each row in the table can be uniquely identified. A primary key cannot have NULL values and must contain unique values for every row.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What are the ACID properties of a database transaction?",
+      "Ideal answer(s)": "ACID stands for Atomicity (the transaction is all or nothing), Consistency (the database remains in a valid state before and after the transaction), Isolation (transactions don't interfere with each other), and Durability (committed transactions are permanent).",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are the main differences between SQL and NoSQL databases?",
+      "Ideal answer(s)": "SQL databases are structured and use a fixed schema with tables and relationships, while NoSQL databases are more flexible, allowing dynamic schemas and various data formats such as key-value pairs, documents, graphs, etc. NoSQL databases are ideal for unstructured or semi-structured data and scaling horizontally.",
+      "Domain": "Database Management",
+      "Skills": "SQL, MongoDB",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of 'data redundancy' in databases.",
+      "Ideal answer(s)": "Data redundancy refers to the unnecessary duplication of data within a database. It increases storage requirements and can lead to inconsistency. Normalization is often used to eliminate redundancy by organizing data into smaller, related tables.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of a `JOIN` in SQL?",
+      "Ideal answer(s)": "A `JOIN` in SQL is used to combine rows from two or more tables based on a related column. It is essential for querying data from multiple tables that are related by foreign keys or other relationships.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How can you handle NULL values in SQL queries?",
+      "Ideal answer(s)": "In SQL, you can handle NULL values using functions like `IS NULL` or `IS NOT NULL` in conditions. You can also use the `COALESCE()` or `IFNULL()` functions to replace NULL values with a default value.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of `GROUP BY` in SQL?",
+      "Ideal answer(s)": "`GROUP BY` is used to group rows that have the same values into summary rows, like finding the average or sum. It is often used with aggregate functions such as `COUNT()`, `SUM()`, `AVG()`, `MAX()`, and `MIN()`.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a `subquery` in SQL?",
+      "Ideal answer(s)": "A subquery is a query nested inside another query, typically used in `WHERE`, `HAVING`, or `FROM` clauses to retrieve data that will be used by the outer query. It helps break complex queries into simpler components.",
+      "Domain": "Database Management",
+      "Skills": "SQL",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the significance of 'defaultProps' in React?",
+      "Ideal answer(s)": "'defaultProps' is a property that allows default values to be set for props in React components. If no value is passed for a prop, React will use the value specified in 'defaultProps', making the component more resilient to missing props.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the difference between a class component and a functional component in React.",
+      "Ideal answer(s)": "Class components have lifecycle methods and are typically used to manage state. Functional components are simpler, do not have lifecycle methods, but can now use hooks like 'useState' and 'useEffect' for managing state and side effects.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of 'React Router' in a single-page application?",
+      "Ideal answer(s)": "React Router enables navigation between different views or pages in a single-page application (SPA) without full page reloads. It helps to manage routing, track the browser's history, and update the UI based on the URL.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How do you prevent an infinite loop in React when using 'useEffect'?",
+      "Ideal answer(s)": "To prevent infinite loops in React, ensure that dependencies of the 'useEffect' hook are correctly defined in the dependency array. By specifying dependencies, React will only re-run the effect when those dependencies change, preventing unnecessary re-renders.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the difference between a stateless and stateful component in React?",
+      "Ideal answer(s)": "A stateless component is one that does not manage any local state and relies entirely on props passed from its parent. A stateful component manages its own state using the 'useState' hook or class component state, allowing it to change and re-render based on user input or other interactions.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What are lifecycle methods in React?",
+      "Ideal answer(s)": "Lifecycle methods in React are methods that are automatically called at various stages of a component’s life cycle (e.g., when it is created, updated, or removed). They include methods like 'componentDidMount', 'shouldComponentUpdate', and 'componentWillUnmount' in class components.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the use of 'React.memo'?",
+      "Ideal answer(s)": "'React.memo' is a higher-order component that helps optimize performance by memoizing functional components. It prevents unnecessary re-renders by only re-rendering the component if the props have changed, improving rendering efficiency in large applications.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How does the Virtual DOM improve React performance?",
+      "Ideal answer(s)": "The Virtual DOM is an in-memory representation of the real DOM. React compares the current Virtual DOM with a snapshot taken before updates and only applies the differences to the real DOM, reducing the number of expensive DOM manipulations and improving performance.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the significance of 'props' in React?",
+      "Ideal answer(s)": "Props (short for properties) are read-only attributes passed from a parent component to a child component in React. They allow data to flow in one direction, making components reusable and enabling dynamic rendering based on parent-provided data.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Easy"
+    },
+    {
+      "Question text": "What is the difference between synchronous and asynchronous rendering in React?",
+      "Ideal answer(s)": "Synchronous rendering occurs when React updates the DOM in a blocking manner, preventing the user interface from being responsive. Asynchronous rendering allows React to work on multiple tasks concurrently without blocking, improving the user experience, especially in large applications.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain how 'Redux' works in React applications.",
+      "Ideal answer(s)": "Redux is a predictable state container for JavaScript apps. It manages application state centrally and ensures that state changes are made in a predictable manner using actions and reducers. React components subscribe to the Redux store and render based on the current state.",
+      "Domain": "React",
+      "Skills": "Redux",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "How can you improve the performance of a React application?",
+      "Ideal answer(s)": "You can improve React app performance by using techniques like code splitting, lazy loading, React.memo, use of PureComponent, optimizing images, reducing unnecessary re-renders with shouldComponentUpdate, and utilizing the Virtual DOM efficiently.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is a component in React?",
+      "Ideal answer(s)": "A component in React is a reusable, self-contained unit that manages a piece of the user interface. It can be either stateful or stateless and is typically defined as a function or class. Components are the building blocks of React applications.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "Explain the concept of 'controlled components' in React.",
+      "Ideal answer(s)": "A controlled component is one where form elements like input, textarea, or select have their value controlled by the React state. The value of the form element is bound to the component's state and updated through event handlers.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the purpose of 'componentDidMount' in React?",
+      "Ideal answer(s)": "'componentDidMount' is a lifecycle method in React that is called once the component is rendered and added to the DOM. It's often used to perform side effects such as data fetching, subscribing to external events, or setting up timers.",
+      "Domain": "React",
+      "Skills": "React",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is Node.js used for in the MERN stack?",
+      "Ideal answer(s)": "In the MERN stack, Node.js is used as the runtime environment for executing JavaScript on the server side. It enables the backend of the application to handle requests, interact with databases, and send responses back to the client, all using JavaScript.",
+      "Domain": "Full Stack Developer",
+      "Skills": "Node.js",
+      "Difficulty level": "Medium"
+    },
+    {
+      "Question text": "What is the role of Express.js in the MERN stack?",
+      "Ideal answer(s)": "Express.js is a web application framework for Node.js that simplifies routing and handling HTTP requests. In the MERN stack, it acts as the server-side framework that manages routes, handles requests, and communicates with the database (MongoDB).",
+      "Domain": "Full Stack Developer",
+      "Skills": "Express.js",
+      "Difficulty level": "Medium"
+    }
+  ]
