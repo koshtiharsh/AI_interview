@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import QuestionPanel from "./QuestionPanel";
 import Navbar from "./Navbar";
 import io from "socket.io-client";
+import Alert from "./Alert";
 
 function Technical() {
   const [questions, setQuestions] = useState([]);
@@ -120,6 +121,7 @@ function Technical() {
   };
 
   return (
+    
     <div className="App">
       <Navbar />
       {questions.length > 0 ? (
@@ -139,8 +141,8 @@ function Technical() {
       <div
   style={{
     position: "absolute",
-    top: 175,  // Position it 10px from the top
-    left: 130, // Position it 10px from the left
+    top: 165,  // Position it 10px from the top
+    left: 150, // Position it 10px from the left
      // Increase the height of the camera window
     border: "1px solid #ccc",
     borderRadius: "8px",
@@ -149,8 +151,8 @@ function Technical() {
   }}
 >
         <video ref={videoRef} autoPlay muted style={{
-      width: "370px",  // Make the video stretch to fill the container
-      height: "270px", // Make the video stretch to fill the container
+      width: "430px",  // Make the video stretch to fill the container
+      height: "330px", // Make the video stretch to fill the container
       objectFit: "cover"  // Ensure the video covers the entire area without distortion
     }} />
       </div>
