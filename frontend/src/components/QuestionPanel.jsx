@@ -47,7 +47,7 @@ function QuestionPanel({
 
   const handleSubmitAnswer = () => {
     const currentAnswer = userAnswers[currentQuestionIndex] || transcript;
-    
+
     if (currentAnswer.trim() === "") {
       alert("Please provide an answer before submitting.");
       return;
@@ -152,9 +152,10 @@ function QuestionPanel({
               </p>
 
               {/* Missing Keywords */}
-              <p className="text-gray-800 mt-2">
-                <strong>Missing Keywords:</strong> {currentQuestion.feedback.missing_keywords.join(", ")}
-              </p>
+              {/* <p className="text-gray-800 mt-2">
+                <strong>Missing Keywords:</strong> {Array.isArray(currentQuestion.feedback?.missing_keywords) ? currentQuestion.feedback.missing_keywords.join(", ") : "N/A"}
+              </p> */}
+
             </div>
           )}
         </div>
