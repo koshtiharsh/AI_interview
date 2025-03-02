@@ -1,6 +1,10 @@
 # !pip install docx2txt
 
 # !pip install PyPDF2
+# !pip install spacy
+# !pip install scikit-learn
+# !pip install nltk
+# !pip install sentence-transformers
 # All packages required for ats
 
 from typing import List
@@ -13,16 +17,34 @@ import re
 import os
 from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from nltk.tokenize import word_tokenize
+from sentence_transformers import SentenceTransformer
+import numpy as np
 from grammarcheck.ats_grammar_check import check_and_correct_pdf
-
+from fuzzywuzzy import fuzz
+# Download necessary NLTK resources
 # nltk.download('punkt')
 # nltk.download('stopwords')
 # nltk.download('averaged_perceptron_tagger')
 # nltk.download('maxent_ne_chunker')
 # nltk.download('words')
 # nltk.download('punkt_tab')
+
+# Load spaCy model
+try:
+    nlp = spacy.load("en_core_web_sm")
+except:
+    # If model not found, download it
+    os.system("python -m spacy download en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
+
+# Load sentence transformer model for better semantic matching
+try:
+    sentence_model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+except:
+    # If there's an error, use a simpler approach
+    sentence_model = None
 
 jobDesc = { 'mern':'''We are seeking a passionate and motivated Junior MERN Stack Developer to join our dynamic development team. This entry-level position is perfect for fresh graduates or early-career developers who are eager to learn and grow in a supportive environment.
 Required Technical Skills
@@ -78,38 +100,57 @@ Competitive salary for entry-level position
 Health insurance and other benefits
 Flexible work arrangements'''}
 
-skills_list = [
-        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
-        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
-        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
-        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
-        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
-        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
-        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
-        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
-        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue", 
-        "Flask-Login", "Flask-WTF", "Flask-SQLAlchemy", "Flask-Mail", "Flask-Admin", "Celery-Beat", 
-        "Flask-RESTful", "Flask-CORS", "Flask-User", "Docker Compose", "Django REST", "Django Channels", 
-        "Django ORM", "Django Forms", "Django Signals", "Django Migrations", "Django Celery", "Django Admin", 
-        "Django Templates", "Django Authentication", "Django Middleware", "Django Views", "Django Filters", 
-        "Django Caching", "Django Templating", "Uvicorn", "Selenium", "Scrapy", "BeautifulSoup", 
-        "Requests", "HTML Parsing", "Web Scraping", "Flask-RESTPlus", "Flask-Caching", "Flask-Uploads", 
-        "Flask-HTTPAuth", "Flask-Mail", "PythonAnywhere", "Gunicorn", "Pytest-Django", "Pytest-FactoryBoy", 
-        "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
-    ]
+skills_list =  [
+    "Python", "Java", "C", "C++", "C#", "JavaScript", "TypeScript", "Swift", "Kotlin", "Go",
+    "Rust", "Ruby", "PHP", "Perl", "R", "Scala", "Dart", "Objective-C", "Haskell", "Lua",
+    "Shell Scripting", "Bash", "PowerShell", "SQL", "NoSQL", "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Redis",
+    "Cassandra", "Elasticsearch", "GraphQL", "Firebase", "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Terraform",
+    "Ansible", "Jenkins", "Git", "GitHub", "GitLab", "Bitbucket", "CI/CD", "Agile Methodology", "Scrum", "Kanban",
+    "Linux", "Windows Server", "macOS", "Networking", "Cybersecurity", "Ethical Hacking", "Penetration Testing", "Firewall Management", "Intrusion Detection Systems", "Endpoint Security",
+    "Blockchain", "Smart Contracts", "Solidity", "Ethereum", "Hyperledger", "NFT Development", "Cryptography", "Bitcoin", "DApps", "Web3",
+    "AI", "Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Computer Vision", "TensorFlow", "PyTorch", "Keras", "Scikit-Learn",
+    "OpenCV", "Speech Recognition", "Reinforcement Learning", "Data Science", "Data Analysis", "Data Visualization", "Big Data", "Hadoop", "Spark", "Kafka",
+    "ETL", "Tableau", "Power BI", "Looker", "Snowflake", "Google BigQuery", "Databricks", "Data Warehousing", "Data Engineering", "Data Governance",
+    "Frontend Development", "React.js", "Vue.js", "Angular", "Next.js", "Nuxt.js", "Svelte", "Bootstrap", "Tailwind CSS", "Material UI",
+    "HTML", "CSS", "SASS", "LESS", "Responsive Web Design", "Web Performance Optimization", "SEO", "Accessibility", "Progressive Web Apps", "WordPress",
+    "Backend Development", "Node.js", "Express.js", "NestJS", "Django", "Flask", "FastAPI", "Spring Boot", "ASP.NET Core", "Ruby on Rails",
+    "Microservices", "Serverless Computing", "REST APIs", "GraphQL APIs", "gRPC", "WebSockets", "OAuth", "JWT", "API Gateway", "Load Balancing",
+    "Cloud Computing", "DevOps", "IaC (Infrastructure as Code)", "Monitoring & Logging", "Prometheus", "Grafana", "Splunk", "ELK Stack", "New Relic", "Sentry",
+    "Software Testing", "Unit Testing", "Integration Testing", "End-to-End Testing", "Test Automation", "Selenium", "Cypress", "Jest", "Mocha", "JUnit",
+    "Mobile Development", "React Native", "Flutter", "SwiftUI", "Jetpack Compose", "Xamarin", "Ionic", "Cordova", "Mobile UI/UX", "App Store Deployment",
+    "Game Development", "Unity", "Unreal Engine", "Cocos2d", "Godot", "Game Physics", "3D Modeling", "Augmented Reality (AR)", "Virtual Reality (VR)", "Metaverse Development",
+    "Embedded Systems", "IoT (Internet of Things)", "Arduino", "Raspberry Pi", "ESP32", "LoRaWAN", "Edge Computing", "RTOS", "FPGA", "Robotics",
+    "AI Ops", "MLOps", "AIOps", "AutoML", "Edge AI", "Explainable AI", "Generative AI", "AI Chatbots", "Conversational AI", "AI Ethics",
+    "Quantum Computing", "Qiskit", "D-Wave", "Quantum Cryptography", "Post-Quantum Cryptography", "Quantum Machine Learning", "Quantum Algorithms", "Topological Quantum Computing", "Quantum Networking", "Quantum Error Correction",
+    "Software Architecture", "Design Patterns", "Event-Driven Architecture", "Domain-Driven Design (DDD)", "CQRS", "Hexagonal Architecture", "Monolithic vs Microservices", "Distributed Systems", "High Availability", "Scalability",
+    "Performance Optimization", "Concurrency", "Multithreading", "Parallel Computing", "Load Testing", "Profiling", "Memory Management", "Garbage Collection", "Code Refactoring", "Technical Debt",
+    "Operating Systems", "Windows Administration", "Linux Administration", "MacOS Administration", "Embedded Linux", "Kernel Development", "Shell Programming", "File System Management", "Memory Management", "Process Scheduling",
+    "Networking Concepts", "TCP/IP", "HTTP/HTTPS", "DNS", "VPN", "Proxy Servers", "Load Balancers", "CDN (Content Delivery Network)", "WebSockets", "MQTT",
+    "Cybersecurity Concepts", "Encryption", "SSL/TLS", "PKI", "Zero Trust Security", "SIEM (Security Information & Event Management)", "SOC (Security Operations Center)", "Vulnerability Assessment", "Incident Response", "Forensics",
+    "Cloud Security", "IAM (Identity & Access Management)", "Zero Trust Networking", "Cloud Compliance", "Security Audits", "Penetration Testing", "Malware Analysis", "Reverse Engineering", "Dark Web Monitoring", "Threat Intelligence",
+    "IT Support", "Help Desk", "Remote Desktop", "ITSM (IT Service Management)", "Asset Management", "ITIL Framework", "Incident Management", "Change Management", "Disaster Recovery", "Backup & Restore",
+    "Version Control", "Git", "SVN", "Mercurial", "Branching Strategies", "Code Review", "Git Hooks", "Git Rebase", "Git Cherry-Pick", "Git Squash",
+    "Soft Skills for IT", "Technical Documentation", "Problem Solving", "Debugging", "Code Optimization", "Collaboration Tools", "JIRA", "Confluence", "Trello", "Slack"
+]
 
 soft_skills_list =  [
-    "Communication", "Adaptability", "Teamwork", "Problem-solving", "Timemanagement",
-    "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
-    "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
-    "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
-    "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
-    ]
-
+    "Communication", "Public Speaking", "Active Listening", "Presentation Skills", "Negotiation",
+    "Leadership", "Teamwork", "Collaboration", "Conflict Resolution", "Empathy",
+    "Adaptability", "Flexibility", "Time Management", "Self-Discipline", "Prioritization",
+    "Problem-Solving", "Critical Thinking", "Decision Making", "Creativity", "Innovation",
+    "Emotional Intelligence", "Self-Awareness", "Resilience", "Patience", "Growth Mindset",
+    "Networking", "Interpersonal Skills", "Cultural Awareness", "Diversity and Inclusion", "Customer Service",
+    "Work Ethic", "Accountability", "Ownership", "Motivation", "Self-Confidence",
+    "Stress Management", "Work-Life Balance", "Open-Mindedness", "Constructive Feedback", "Coaching & Mentoring",
+    "Project Management", "Agile Mindset", "Scrum Methodology", "Stakeholder Management", "Business Acumen",
+    "Technical Writing", "Attention to Detail", "Presentation Design", "Continuous Learning","Decision-Making"
+]
 def processing(resume_copy, choice, role):
-    # preprocessing
+    # Enhanced preprocessing
     def clean_text(text):
-        text = re.sub(r"[^a-zA-Z\s]", "", text)
+        # More thorough cleaning with better regex pattern
+        text = re.sub(r'[^\w\s]|_', ' ', text)
+        text = re.sub(r'\s+', ' ', text).strip()
         tokens = text.split()
         stop_words = set(stopwords.words("english"))
         tokens = [word for word in tokens if word.lower() not in stop_words]
@@ -119,303 +160,449 @@ def processing(resume_copy, choice, role):
     def clean_skills(skills_list):
         stop_words = set(stopwords.words("english"))
         punctuation = set(string.punctuation)
-        cleaned_skills = [
-            word
-            for skill in skills_list
-            for word in word_tokenize(skill.lower())
-            if word.isalnum() and word not in stop_words and word not in punctuation
-        ]
+        cleaned_skills = []
+        
+        for skill in skills_list:
+            # Handle multi-word skills better
+            if ' ' in skill:
+                cleaned_skills.append(skill.lower())  # Keep multi-word skills intact
+            else:
+                # Process single words
+                words = word_tokenize(skill.lower())
+                for word in words:
+                    if word.isalnum() and word not in stop_words and word not in punctuation:
+                        cleaned_skills.append(word)
+        
         return cleaned_skills
-
-    def match_skills(job_description, skills_list):
-        job_keywords = set(word_tokenize(job_description.lower()))
-        matched_skills = {skill for skill in skills_list if skill.lower() in job_keywords}  # Using a set to ensure uniqueness
-        return list(matched_skills)  # Converting back to a list if needed
-
-    def find_matching_skills_web(text, skills_list):
-        text_keywords = set(word_tokenize(text.lower()))
-        matching_skills = [
-            skill for skill in skills_list if skill.lower() in text_keywords
+    
+    def extract_entities(text):
+        """Extract named entities and technical terms using spaCy with improved pattern matching"""
+        doc = nlp(text)
+        entities = []
+        
+        # Extract named entities
+        for ent in doc.ents:
+            entities.append(ent.text.lower())
+            
+        # Extract technical terms (noun phrases that might represent skills)
+        for chunk in doc.noun_chunks:
+            if any(token.pos_ in ["NOUN", "PROPN"] for token in chunk):
+                entities.append(chunk.text.lower())
+        
+        # Extract potential skills with custom patterns (programming languages, tools, etc.)
+        skill_patterns = [
+            r'\b[A-Za-z]+\+\+\b',  # C++, etc.
+            r'\b[A-Za-z]+#\b',      # C#, etc.
+            r'\b[A-Za-z]+\.[A-Za-z]+\b',  # .NET, etc.
+            r'\b[A-Za-z]+-[A-Za-z]+\b',   # Hyphenated technologies
         ]
+        
+        for pattern in skill_patterns:
+            matches = re.findall(pattern, text)
+            entities.extend([match.lower() for match in matches])
+                
+        return list(set(entities))
+
+    def fuzzy_match_skills(text, skills_list, threshold=90):
+        """Use fuzzy matching to find skills that might be spelled differently"""
+        matched_skills = []
+        text_lower = text.lower()
+        
+        for skill in skills_list:
+            skill_lower = skill.lower()
+            
+            # Direct matching
+            if skill_lower in text_lower:
+                matched_skills.append(skill)
+                continue
+                
+            # Fuzzy matching for single-word skills
+            if ' ' not in skill_lower:
+                # Check with different forms (plural/singular)
+                singular = skill_lower
+                plural = skill_lower + 's'
+                plural_es = skill_lower + 'es'
+                plural_ies = skill_lower[:-1] + 'ies' if skill_lower.endswith('y') else ''
+                
+                if (plural in text_lower or plural_es in text_lower or 
+                    (plural_ies and plural_ies in text_lower)):
+                    matched_skills.append(skill)
+                    continue
+                    
+                # Try fuzzy matching
+                for word in word_tokenize(text_lower):
+                    similarity = fuzz.ratio(skill_lower, word)
+                    if similarity >= threshold:
+                        matched_skills.append(skill)
+                        break
+            else:
+                # For multi-word skills, check if all words are within close proximity
+                skill_words = skill_lower.split()
+                # Create a window of text segments
+                text_segments = [text_lower[i:i+100] for i in range(0, len(text_lower), 50)]
+                
+                for segment in text_segments:
+                    if all(word in segment for word in skill_words):
+                        matched_skills.append(skill)
+                        break
+        
+        return matched_skills
+
+    def match_skills_nlp(text, skills_list):
+        """Enhanced skill matching using multiple NLP techniques"""
+        # 1. Basic keyword matching
+        text_lower = text.lower()
+        basic_matched = []
+        for skill in skills_list:
+            skill_lower = skill.lower()
+            if skill_lower in text_lower:
+                basic_matched.append(skill)
+        
+        # 2. Entity extraction using spaCy
+        entities = extract_entities(text)
+        entity_matched = []
+        for skill in skills_list:
+            if skill.lower() in entities:
+                entity_matched.append(skill)
+        
+        # 3. Fuzzy matching for misspelled or variant forms
+        fuzzy_matched = fuzzy_match_skills(text, skills_list)
+        
+        # 4. Semantic similarity using sentence transformers (if available)
+        semantic_matched = []
+        if 'sentence_model' in globals() and sentence_model:
+            try:
+                # Get embeddings for skills and entities from text
+                skill_embeddings = sentence_model.encode([skill.lower() for skill in skills_list])
+                text_entities_embeddings = sentence_model.encode(entities)
+                
+                # Calculate similarity
+                similarities = cosine_similarity(text_entities_embeddings, skill_embeddings)
+                
+                # For each entity, check if it's similar to any skill
+                for i, entity in enumerate(entities):
+                    for j, skill in enumerate(skills_list):
+                        if similarities[i][j] > 0.9:  # Threshold for similarity
+                            semantic_matched.append(skill)
+            except Exception as e:
+                # If there's an error with sentence transformers, skip this step
+                logger.warning(f"Error in semantic matching: {str(e)}")
+                pass
+        
+        # 5. Skill context matching (skills often appear in lists or certain contexts)
+        context_matched = []
+        skill_context_patterns = [
+            r'skills:?\s(.*?)(?:\n|$)',
+            r'technical:?\s(.*?)(?:\n|$)',
+            r'technologies:?\s(.*?)(?:\n|$)',
+            r'proficient in:?\s(.*?)(?:\n|$)',
+            r'experienced with:?\s(.*?)(?:\n|$)',
+        ]
+        
+        for pattern in skill_context_patterns:
+            matches = re.findall(pattern, text_lower, re.IGNORECASE)
+            for match in matches:
+                for skill in skills_list:
+                    if skill.lower() in match.lower():
+                        context_matched.append(skill)
+        
+        # Combine results (removing duplicates)
+        combined_matched = list(set(basic_matched + entity_matched + fuzzy_matched + semantic_matched + context_matched))
+        
+        return combined_matched
+
+    def find_matching_skills_enhanced(text, skills_list):
+        """Find matching skills using multiple enhanced methods"""
+        # Enhanced method with multiple techniques
+        matching_skills_nlp = match_skills_nlp(text, skills_list)
+        
+        # Combine results (maintaining order from skills_list)
+        matching_skills = []
+        for skill in skills_list:
+            if skill in matching_skills_nlp:
+                matching_skills.append(skill)
+        
+        # Find missing skills
         missing_skills = [
             skill for skill in skills_list if skill not in matching_skills
         ]
 
         return matching_skills, missing_skills
 
-    def find_matching_skills_data(text, skill_for_DS):
-        text_keywords = set(word_tokenize(text.lower()))
-        matching_skills = [
-            skill for skill in skill_for_DS if skill.lower() in text_keywords
-        ]
-        missing_skills = [
-            skill for skill in skill_for_DS if skill not in matching_skills
-        ]
+    def extract_sections(text):
+        """Enhanced section identification with multiple common heading patterns"""
+        sections = {}
+        section_patterns = {
+            'experience': [
+                r'(?:professional\s)?experience', 
+                r'work\s(?:experience|history)',
+                r'employment(?:\shistory)?',
+                r'career(?:\shistory)?',
+                r'projects'
+            ],
+            'education': [
+                r'education(?:al)?(?:\sbackground)?',
+                r'academic(?:\sbackground)?',
+                r'qualification',
+                r'academic\sprofile',
+                r'degrees?'
+            ],
+            'skills': [
+                r'technical\sskills',
+                r'skills(?:\s&\sabilities)?',
+                r'competencies',
+                r'proficiencies',
+                r'expertise',
+                r'core\scompetencies'
+            ],
+            'achievement': [
+                r'achievements?',
+                r'accomplishments?',
+                r'awards',
+                r'honors?',
+                r'recognitions?'
+            ],
+            'summary': [
+                r'(?:professional\s)?summary',
+                r'profile',
+                r'objective',
+                r'career\sobjective',
+                r'about\sme',
+                r'introduction'
+            ]
+        }
+        
+        found_sections = []
+        
+        for section_type, patterns in section_patterns.items():
+            for pattern in patterns:
+                if re.search(pattern, text, re.IGNORECASE):
+                    found_sections.append(f"{section_type.capitalize()} section found")
+                    sections[section_type] = True
+                    break
+        
+        return found_sections, sections
 
-        return matching_skills, missing_skills
-
-    # taking the user input and resume #pg
-    ch = choice
-    # print("Choose Your file format")
-    # print("1. PDF")
-    # print("2. Docx")
-    # ch = int(input("Enter the number: "))
-    # job_des = input("Enter Job Description: ")
-    job_des = jobDesc.get(role)
-    job_des = job_des.lower()
-    error = False
-
-    if ch == 1:
-
-        def extract_text_from_pdf(pdf_file: str) -> List[str]:
-            try:
-                with open(pdf_file, "rb") as pdf:
+    # Improved text extraction based on file format
+    def extract_text(file_path, file_type):
+        """Extract text from different file formats with better handling"""
+        try:
+            if file_type == 1:  # PDF
+                with open(file_path, "rb") as pdf:
                     reader = PdfReader(pdf)
-                    pdf_text = []
+                    text = []
                     for page in reader.pages:
                         content = page.extract_text()
-                        pdf_text.append(content)
-                    return pdf_text
-            except FileNotFoundError:
-                # print(f"The file '{pdf_file}' was not found.")
-                return []
+                        if content:
+                            text.append(content)
+                    
+                    # Handle PDFs with poor text extraction
+                    if not text or all(not t.strip() for t in text):
+                        # Try alternative extraction if primary method fails
+                        try:
+                            # Using PyMuPDF as a fallback if available
+                            import fitz
+                            doc = fitz.open(file_path)
+                            text = []
+                            for page in doc:
+                                text.append(page.get_text())
+                            doc.close()
+                        except ImportError:
+                            pass
+                    
+                    return " ".join(text)
+                    
+            elif file_type == 2:  # DOCX
+                return docx2txt.process(file_path)
+                
+            elif file_type == 3:  # Plain text
+                with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    return f.read()
+                    
+            elif file_type == 4:  # RTF
+                with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    rtf_text = f.read()
+                    try:
+                        from striprtf.striprtf import rtf_to_text
+                        return rtf_to_text(rtf_text)
+                    except ImportError:
+                        # Fallback simple RTF stripping
+                        return re.sub(r'\\[a-z]+|\{|\}|\\|\n', ' ', rtf_text)
+                        
+            elif file_type == 5:  # HTML
+                with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    html_content = f.read()
+                    try:
+                        from bs4 import BeautifulSoup
+                        soup = BeautifulSoup(html_content, 'html.parser')
+                        return soup.get_text(separator=' ')
+                    except ImportError:
+                        # Simple HTML tag removal
+                        return re.sub(r'<[^>]+>', ' ', html_content)
+            
+            return ""
+        except Exception as e:
+            logger.error(f"Error extracting text: {str(e)}")
+            return ""
 
-        extract_txt = extract_text_from_pdf("./static/uploads/" + resume_copy)
-        fin_txt = []  # Initialize an empty list outside the loop
-        for txt in extract_txt:
-            txt = txt.lower()
-            # print(txt)
-            fin_txt.append(txt)
-
-    elif ch == 2:
-        resume = docx2txt.process(".static/uploads/" + resume_copy)
-        resume = resume.lower()
-        # print(resume)
-
-    else:
+    # Main processing begins
+    error = False
+    ch = choice
+    job_des = jobDesc.get(role, "").lower()
+    
+    # Determine file path
+    file_path = os.path.join("./static/uploads/", resume_copy)
+    
+    # Auto-detect file type if not specified
+    if ch == 0:  # Auto-detect
+        _, ext = os.path.splitext(resume_copy)
+        ext = ext.lower()
+        if ext == '.pdf':
+            ch = 1
+        elif ext in ['.docx', '.doc']:
+            ch = 2
+        elif ext == '.txt':
+            ch = 3
+        elif ext == '.rtf':
+            ch = 4
+        elif ext in ['.html', '.htm']:
+            ch = 5
+        else:
+            ch = 1  # Default to PDF if unknown
+    
+    # Extract text based on file type
+    resume_text = extract_text(file_path, ch)
+    
+    if not resume_text:
         error = True
-
-    # converting the array in string $pg
-    ok = " ".join(fin_txt)
-
-    # Checking the sections: #pg
-
-    pdf_sections_found = []
-    docx_sections_found = []
-    section_found = []
-    section_score = 0
-    if ch == 1:
-        if "professional experience" in ok or "projects" in ok or "experience" in ok:
-            pdf_sections_found.append("Professional experience section found")
-
-        if "education" in ok or "qualification" in ok:
-            pdf_sections_found.append("Education section found")
-
-        if "skills" in ok:
-            pdf_sections_found.append("Skills section found")
-
-        if "achievement" in ok:
-            pdf_sections_found.append("Achievement section found")
-
-        if "summary" in ok:
-            pdf_sections_found.append("Summary section Found")
-        section_found = pdf_sections_found
-
-    elif ch == 2:
-        if (
-            "professional experience" in resume
-            or "projects" in resume
-            or "experience" in resume
-        ):
-            docx_sections_found.append("Professional experience section found")
-
-        if "education" in resume or "qualification" in resume:
-            docx_sections_found.append("Education section found")
-
-        if "skills" in resume:
-            docx_sections_found.append("Skills section found")
-
-        if "achievement" in resume:
-            docx_sections_found.append("Achievement section found")
-
-        if "summary" in resume:
-            docx_sections_found.append("Summary section Found")
-        section_found = docx_sections_found
-
-    # storing length of resume #hk
-    resume_length = 0
-    word_count = 0
-    if ch == 1:
-        resume_length = ok.split()
-        word_count = len(resume_length)
-
-    elif ch == 2:
-        resume_length = resume.split()
-        word_count = len(resume_length)
-
-    # print(word_count)
-
-    nltk.download("stopwords")  # hk
-
-    # using the preprocessing function so that the stop words are removed
-    if ch == 1:
-        ok = clean_text(ok)
-
-    elif ch == 2:
-        resume = clean_text(resume)
-        # print(resume)
-        doc = [resume, job_des]
-
-    job_des = clean_text(job_des)
-
-    # print(job_des)
-    z = [ok, job_des]
-
-    a = CountVectorizer()
-
-    # finding the similar key words
-
-    if ch == 1:
-        # print("pdf")
-        c_at = a.fit_transform(z)
-        # print(cosine_similarity(c_at))
-        match = cosine_similarity(c_at)[0][1]
-        match = match * 100
+        return None
+    
+    resume_text = resume_text.lower()
+    
+    # Enhanced section identification
+    section_found, sections_dict = extract_sections(resume_text)
+    
+    # Count words in resume
+    resume_length = [word for word in resume_text.split() if word.strip()]
+    word_count = len(resume_length)
+    
+    # Pre-process text for similarity comparison
+    cleaned_resume = clean_text(resume_text)
+    cleaned_job_des = clean_text(job_des)
+    
+    # Calculate overall similarity score using TF-IDF
+    vectorizer = TfidfVectorizer()
+    try:
+        tfidf_matrix = vectorizer.fit_transform([cleaned_resume, cleaned_job_des])
+        match = cosine_similarity(tfidf_matrix)[0][1] * 100
         match = round(match, 2)
-        # print(match)
-
-    elif ch == 2:
-        # print("doc")
-        c_mat = a.fit_transform(doc)
-        # print(cosine_similarity(c_mat))
-        match = cosine_similarity(c_mat)[0][1]
-        match = match * 100
-        match = round(match, 2)
-        # print(match)
-
-    nltk.download("punkt")
-
-
-   
-    # print(skills_list)
-
+    except:
+        # Fallback if TF-IDF fails
+        match = 0
+    
+    # Skills matching with improved algorithms
     cleaned_skills = clean_skills(skills_list)
-    # print(cleaned_skills)
-
-    # Example job description
-    job_description = job_des
-
-    # Example usage
-    matched_skills = match_skills(job_description, cleaned_skills)
-    # print("Matched Skills:")
-    # print(matched_skills)
-
-    # Example text
-    another_text = ok
-
-    # Example usage
-    matching_skills, missing_skills = find_matching_skills_web(
-        another_text, matched_skills
+    
+    # Get skills mentioned in job description using better matching
+    matched_skills = match_skills_nlp(job_des, skills_list)
+    
+    # Improved matching between resume and matched skills
+    matching_skills, missing_skills = find_matching_skills_enhanced(
+        resume_text, matched_skills
     )
-
-    # print("Matching Skills:")
-    # print(matching_skills)
-    # print("\nMissing Skills:")
-    # print(missing_skills)
-
+    
+    # Soft skills matching with similar improvements
+    cleaned_soft = clean_skills(soft_skills_list)
+    matched_soft = match_skills_nlp(job_des, cleaned_soft)
+    matching_soft, missing_soft = find_matching_skills_enhanced(resume_text, matched_soft)
+    
+    # Calculate scores with improved logic
+    # Word count score - more nuanced scoring
     word_count_score = 0
-    if 500 < word_count and word_count < 700:
+    if 450 <= word_count <= 750:  # Ideal range
         word_count_score = 80
-    elif 300 < word_count and word_count < 500:
-        word_count_score = 60
-    elif 200 < word_count and word_count < 300:
-        word_count_score = 50
-    elif 100 < word_count and word_count < 200:
-        word_count_score = 35
-    elif 701 < word_count and word_count < 800:
+    elif 300 <= word_count < 450:
         word_count_score = 70
-    elif 800 < word_count and word_count < 100:
-        word_count_score = 65
-    elif word_count > 1001:
+    elif 750 < word_count <= 900:
+        word_count_score = 70
+    elif 200 <= word_count < 300:
         word_count_score = 60
-
-    # sectionwise scoring
-    section_count = len(section_found)
-    if section_count == 5:
-        section_score = 70
-    elif section_count == 4:
-        section_score = 60
-    elif section_count == 3:
-        section_score = 50
-    elif section_count < 3:
-        section_score = 45
-    # scoring for skills
-
+    elif 900 < word_count <= 1100:
+        word_count_score = 60
+    elif 100 <= word_count < 200:
+        word_count_score = 40
+    elif word_count > 1100:
+        word_count_score = 50
+    else:  # Less than 100 words
+        word_count_score = 30
+    
+    # Section score - weighted by importance
+    section_score = 0
+    section_weights = {
+        'experience': 30,
+        'skills': 25,
+        'education': 20, 
+        'summary': 15,
+        'achievement': 10
+    }
+    
+    for section, weight in section_weights.items():
+        if sections_dict.get(section, False):
+            section_score += weight
+    
+    # Cap at 100
+    section_score = min(section_score, 100)
+    
+    # Technical skills score - improved calculation
     skill_score = 0
     desc_skill = len(matched_skills)
     no_match = len(matching_skills)
-    no_miss = len(missing_skills)
-
-    if no_match == 0:
-        skill_score = 20
+    
+    if desc_skill > 0:
+        # Base score on percentage of matched skills
+        raw_score = (no_match / desc_skill) * 100
+        
+        # Bonus points for matching high-priority skills (if available)
+        if 'priority_skills' in globals() and priority_skills:
+            priority_matches = sum(1 for skill in matching_skills if skill in priority_skills)
+            priority_bonus = min(15, priority_matches * 5)  # Up to 15% bonus
+            raw_score = min(100, raw_score + priority_bonus)
+            
+        skill_score = raw_score
     else:
-        skill_score = no_match / desc_skill * 100
-    # print("skill score", skill_score)
-    # print("count score", word_count_score)
-
-    # soft skills scoring
-
-    cleaned_soft = clean_skills(soft_skills_list)
-
-    # Example job description
-
-    # Example usage
-    matched_soft = match_skills(job_description, cleaned_soft)
-    # print("Matched Skills:")
-
-    # Example text
-
-    # Example usage
-    matching_soft, missing_soft = find_matching_skills_web(another_text, matched_soft)
+        skill_score = 20  # Default score when no skills in job description
+    
+    # Soft skills score - similar improvement
     soft_skill_score = 0
     desc_skill_soft = len(matched_soft)
     no_match_soft = len(matching_soft)
-    no_miss_soft = len(missing_soft)
-
-    if no_match_soft == 0:
-        soft_skill_score = 20
+    
+    if desc_skill_soft > 0:
+        soft_skill_score = (no_match_soft / desc_skill_soft) * 100
     else:
-        soft_skill_score = no_match_soft / desc_skill_soft * 100
-    # print("skill score", soft_skill_score)
-    # print("count score", word_count_score)
+        soft_skill_score = 20  # Default score
+    
+    # Generate corrected resume
     base_name, extension = os.path.splitext(resume_copy)
-
-# Append "-1" to the base name
-
-    print("tech_skills ", no_match_soft)
-    print("tech_skills ", no_match_soft)
-    print("tech_skills ", desc_skill_soft)
-    print("tech_skills ", desc_skill_soft)
-    print("available ", matched_soft)
-    print("tech_skills ", matching_soft)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
-    print("tech_skills ", soft_skill_score)
     new_file_name = f"{base_name}-1{extension}"
-    # Now you can use the soft_skills_list in your Python code
-    corrections= check_and_correct_pdf("./static/uploads/" + resume_copy, './static/uploads/'+new_file_name)
-
-
+    corrections = check_and_correct_pdf(file_path, f'./static/uploads/{new_file_name}')
+    
+    # Calculate final score with weighted components
+    component_weights = {
+        'skill_score': 0.4,  # Technical skills are most important
+        'section_score': 0.25,  # Structure is important
+        'word_count_score': 0.15,  # Length is less important
+        'soft_skill_score': 0.2   # Soft skills are moderately important
+    }
+    
     final_score = (
-        skill_score + section_score + word_count_score + soft_skill_score
-    ) / 4
-    # print("final score", final_score)
-
+        skill_score * component_weights['skill_score'] +
+        section_score * component_weights['section_score'] +
+        word_count_score * component_weights['word_count_score'] +
+        soft_skill_score * component_weights['soft_skill_score']
+    )
+    
+    # Return results in the original format
     return (
         final_score,
         matching_skills,
@@ -430,6 +617,3 @@ def processing(resume_copy, choice, role):
         section_score,
         corrections
     )
-
-
-# processing("pt.pdf", 1, "html ,angular")
