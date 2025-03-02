@@ -78,6 +78,34 @@ Competitive salary for entry-level position
 Health insurance and other benefits
 Flexible work arrangements'''}
 
+skills_list = [
+        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
+        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
+        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
+        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
+        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
+        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
+        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
+        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
+        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue", 
+        "Flask-Login", "Flask-WTF", "Flask-SQLAlchemy", "Flask-Mail", "Flask-Admin", "Celery-Beat", 
+        "Flask-RESTful", "Flask-CORS", "Flask-User", "Docker Compose", "Django REST", "Django Channels", 
+        "Django ORM", "Django Forms", "Django Signals", "Django Migrations", "Django Celery", "Django Admin", 
+        "Django Templates", "Django Authentication", "Django Middleware", "Django Views", "Django Filters", 
+        "Django Caching", "Django Templating", "Uvicorn", "Selenium", "Scrapy", "BeautifulSoup", 
+        "Requests", "HTML Parsing", "Web Scraping", "Flask-RESTPlus", "Flask-Caching", "Flask-Uploads", 
+        "Flask-HTTPAuth", "Flask-Mail", "PythonAnywhere", "Gunicorn", "Pytest-Django", "Pytest-FactoryBoy", 
+        "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
+    ]
+
+soft_skills_list =  [
+    "Communication", "Adaptability", "Teamwork", "Problem-solving", "Timemanagement",
+    "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
+    "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
+    "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
+    "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
+    ]
+
 def processing(resume_copy, choice, role):
     # preprocessing
     def clean_text(text):
@@ -267,25 +295,6 @@ def processing(resume_copy, choice, role):
 
     nltk.download("punkt")
 
-    skills_list = [
-        "Flask", "Django", "FastAPI", "Jinja", "SQLAlchemy", "Gunicorn", "Celery", "HTML", "CSS", 
-        "JavaScript", "REST", "API", "WebSockets", "Postgres", "SQLite", "Redis", "Bootstrap", 
-        "React", "Webpack", "Nginx", "JSON", "ORM", "MVC", "Templating", "AJAX", "XML", "Docker", 
-        "Kubernetes", "JQuery", "Python", "Unix", "Git", "Linux", "Vagrant", "Pipenv", "Virtualenv", 
-        "MySQL", "MongoDB", "OAuth", "JWT", "JWT Authentication", "TDD", "UnitTest", "Pytest", 
-        "pytest-django", "WebRTC", "HTML5", "CSS3", "SASS", "LESS", "NPM", "Yarn", "ES6", "Babel", 
-        "Webpack", "API Testing", "Pandas", "NumPy", "Asyncio", "Async", "Socket.IO", "OAuth2", 
-        "APIs", "Swagger", "JSON Schema", "RESTful", "CI/CD", "Postman", "Apache", "AWS", "Google Cloud", 
-        "Azure", "Heroku", "S3", "Cloud Functions", "Lambda", "Serverless", "Cloud Storage", "Redis Queue", 
-        "Flask-Login", "Flask-WTF", "Flask-SQLAlchemy", "Flask-Mail", "Flask-Admin", "Celery-Beat", 
-        "Flask-RESTful", "Flask-CORS", "Flask-User", "Docker Compose", "Django REST", "Django Channels", 
-        "Django ORM", "Django Forms", "Django Signals", "Django Migrations", "Django Celery", "Django Admin", 
-        "Django Templates", "Django Authentication", "Django Middleware", "Django Views", "Django Filters", 
-        "Django Caching", "Django Templating", "Uvicorn", "Selenium", "Scrapy", "BeautifulSoup", 
-        "Requests", "HTML Parsing", "Web Scraping", "Flask-RESTPlus", "Flask-Caching", "Flask-Uploads", 
-        "Flask-HTTPAuth", "Flask-Mail", "PythonAnywhere", "Gunicorn", "Pytest-Django", "Pytest-FactoryBoy", 
-        "GitHub Actions", "Jenkins", "Travis CI", "GitLab CI", "Jira", "Confluence", "Slack", "Trello"
-    ]
 
    
     # print(skills_list)
@@ -355,13 +364,7 @@ def processing(resume_copy, choice, role):
     # print("count score", word_count_score)
 
     # soft skills scoring
-    soft_skills_list =  [
-    "Communication", "Adaptability", "Teamwork", "Problem-solving", "Time-management",
-    "Creativity", "Collaboration", "Critical-thinking", "Resilience", "Accountability",
-    "Self-motivation", "Discipline", "Attention-to-detail", "Work-ethic", "Flexibility",
-    "Emotional-intelligence", "Decision-making", "Conflict-resolution", "Patience", "Networking",
-    "Active-listening", "Reliability", "Leadership", "Openness", "Self-discipline"
-    ]
+
     cleaned_soft = clean_skills(soft_skills_list)
 
     # Example job description
