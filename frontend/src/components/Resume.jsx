@@ -76,23 +76,30 @@ const Resume = () => {
           <input id='fileselect' type="file" onChange={(e) => setFile(e.target.files[0])} hidden />
           <label htmlFor='fileselect' className='rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]'>Select Pdf or Doc</label>
           {file && <p>{file.name}</p>}
-          <select name="" id="" className=' rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' onChange={(e) => setJobRole(e.target.value)}>
+          {/* <select name="" id="" className=' rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' onChange={(e) => setJobRole(e.target.value)}>
             <option value="">Select</option>
             <option value="webdev">Web Dev</option>
-          </select>
+          </select> */}
 
-          {
-            jobRole.length > 0 ? (
-              <>
-                <select name="" id="" className=' rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' onChange={(e) => setSubRole(e.target.value)}>
-                  <option value="">Select</option>
-                  <option value="mern">MERN Stack</option>
-                </select>
-                <button onClick={handleSubmit} className='bg-blue-500 rounded-md flex items-center justify-center  text-white font-semibold w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' disabled={isLoading}>{isLoading ? <img className='w-6' src={loader} alt="" /> : 'Generate Report'}</button>
-              </>
-            ) :
-              ''
-          }
+
+
+          <>
+            <select name="" id="" className=' rounded-md w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' onChange={(e) => setSubRole(e.target.value)}>
+              <option value="">Select Job RoleS</option>
+              <option value="mern">MERN Stack</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Data Scientist">Data Scientist</option>
+
+              <option value="Cloud Architect">Cloud Architect</option>
+              <option value="AI/ML Engineer">AI/ML Engineer</option>
+              <option value="Business Analyst">Business Analyst</option>
+              <option value="UI/UX Designer">UI/UX Designer</option>
+              <option value="QA Engineer">QA Engineer</option>
+
+            </select>
+            <button onClick={handleSubmit} className='bg-blue-500 rounded-md flex items-center justify-center  text-white font-semibold w-36 h-10 p-2 m-2 cursor-pointer shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]' disabled={isLoading}>{isLoading ? <img className='w-6' src={loader} alt="" /> : 'Generate Report'}</button>
+          </>
+
         </div>
       </div>
 
