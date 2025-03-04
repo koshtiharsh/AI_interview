@@ -892,12 +892,12 @@ def get_questions():
 
         # Create a list of questions by alternating between skills
         alternated_questions = []
-        while len(alternated_questions) < 5:
+        while len(alternated_questions) < 15:
             for skill in skills:
                 skill_lower = skill.lower()
                 if skill_question_map[skill_lower]:
                     alternated_questions.append(skill_question_map[skill_lower].pop(0))
-                if len(alternated_questions) == 5:
+                if len(alternated_questions) == 15:
                     break
 
         return jsonify({"questions": alternated_questions}), 200

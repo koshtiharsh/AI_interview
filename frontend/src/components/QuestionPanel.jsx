@@ -8,6 +8,8 @@ function QuestionPanel({
   onSubmitAnswer,
   detectedEmotion,
   videoRef,
+  level,
+  setLevel
 }) {
   const {
     transcript,
@@ -16,6 +18,7 @@ function QuestionPanel({
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+  const [ids, setIds] = useState([questions[0].id])
   const [userAnswers, setUserAnswers] = useState(
     new Array(questions.length).fill("")
   );
@@ -38,12 +41,15 @@ function QuestionPanel({
   }
 
   useEffect(() => {
-    if (!submittedAnswers[currentQuestionIndex]) {
-      const newAnswers = [...userAnswers];
-      newAnswers[currentQuestionIndex] = transcript;
-      setUserAnswers(newAnswers);
+    if (!submittedAnswers[currentQuestionIndex] && transcript !== userAnswers[currentQuestionIndex]) {
+      setUserAnswers((prevAnswers) => {
+        const newAnswers = [...prevAnswers];
+        newAnswers[currentQuestionIndex] = transcript;
+        return newAnswers;
+      });
     }
-  }, [transcript, currentQuestionIndex, submittedAnswers, userAnswers]);
+  }, [transcript, currentQuestionIndex, submittedAnswers]);
+
 
   const handleSubmitAnswer = () => {
     const currentAnswer = userAnswers[currentQuestionIndex] || transcript;
@@ -59,10 +65,24 @@ function QuestionPanel({
     newSubmittedAnswers[currentQuestionIndex] = true;
     setSubmittedAnswers(newSubmittedAnswers);
   };
-
+  const [total, setTotal] = useState(1)
   const handleNextQuestion = () => {
     resetTranscript();
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    setTotal((prev) => prev + 1)
+    setIds((prevIds) => {
+
+      for (let i = 0; i < questions.length; i++) {
+        console.log(questions[i]["Difficulty level"]);
+        if (!prevIds.includes(questions[i].id) && questions[i]["Difficulty level"] == level) {
+          setCurrentQuestionIndex(i);
+
+
+          return [...prevIds, questions[i].id]; // Correctly update state
+        }
+      }
+      return prevIds; // Return the same state if no changes
+    });
+    // setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
   const handleFinishTest = () => {
@@ -111,12 +131,12 @@ function QuestionPanel({
           {/* Next Question / Finish Test Button */}
           <div className="flex justify-center">
             {hasSubmitted ? (
-              currentQuestionIndex === questions.length - 1 ? (
+              total === 5 ? (
                 <button
                   onClick={handleFinishTest}
                   className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md shadow text-lg"
                 >
-                  Finish Test
+                  Finish Test {total}
                 </button>
               ) : (
                 <button

@@ -11,6 +11,7 @@ function Technical() {
   const [emotionHistory, setEmotionHistory] = useState([]); // Keep last few emotions
   const socketRef = useRef(null);
   const videoRef = useRef(null);
+  const [level, setLevel] = useState('Easy')
 
   const fixedSkills = ["java", "css", "python"]; // Fixed array of skills
 
@@ -25,6 +26,7 @@ function Technical() {
       .then((response) => response.json())
       .then((data) => {
         const limitedQuestions = data.questions.slice(0, 5);
+        console.log(data.questions)
         setQuestions(limitedQuestions);
       })
       .catch((error) => console.error("Error fetching questions:", error));
@@ -111,6 +113,13 @@ function Technical() {
     })
       .then((response) => response.json())
       .then((feedback) => {
+        if (feedback.evaluation == 'incorrect') {
+
+          if (level == 'Medium') setLevel("Easy");
+        } else {
+    
+          if (level == 'Easy') setLevel('Medium');
+        }
         setQuestions((prev) =>
           prev.map((q, index) =>
             index === currentQuestionIndex ? { ...q, feedback } : q
@@ -132,6 +141,8 @@ function Technical() {
           onSubmitAnswer={handleSubmitAnswer}
           detectedEmotion={detectedEmotion}
           socketRef={socketRef}
+          level ={level}
+          setLevel ={setLevel}
         />
       ) : (
         <p>Loading questions...</p>
