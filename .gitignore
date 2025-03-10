@@ -3,3 +3,4 @@ __pycache__/
 qa_model/
 results/
 utils/
+node_modules/

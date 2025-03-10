@@ -14,6 +14,8 @@ import Technical from './components/Technical';
 import "regenerator-runtime/runtime";
 import Test from './components/Test';
 import CandidateFeedbackUI from './components/Feedback';
+import ProfileBasedJobRecommendations from './components/Jobsearch';
+import CareerPath from './components/Career';
 const App = () => {
   const router = createBrowserRouter([
     {
@@ -60,7 +62,14 @@ const App = () => {
       path: '/technical',
       element: <Technical />
     }
-    
+    , {
+      path: "/careerpath",
+      element: <CareerPath />
+    }
+    , {
+      path: "/jobsearch",
+      element: <ProfileBasedJobRecommendations />
+    }
 
   ])
   return (
