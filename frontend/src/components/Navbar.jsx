@@ -1,15 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useResolvedPath } from 'react-router-dom'
 
 import logo from '../assets/logo-final.png'
+import { context } from '../context/Context'
 
 const Navbar = () => {
+
+  //checking session code 
+
+  const { session } = useContext(context)
 
   const Url = useResolvedPath()
 
   if (Url.pathname === 'resume') {
 
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = "/"
+  };
   return (
     <>
 
@@ -19,50 +29,59 @@ const Navbar = () => {
         <a href="/" className="text-2xl font-bold text-slate-500"><img src={logo} alt="" className='w-[140px]' /></a>
 
         <nav className="hidden md:flex space-x-10 ">
-          <a href="/home" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          <a href="/home" className="relative font-medium text-md text-slate-500  transition duration-300">
             Home
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
-          {/* <a href="/contactus" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          {/* <a href="/contactus" className="relative font-medium text-md text-slate-500  transition duration-300">
             Contact us
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a> */}
-          <a href="/aboutus" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          <a href="/aboutus" className="relative font-medium text-md text-slate-500  transition duration-300">
             About us
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
-          <a href="/technical" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          <a href="/technical" className="relative font-medium text-md text-slate-500  transition duration-300">
             technical
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
-          <a href="/login" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          {/* <a href="/login" className="relative font-medium text-md text-slate-500  transition duration-300">
             Login
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
-          </a>
-          <a href="/hr" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          </a> */}
+          <a href="/hr" className="relative font-medium text-md text-slate-500  transition duration-300">
             Hr Interview
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
-          <a href="/resume" className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+          <a href="/resume" className="relative font-medium text-md text-slate-500  transition duration-300">
             Upload Resume
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           {
-            localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-md text-slate-500 hover:text-white transition duration-300">
+            localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-md text-slate-500  transition duration-300">
               Resume Report
               <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
             </a> : ''
           }
         </nav>
 
-        <div className="hidden md:flex items-center">
-              <a href="#" className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
-                Log in
-              </a>
-              <a href="#" className="ml-4 inline-flex items-center px-5 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                Sign up free
-              </a>
-            </div>
+        {!session && (<div className="hidden md:flex items-center">
+          <a href="/login" className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+            Log in
+          </a>
+          <a href="/signup" className="ml-4 inline-flex items-center px-5 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+            Sign up
+          </a>
+        </div>)}
+
+        {session && (
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300"
+          >
+            Logout
+          </button>
+        )}
 
         {/* Responsive Hamburger Menu */}
         <button className="md:hidden p-2 focus:outline-none">

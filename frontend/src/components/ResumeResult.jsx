@@ -1,6 +1,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { context } from '../context/Context';
+import Navbar from './Navbar';
 
 const ResumeResult = () => {
     const { htmlContent, setHtmlContent } = useContext(context);
@@ -18,7 +19,10 @@ const ResumeResult = () => {
 
     return (
 
-        <div dangerouslySetInnerHTML={{ __html: htmlContent.html }} />
+        <>
+            <Navbar />
+            <div dangerouslySetInnerHTML={{ __html: htmlContent.html }} />
+        </>
     );
 };
 

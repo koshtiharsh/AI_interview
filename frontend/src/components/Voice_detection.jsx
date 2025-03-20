@@ -24,7 +24,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
 
 
-    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start } = useContext(context)
+    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start ,email} = useContext(context)
 
 
     const [silenceDetected, setSilenceDetected] = useState(false);
@@ -137,7 +137,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         setPrevTs(0)
 
         if (!transcriptCleared) {
-            socketRef.current.emit('send_transcript', { transcript, hrQuestion, userId });
+            socketRef.current.emit('send_transcript', { transcript, hrQuestion, email });
         }
 
 
@@ -247,7 +247,6 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
                 )}
 
                 <div className="mt-4 p-3 bg-gray-100 border rounded-lg">
-                    <p className="text-gray-700">{feedback_emotion}</p>
                 </div>
             </div>
 

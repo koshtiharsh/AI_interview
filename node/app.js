@@ -2,7 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
-
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -196,6 +198,250 @@ Programming | Reading Book | Sports | Designing Web
 
     res.json({ resume: resumetext });
 });
+
+
+
+
+
+// user authtentication ********************************************************************************************
+
+// MongoDB Connection
+const mongoURI = 'mongodb+srv://harsh0801004:8857090609@harshkoshti.b208der.mongodb.net/ai_interview?retryWrites=true&w=majority&appName=harshkoshti';
+
+mongoose.connect(mongoURI)
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// User Schema
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    age: {
+        type: Number,
+        required: true,
+    },
+    mobile: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    degree: {
+        type: String,
+        required: true,
+    },
+    specialization: {
+        type: String,
+        required: true,
+    },
+    additionalInfo: {
+        type: String,
+        default: '',
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    technicalSkills: {
+        type: [String], // Array of strings
+        default: [],    // Default to empty array
+    },
+    projects: {
+        type: [String], // Array of strings
+        default: [],    // Default to empty array
+    },
+    resumeFile: {
+        type: String,   // String to store the PDF file name
+        default: '',    // Default to empty string (or null if preferred)
+    },
+}, {
+    timestamps: true, // Optional: adds createdAt and updatedAt fields
+});
+
+const User = mongoose.model('UserData', userSchema, 'userData');
+
+// JWT Secret (In production, store this in environment variables)
+const JWT_SECRET = 'your-secret-key-please-change-this-in-production';
+
+// Validation Middleware
+const validateSignup = (req, res, next) => {
+    const { name, age, mobile, email, degree, specialization, password } = req.body;
+
+    if (!name || !age || !mobile || !email || !degree || !specialization || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    if (!/^\d{10}$/.test(mobile)) {
+        return res.status(400).json({ message: 'Invalid mobile number' });
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+        return res.status(400).json({ message: 'Invalid email address' });
+    }
+
+    if (age < 16 || age > 100) {
+        return res.status(400).json({ message: 'Age must be between 16 and 100' });
+    }
+
+    if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    next();
+};
+
+// Signup Route
+app.post('/api/signup', validateSignup, async (req, res) => {
+    try {
+        const { name, age, mobile, email, degree, specialization, additionalInfo, password } = req.body;
+
+        // Check if email already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already exists' });
+        }
+
+        // Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Create new user with default emotion and hrQuestions
+        const user = new User({
+            name,
+            age,
+            mobile,
+            email,
+            degree,
+            specialization,
+            additionalInfo,
+            password: hashedPassword,
+            // emotion and hrQuestions will be automatically added with defaults
+        });
+
+        await user.save();
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user._id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({
+            message: 'User registered successfully',
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                emotion: user.emotion,
+                hrQuestions: user.hrQuestions
+            }
+        });
+    } catch (error) {
+        console.error('Signup error:', error);
+        res.status(500).json({ message: 'Server error during signup' });
+    }
+});
+
+// Login Route
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
+        // Find user
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user._id, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            message: 'Login successful',
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                emotion: user.emotion,
+                hrQuestions: user.hrQuestions
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Server error during login' });
+    }
+});
+
+// Authentication Middleware
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Authentication token required' });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid or expired token' });
+        }
+        req.user = user;
+        next();
+    });
+};
+
+// Protected Route Example
+app.get('/api/profile', authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Profile error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.get('/api/skills/:email', async (req, res) => {
+
+    try {
+        const user = await User.findOne({ email: req.params.email })
+
+        if (user) {
+
+            return res.status(200).json({ skills: user.technicalSkills })
+        }
+    } catch (error) {
+
+    }
+})
+
+
+// user authtentication end ********************************************************************************************
 
 const PORT = 2000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

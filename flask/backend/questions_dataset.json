@@ -9,8 +9,13 @@
         "keywords": [
             "stack memory",
             "heap memory",
-            "static allocation",
-            "dynamic allocation"
+            "static memory allocation",
+            "dynamic memory allocation",
+            "local variables",
+            "function calls",
+            "faster",
+            "limited size",
+            "grow dynamically"
         ]
     },
     {
@@ -23,8 +28,11 @@
         "keywords": [
             "pointers",
             "memory address",
-            "dynamic memory",
-            "data structures"
+            "direct access",
+            "data structures",
+            "arrays",
+            "linked lists",
+            "dynamic memory allocation"
         ]
     },
     {
@@ -35,11 +43,12 @@
         "Skills": "c++",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
             "`new`",
-            "operator",
-            "in",
-            "C++"
+            "`malloc`",
+            "dynamic memory allocation",
+            "pointer",
+            "constructor",
+            "object initialization"
         ]
     },
     {
@@ -51,9 +60,12 @@
         "Difficulty level": "Easy",
         "keywords": [
             "constructor",
-            "initialization",
+            "initializes",
+            "object",
             "class",
-            "object"
+            "data members",
+            "parameterized",
+            "default"
         ]
     },
     {
@@ -64,11 +76,15 @@
         "Skills": "java",
         "Difficulty level": "Medium",
         "keywords": [
-            "An",
             "`ArrayList`",
-            "in",
-            "Java",
-            "provides"
+            "`LinkedList`",
+            "faster access",
+            "indexing",
+            "slower insertions",
+            "array resizing",
+            "faster deletions",
+            "pointers",
+            "traversing"
         ]
     },
     {
@@ -79,11 +95,14 @@
         "Skills": "java",
         "Difficulty level": "Easy",
         "keywords": [
-            "In",
-            "Java,",
-            "the",
             "`final`",
-            "keyword"
+            "constants",
+            "prevent overriding",
+            "prevent inheritance",
+            "variable",
+            "cannot change",
+            "method",
+            "subclasses"
         ]
     },
     {
@@ -94,11 +113,13 @@
         "Skills": "python",
         "Difficulty level": "Easy",
         "keywords": [
-            "Python",
             "lists",
-            "are",
-            "mutable,",
-            "meaning"
+            "tuples",
+            "mutable",
+            "immutable",
+            "elements",
+            "memory",
+            "efficient storage"
         ]
     },
     {
@@ -110,9 +131,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "exceptions",
-            "try block",
-            "except block",
-            "error handling"
+            "`try`",
+            "`except`",
+            "`else`",
+            "`finally`",
+            "throw exception",
+            "catch",
+            "always execute"
         ]
     },
     {
@@ -123,11 +148,13 @@
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "shallow",
-            "copy",
-            "of",
-            "an"
+            "`deepcopy`",
+            "`shallow copy`",
+            "new object",
+            "nested objects",
+            "mutable",
+            "recursively copy",
+            "shared references"
         ]
     },
     {
@@ -138,11 +165,14 @@
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "decorator",
-            "in",
-            "Python",
-            "is"
+            "decorators",
+            "wraps function",
+            "modify behavior",
+            "extend behavior",
+            "logging",
+            "access control",
+            "caching",
+            "validation"
         ]
     },
     {
@@ -154,10 +184,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`null`",
-            "is",
-            "an",
-            "assignment",
-            "value"
+            "`undefined`",
+            "no value",
+            "no object",
+            "explicitly assigned",
+            "default value",
+            "not assigned"
         ]
     },
     {
@@ -170,8 +202,11 @@
         "keywords": [
             "closures",
             "lexical scope",
-            "state retention",
-            "function"
+            "retains access",
+            "executed outside",
+            "remember environment",
+            "maintain state",
+            "asynchronous programming"
         ]
     },
     {
@@ -182,11 +217,13 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Event",
-            "delegation",
-            "in",
-            "JavaScript",
-            "is"
+            "event delegation",
+            "event listener",
+            "multiple elements",
+            "event bubbling",
+            "parent element",
+            "dynamically added",
+            "efficiently"
         ]
     },
     {
@@ -197,11 +234,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Promises",
-            "in",
-            "JavaScript",
-            "are",
-            "objects"
+            "promises",
+            "asynchronous operation",
+            "pending",
+            "resolved",
+            "rejected",
+            "`.then()`",
+            "`.catch()`",
+            "manage asynchronous"
         ]
     },
     {
@@ -213,10 +253,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`let`",
-            "is",
-            "block-scoped,",
-            "meaning",
-            "it"
+            "`const`",
+            "`var`",
+            "block-scoped",
+            "cannot be reassigned",
+            "function-scoped",
+            "hoisting",
+            "unintended behavior"
         ]
     },
     {
@@ -228,10 +271,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`inline`",
-            "elements",
-            "do",
-            "not",
-            "start"
+            "`block`",
+            "`inline-block`",
+            "new line",
+            "width",
+            "height",
+            "full width"
         ]
     },
     {
@@ -242,11 +287,15 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "CSS",
             "Flexbox",
-            "is",
-            "a",
-            "layout"
+            "layout model",
+            "flexible design",
+            "responsive design",
+            "distribute space",
+            "aligning",
+            "one-dimensional",
+            "horizontally",
+            "vertically"
         ]
     },
     {
@@ -258,10 +307,14 @@
         "Difficulty level": "Medium",
         "keywords": [
             "CSS Grid",
+            "two-dimensional",
             "rows",
             "columns",
-            "layout",
-            "container"
+            "positioning",
+            "alignment",
+            "complex layouts",
+            "`float`",
+            "`position`"
         ]
     },
     {
@@ -272,11 +325,14 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
             "`box-sizing`",
-            "property",
-            "defines",
-            "how"
+            "width",
+            "height",
+            "`border-box`",
+            "padding",
+            "border",
+            "`content-box`",
+            "default"
         ]
     },
     {
@@ -287,11 +343,15 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "Media",
-            "queries",
-            "in",
-            "CSS",
-            "are"
+            "media queries",
+            "apply styles",
+            "device characteristics",
+            "screen width",
+            "height",
+            "resolution",
+            "responsive design",
+            "layout",
+            "appearance"
         ]
     },
     {
@@ -302,10 +362,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "async",
-            "await",
-            "promise",
-            "asynchronous"
+            "`async`",
+            "`await`",
+            "promises",
+            "returns promise",
+            "pause execution",
+            "promise resolves",
+            "readability",
+            "asynchronous code"
         ]
     },
     {
@@ -318,8 +382,13 @@
         "keywords": [
             "stack memory",
             "heap memory",
-            "static allocation",
-            "dynamic allocation"
+            "static memory allocation",
+            "dynamic memory allocation",
+            "local variables",
+            "function calls",
+            "faster",
+            "limited size",
+            "grow dynamically"
         ]
     },
     {
@@ -332,8 +401,11 @@
         "keywords": [
             "pointers",
             "memory address",
-            "dynamic memory",
-            "data structures"
+            "direct access",
+            "data structures",
+            "arrays",
+            "linked lists",
+            "dynamic memory allocation"
         ]
     },
     {
@@ -344,11 +416,12 @@
         "Skills": "c++",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
             "`new`",
-            "operator",
-            "in",
-            "C++"
+            "`malloc`",
+            "dynamic memory allocation",
+            "pointer",
+            "constructor",
+            "object initialization"
         ]
     },
     {
@@ -360,9 +433,12 @@
         "Difficulty level": "Easy",
         "keywords": [
             "constructor",
-            "initialization",
+            "initializes",
+            "object",
             "class",
-            "object"
+            "data members",
+            "parameterized",
+            "default"
         ]
     },
     {
@@ -373,11 +449,15 @@
         "Skills": "java",
         "Difficulty level": "Medium",
         "keywords": [
-            "An",
             "`ArrayList`",
-            "in",
-            "Java",
-            "provides"
+            "`LinkedList`",
+            "faster access",
+            "indexing",
+            "slower insertions",
+            "array resizing",
+            "faster deletions",
+            "pointers",
+            "traversing"
         ]
     },
     {
@@ -388,11 +468,14 @@
         "Skills": "java",
         "Difficulty level": "Easy",
         "keywords": [
-            "In",
-            "Java,",
-            "the",
             "`final`",
-            "keyword"
+            "constants",
+            "prevent overriding",
+            "prevent inheritance",
+            "variable",
+            "cannot change",
+            "method",
+            "subclasses"
         ]
     },
     {
@@ -403,11 +486,13 @@
         "Skills": "python",
         "Difficulty level": "Easy",
         "keywords": [
-            "Python",
             "lists",
-            "are",
-            "mutable,",
-            "meaning"
+            "tuples",
+            "mutable",
+            "immutable",
+            "elements",
+            "memory",
+            "efficient storage"
         ]
     },
     {
@@ -419,9 +504,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "exceptions",
-            "try block",
-            "except block",
-            "error handling"
+            "`try`",
+            "`except`",
+            "`else`",
+            "`finally`",
+            "throw exception",
+            "catch",
+            "always execute"
         ]
     },
     {
@@ -432,11 +521,13 @@
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "shallow",
-            "copy",
-            "of",
-            "an"
+            "`deepcopy`",
+            "`shallow copy`",
+            "new object",
+            "nested objects",
+            "mutable",
+            "recursively copy",
+            "shared references"
         ]
     },
     {
@@ -447,11 +538,14 @@
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "decorator",
-            "in",
-            "Python",
-            "is"
+            "decorators",
+            "wraps function",
+            "modify behavior",
+            "extend behavior",
+            "logging",
+            "access control",
+            "caching",
+            "validation"
         ]
     },
     {
@@ -463,10 +557,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`null`",
-            "is",
-            "an",
-            "assignment",
-            "value"
+            "`undefined`",
+            "no value",
+            "no object",
+            "explicitly assigned",
+            "default value",
+            "not assigned"
         ]
     },
     {
@@ -479,8 +575,11 @@
         "keywords": [
             "closures",
             "lexical scope",
-            "state retention",
-            "function"
+            "retains access",
+            "executed outside",
+            "remember environment",
+            "maintain state",
+            "asynchronous programming"
         ]
     },
     {
@@ -491,11 +590,13 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Event",
-            "delegation",
-            "in",
-            "JavaScript",
-            "is"
+            "event delegation",
+            "event listener",
+            "multiple elements",
+            "event bubbling",
+            "parent element",
+            "dynamically added",
+            "efficiently"
         ]
     },
     {
@@ -506,11 +607,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Promises",
-            "in",
-            "JavaScript",
-            "are",
-            "objects"
+            "promises",
+            "asynchronous operation",
+            "pending",
+            "resolved",
+            "rejected",
+            "`.then()`",
+            "`.catch()`",
+            "manage asynchronous"
         ]
     },
     {
@@ -522,10 +626,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`let`",
-            "is",
-            "block-scoped,",
-            "meaning",
-            "it"
+            "`const`",
+            "`var`",
+            "block-scoped",
+            "cannot be reassigned",
+            "function-scoped",
+            "hoisting",
+            "unintended behavior"
         ]
     },
     {
@@ -537,10 +644,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`inline`",
-            "elements",
-            "do",
-            "not",
-            "start"
+            "`block`",
+            "`inline-block`",
+            "new line",
+            "width",
+            "height",
+            "full width"
         ]
     },
     {
@@ -551,11 +660,15 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "CSS",
             "Flexbox",
-            "is",
-            "a",
-            "layout"
+            "layout model",
+            "flexible design",
+            "responsive design",
+            "distribute space",
+            "aligning",
+            "one-dimensional",
+            "horizontally",
+            "vertically"
         ]
     },
     {
@@ -567,10 +680,14 @@
         "Difficulty level": "Medium",
         "keywords": [
             "CSS Grid",
+            "two-dimensional",
             "rows",
             "columns",
-            "layout",
-            "container"
+            "positioning",
+            "alignment",
+            "complex layouts",
+            "`float`",
+            "`position`"
         ]
     },
     {
@@ -581,11 +698,14 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
             "`box-sizing`",
-            "property",
-            "defines",
-            "how"
+            "width",
+            "height",
+            "`border-box`",
+            "padding",
+            "border",
+            "`content-box`",
+            "default"
         ]
     },
     {
@@ -596,11 +716,15 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "Media",
-            "queries",
-            "in",
-            "CSS",
-            "are"
+            "media queries",
+            "apply styles",
+            "device characteristics",
+            "screen width",
+            "height",
+            "resolution",
+            "responsive design",
+            "layout",
+            "appearance"
         ]
     },
     {
@@ -611,11 +735,16 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "Software",
-            "Developer",
-            "primarily",
-            "focuses"
+            "Software Developer",
+            "Software Engineer",
+            "building software",
+            "coding",
+            "engineering principles",
+            "design",
+            "scalability",
+            "reliability",
+            "architecture",
+            "system design"
         ]
     },
     {
@@ -626,11 +755,12 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "closure",
-            "in",
-            "JavaScript",
-            "is"
+            "lexical scope",
+            "retains access",
+            "outer function",
+            "private variables",
+            "private functions"
         ]
     },
     {
@@ -642,10 +772,13 @@
         "Difficulty level": "Easy",
         "keywords": [
             "`let`",
-            "and",
             "`const`",
-            "are",
-            "block-scoped,"
+            "`var`",
+            "block-scoped",
+            "function-scoped",
+            "reassignment",
+            "initialization",
+            "discouraged"
         ]
     },
     {
@@ -656,11 +789,15 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "promise",
-            "in",
-            "JavaScript",
-            "is"
+            "asynchronous operation",
+            "pending",
+            "resolved",
+            "rejected",
+            "`.then()`",
+            "`.catch()`",
+            "chaining",
+            "error handling"
         ]
     },
     {
@@ -671,11 +808,13 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Synchronous",
-            "code",
-            "is",
-            "executed",
-            "line"
+            "synchronous",
+            "asynchronous",
+            "line by line",
+            "blocking",
+            "non-blocking",
+            "I/O",
+            "performance"
         ]
     },
     {
@@ -686,11 +825,13 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "React",
-            "component",
-            "lifecycle",
-            "refers"
+            "component lifecycle",
+            "`componentDidMount`",
+            "`componentDidUpdate`",
+            "`componentWillUnmount`",
+            "sequence of methods",
+            "initializing state",
+            "cleaning up"
         ]
     },
     {
@@ -701,11 +842,15 @@
         "Skills": "react",
         "Difficulty level": "Easy",
         "keywords": [
-            "State",
-            "refers",
-            "to",
-            "data",
-            "that"
+            "state",
+            "props",
+            "local data",
+            "change over time",
+            "rendering",
+            "pass data",
+            "parent component",
+            "child component",
+            "immutable"
         ]
     },
     {
@@ -717,9 +862,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "hooks",
-            "useState",
-            "useEffect",
-            "functional components"
+            "`useState`",
+            "`useEffect`",
+            "functional components",
+            "manage state",
+            "side effects",
+            "fetching data",
+            "DOM manipulation"
         ]
     },
     {
@@ -730,11 +879,13 @@
         "Skills": "react",
         "Difficulty level": "Hard",
         "keywords": [
-            "A",
-            "higher-order",
-            "component",
-            "is",
-            "a"
+            "higher-order component",
+            "HOC",
+            "reuse logic",
+            "function",
+            "new component",
+            "additional props",
+            "abstract behavior"
         ]
     },
     {
@@ -745,10 +896,12 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "virtual DOM",
-            "React",
-            "performance",
-            "update"
+            "Virtual DOM",
+            "lightweight representation",
+            "actual DOM",
+            "optimize rendering",
+            "update parts",
+            "performance"
         ]
     },
     {
@@ -760,10 +913,13 @@
         "Difficulty level": "Hard",
         "keywords": [
             "Redux",
-            "is",
-            "a",
-            "state",
-            "management"
+            "state management",
+            "centralized store",
+            "predictable updates",
+            "actions",
+            "reducers",
+            "`react-redux`",
+            "connect components"
         ]
     },
     {
@@ -774,11 +930,13 @@
         "Skills": "html",
         "Difficulty level": "Easy",
         "keywords": [
-            "In",
-            "HTML,",
             "`id`",
-            "is",
-            "a"
+            "`class`",
+            "unique identifier",
+            "single element",
+            "multiple elements",
+            "styles",
+            "behaviors"
         ]
     },
     {
@@ -790,10 +948,11 @@
         "Difficulty level": "Medium",
         "keywords": [
             "`z-index`",
-            "is",
-            "used",
-            "in",
-            "CSS"
+            "stacking order",
+            "overlap",
+            "higher value",
+            "lower value",
+            "layering"
         ]
     },
     {
@@ -804,11 +963,12 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "`display:",
-            "none`",
-            "removes",
-            "the",
-            "element"
+            "`display: none`",
+            "`visibility: hidden`",
+            "document flow",
+            "takes up space",
+            "invisible",
+            "affects layout"
         ]
     },
     {
@@ -820,10 +980,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "Flexbox",
-            "is",
-            "a",
-            "layout",
-            "model"
+            "layout model",
+            "flexible layouts",
+            "responsive layouts",
+            "distribute space",
+            "align items",
+            "dynamic sizes"
         ]
     },
     {
@@ -834,11 +996,11 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "`position:",
-            "absolute`",
-            "positions",
-            "an",
-            "element"
+            "`position: absolute`",
+            "positioned ancestor",
+            "document flow",
+            "position anywhere",
+            "containing element"
         ]
     },
     {
@@ -849,11 +1011,12 @@
         "Skills": "css",
         "Difficulty level": "Easy",
         "keywords": [
-            "The",
-            "CSS",
-            "box",
-            "model",
-            "describes"
+            "box model",
+            "content",
+            "padding",
+            "border",
+            "margin",
+            "rectangular boxes"
         ]
     },
     {
@@ -864,11 +1027,12 @@
         "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "`position:",
-            "relative`",
-            "positions",
-            "an",
-            "element"
+            "`position: relative`",
+            "`position: absolute`",
+            "normal position",
+            "document flow",
+            "positioned ancestor",
+            "viewport"
         ]
     },
     {
@@ -880,9 +1044,11 @@
         "Difficulty level": "Medium",
         "keywords": [
             "RESTful API",
+            "architectural style",
+            "stateless",
             "HTTP methods",
-            "JSON",
-            "CRUD operations"
+            "CRUD operations",
+            "JSON format"
         ]
     },
     {
@@ -893,11 +1059,15 @@
         "Skills": "node.js",
         "Difficulty level": "Medium",
         "keywords": [
-            "Middleware",
-            "in",
+            "middleware",
             "Express.js",
-            "is",
-            "a"
+            "request object",
+            "response object",
+            "modify",
+            "terminate cycle",
+            "logging",
+            "authentication",
+            "error handling"
         ]
     },
     {
@@ -909,10 +1079,12 @@
         "Difficulty level": "Easy",
         "keywords": [
             "`var`",
-            "is",
+            "`let`",
+            "`const`",
             "function-scoped",
-            "and",
-            "allows"
+            "block-scoped",
+            "re-assignment",
+            "constant values"
         ]
     },
     {
@@ -923,11 +1095,15 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Version",
-            "control",
-            "allows",
-            "multiple",
-            "developers"
+            "version control",
+            "collaborate",
+            "track changes",
+            "manage versions",
+            "Git",
+            "rollback",
+            "branch creation",
+            "merging",
+            "team-based development"
         ]
     },
     {
@@ -938,10 +1114,15 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "encapsulation",
+            "OOP",
+            "reusability",
+            "modularity",
             "inheritance",
             "polymorphism",
-            "abstraction"
+            "encapsulation",
+            "abstraction",
+            "scalable systems",
+            "maintainable systems"
         ]
     },
     {
@@ -952,11 +1133,15 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Software",
-            "Engineers",
-            "leverage",
-            "design",
-            "patterns"
+            "design patterns",
+            "Singleton",
+            "Factory",
+            "Observer",
+            "reusability",
+            "flexibility",
+            "maintainability",
+            "object-oriented design",
+            "system architecture"
         ]
     },
     {
@@ -967,11 +1152,15 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Clean",
-            "code",
-            "principles",
-            "emphasize",
-            "readability,"
+            "clean code",
+            "readability",
+            "simplicity",
+            "maintainability",
+            "naming conventions",
+            "redundant code",
+            "single-purpose methods",
+            "collaboration",
+            "code quality"
         ]
     },
     {
@@ -983,9 +1172,12 @@
         "Difficulty level": "Medium",
         "keywords": [
             "RESTful API",
+            "Representational State Transfer",
             "HTTP methods",
+            "client-server",
             "JSON",
-            "CRUD operations"
+            "scalable",
+            "flexible"
         ]
     },
     {
@@ -997,10 +1189,15 @@
         "Difficulty level": "Medium",
         "keywords": [
             "Node.js",
-            "is",
-            "a",
-            "JavaScript",
-            "runtime"
+            "JavaScript runtime",
+            "server-side",
+            "asynchronous",
+            "event-driven",
+            "I/O",
+            "scalable",
+            "real-time",
+            "non-blocking",
+            "performance"
         ]
     },
     {
@@ -1012,10 +1209,15 @@
         "Difficulty level": "Medium",
         "keywords": [
             "MongoDB",
-            "is",
-            "a",
             "NoSQL",
-            "database"
+            "JSON-like",
+            "flexible",
+            "rapid prototyping",
+            "scalability",
+            "unstructured data",
+            "Express.js",
+            "React",
+            "Node.js"
         ]
     },
     {
@@ -1026,25 +1228,35 @@
         "Skills": "mern",
         "Difficulty level": "Medium",
         "keywords": [
-            "Authentication",
-            "in",
-            "a",
-            "MERN",
-            "stack"
+            "authentication",
+            "MERN stack",
+            "JWT",
+            "session-based",
+            "Node.js",
+            "Express",
+            "React",
+            "tokens",
+            "secure storage",
+            "API requests"
         ]
     },
     {
         "id": 71,
-        "Question text": "How does React\u2019s Virtual DOM improve web application performance?",
-        "Ideal answer(s)": "React\u2019s Virtual DOM enhances performance by minimizing direct manipulations of the actual DOM. Instead of updating the real DOM with each state change, React creates a Virtual DOM and only updates the real DOM with the necessary changes. This optimization reduces the number of expensive reflows and repaints, improving responsiveness.",
+        "Question text": "How does React’s Virtual DOM improve web application performance?",
+        "Ideal answer(s)": "React’s Virtual DOM enhances performance by minimizing direct manipulations of the actual DOM. Instead of updating the real DOM with each state change, React creates a Virtual DOM and only updates the real DOM with the necessary changes. This optimization reduces the number of expensive reflows and repaints, improving responsiveness.",
         "Domain": "React",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "virtual DOM",
-            "React",
+            "Virtual DOM",
             "performance",
-            "update"
+            "minimize manipulations",
+            "actual DOM",
+            "state change",
+            "necessary changes",
+            "reflows",
+            "repaints",
+            "responsiveness"
         ]
     },
     {
@@ -1055,11 +1267,16 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "In",
-            "React,",
-            "'props'",
-            "are",
-            "immutable"
+            "props",
+            "state",
+            "immutable",
+            "mutable",
+            "parent component",
+            "child component",
+            "data flow",
+            "dynamic data",
+            "re-renders",
+            "communication"
         ]
     },
     {
@@ -1070,11 +1287,14 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "Class",
-            "components",
-            "in",
-            "React",
-            "are"
+            "functional components",
+            "class components",
+            "local state",
+            "lifecycle methods",
+            "hooks",
+            "useState",
+            "useEffect",
+            "concise"
         ]
     },
     {
@@ -1085,10 +1305,16 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "hooks",
+            "React hooks",
+            "state",
+            "lifecycle features",
+            "functional components",
             "useState",
             "useEffect",
-            "functional components"
+            "useContext",
+            "cleaner code",
+            "reduce boilerplate",
+            "performance"
         ]
     },
     {
@@ -1100,10 +1326,15 @@
         "Difficulty level": "Medium",
         "keywords": [
             "Express.js",
-            "is",
-            "a",
-            "lightweight",
-            "web"
+            "web framework",
+            "backend services",
+            "APIs",
+            "HTTP requests",
+            "middleware",
+            "MongoDB",
+            "Angular",
+            "Node.js",
+            "full-stack"
         ]
     },
     {
@@ -1114,26 +1345,34 @@
         "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "Two-way",
-            "data",
-            "binding",
-            "in",
-            "Angular"
+            "two-way data binding",
+            "Angular",
+            "synchronizes",
+            "model",
+            "view",
+            "`ngModel`",
+            "forms",
+            "user input",
+            "DOM manipulation"
         ]
     },
     {
         "id": 77,
         "Question text": "How does Angular's dependency injection work?",
-        "Ideal answer(s)": "Angular\u2019s dependency injection (DI) system allows for the automatic provisioning of services and other dependencies to components and other services. DI helps decouple code, making it modular, testable, and easier to maintain by injecting dependencies via constructors rather than manually instantiating objects.",
+        "Ideal answer(s)": "Angular’s dependency injection (DI) system allows for the automatic provisioning of services and other dependencies to components and other services. DI helps decouple code, making it modular, testable, and easier to maintain by injecting dependencies via constructors rather than manually instantiating objects.",
         "Domain": "Full Stack Developer",
         "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "Angular\u2019s",
-            "dependency",
-            "injection",
-            "(DI)",
-            "system"
+            "dependency injection",
+            "Angular",
+            "automatic provisioning",
+            "services",
+            "decouple code",
+            "modular",
+            "testable",
+            "maintainable",
+            "constructors"
         ]
     },
     {
@@ -1144,11 +1383,15 @@
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
             "`useEffect`",
-            "hook",
-            "in",
-            "React"
+            "side effects",
+            "fetching data",
+            "updating DOM",
+            "external resources",
+            "function component",
+            "renders",
+            "state changes",
+            "prop changes"
         ]
     },
     {
@@ -1160,10 +1403,15 @@
         "Difficulty level": "Medium",
         "keywords": [
             "Webpack",
-            "is",
-            "a",
-            "module",
-            "bundler"
+            "module bundler",
+            "bundle assets",
+            "JavaScript",
+            "CSS",
+            "optimize performance",
+            "code splitting",
+            "lazy loading",
+            "transpile",
+            "Babel"
         ]
     },
     {
@@ -1175,10 +1423,15 @@
         "Difficulty level": "Medium",
         "keywords": [
             "SQL",
-            "databases",
-            "are",
-            "relational,",
-            "use"
+            "NoSQL",
+            "relational",
+            "structured query",
+            "tables",
+            "predefined schemas",
+            "non-relational",
+            "flexible",
+            "unstructured data",
+            "scalable"
         ]
     },
     {
@@ -1189,26 +1442,31 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "callback",
-            "in",
-            "JavaScript",
-            "is"
+            "passed argument",
+            "executed",
+            "asynchronous operations",
+            "reading files",
+            "API requests",
+            "correct order",
+            "non-blocking"
         ]
     },
     {
         "id": 82,
-        "Question text": "How does React\u2019s one-way data flow work?",
-        "Ideal answer(s)": "React\u2019s one-way data flow means that data flows in a single direction, from parent to child components through props. This ensures predictable behavior and makes debugging easier, as each component is responsible for managing its own state and only receives props from its parent.",
+        "Question text": "How does React’s one-way data flow work?",
+        "Ideal answer(s)": "React’s one-way data flow means that data flows in a single direction, from parent to child components through props. This ensures predictable behavior and makes debugging easier, as each component is responsible for managing its own state and only receives props from its parent.",
         "Domain": "React",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "React\u2019s",
-            "one-way",
-            "data",
-            "flow",
-            "means"
+            "one-way data flow",
+            "single direction",
+            "parent to child",
+            "props",
+            "predictable behavior",
+            "debugging",
+            "manage state"
         ]
     },
     {
@@ -1220,10 +1478,13 @@
         "Difficulty level": "Medium",
         "keywords": [
             "'var'",
-            "is",
+            "'let'",
+            "'const'",
             "function-scoped",
-            "and",
-            "can"
+            "block-scoped",
+            "redeclared",
+            "immutable",
+            "reassignment"
         ]
     },
     {
@@ -1234,11 +1495,15 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "promise",
-            "is",
-            "an",
-            "object"
+            "asynchronous operation",
+            "completion",
+            "failure",
+            "`.then()`",
+            "`.catch()`",
+            "callback hell",
+            "readable",
+            "maintainable"
         ]
     },
     {
@@ -1249,11 +1514,14 @@
         "Skills": "full stack development",
         "Difficulty level": "Medium",
         "keywords": [
-            "APIs",
-            "(Application",
-            "Programming",
-            "Interfaces)",
-            "facilitate"
+            "API",
+            "communication",
+            "frontend",
+            "backend",
+            "endpoints",
+            "data exchange",
+            "client requests",
+            "JSON"
         ]
     },
     {
@@ -1264,11 +1532,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Synchronous",
-            "operations",
-            "block",
-            "the",
-            "execution"
+            "synchronous",
+            "asynchronous",
+            "block execution",
+            "continue executing",
+            "callbacks",
+            "promises",
+            "async/await",
+            "network requests"
         ]
     },
     {
@@ -1279,11 +1550,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "'this'",
-            "refers",
-            "to",
-            "the",
-            "context"
+            "`this`",
+            "context",
+            "executed",
+            "object",
+            "method",
+            "global object",
+            "arrow functions",
+            "lexical context"
         ]
     },
     {
@@ -1294,11 +1568,14 @@
         "Skills": "full stack development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Cross-Origin",
-            "Resource",
-            "Sharing",
-            "(CORS)",
-            "headers"
+            "CORS",
+            "cross-origin requests",
+            "headers",
+            "allow requests",
+            "restrict requests",
+            "secure access",
+            "server side",
+            "security issues"
         ]
     },
     {
@@ -1310,10 +1587,14 @@
         "Difficulty level": "Medium",
         "keywords": [
             "MongoDB",
-            "is",
-            "a",
             "NoSQL",
-            "database"
+            "flexible schema",
+            "horizontal scaling",
+            "JSON-like",
+            "JavaScript applications",
+            "data structures",
+            "productivity",
+            "scalability"
         ]
     },
     {
@@ -1324,11 +1605,15 @@
         "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "RESTful",
-            "services",
-            "follow",
-            "the",
-            "principles"
+            "RESTful services",
+            "REST",
+            "stateless",
+            "HTTP methods",
+            "lightweight",
+            "SOAP",
+            "XML",
+            "bandwidth",
+            "overhead"
         ]
     },
     {
@@ -1339,11 +1624,14 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "Callback",
-            "hell",
-            "refers",
-            "to",
-            "the"
+            "callback hell",
+            "nested callbacks",
+            "difficult to read",
+            "maintain",
+            "asynchronous operations",
+            "API calls",
+            "promises",
+            "async/await"
         ]
     },
     {
@@ -1355,10 +1643,12 @@
         "Difficulty level": "Easy",
         "keywords": [
             "'null'",
-            "is",
-            "an",
-            "assignment",
-            "value"
+            "'undefined'",
+            "assignment value",
+            "no value",
+            "empty object",
+            "not assigned",
+            "falsy values"
         ]
     },
     {
@@ -1369,11 +1659,13 @@
         "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "closure",
-            "is",
-            "a",
-            "function"
+            "lexical environment",
+            "retains access",
+            "outer function",
+            "remember variables",
+            "data encapsulation",
+            "function factories"
         ]
     },
     {
@@ -1384,11 +1676,13 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "stack",
-            "is",
-            "a",
-            "LIFO"
+            "queue",
+            "LIFO",
+            "FIFO",
+            "last in first out",
+            "first in first out",
+            "data structure"
         ]
     },
     {
@@ -1399,11 +1693,15 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "binary",
-            "search",
-            "tree",
-            "(BST)"
+            "binary search tree",
+            "BST",
+            "tree data structure",
+            "two children",
+            "left child",
+            "right child",
+            "searching",
+            "insertion",
+            "deletion"
         ]
     },
     {
@@ -1414,11 +1712,13 @@
         "Skills": "general programming",
         "Difficulty level": "Hard",
         "keywords": [
-            "Dynamic",
-            "programming",
-            "is",
-            "a",
-            "method"
+            "dynamic programming",
+            "subproblems",
+            "store results",
+            "avoid redundant",
+            "optimization",
+            "Fibonacci sequence",
+            "knapsack problem"
         ]
     },
     {
@@ -1430,10 +1730,14 @@
         "Difficulty level": "Medium",
         "keywords": [
             "DFS",
-            "explores",
-            "as",
-            "far",
-            "as"
+            "BFS",
+            "depth-first search",
+            "breadth-first search",
+            "branch",
+            "backtracking",
+            "depth level",
+            "stack",
+            "queue"
         ]
     },
     {
@@ -1444,11 +1748,15 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "hash",
-            "table",
-            "is",
-            "a"
+            "hash table",
+            "key-value pairs",
+            "hash function",
+            "index",
+            "fast access",
+            "O(1)",
+            "lookups",
+            "inserts",
+            "deletions"
         ]
     },
     {
@@ -1459,11 +1767,15 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "graph",
-            "is",
-            "a",
-            "collection"
+            "nodes",
+            "vertices",
+            "edges",
+            "directed",
+            "undirected",
+            "weighted",
+            "unweighted",
+            "relationships"
         ]
     },
     {
@@ -1474,11 +1786,14 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
             "heap",
-            "is",
-            "a",
-            "complete"
+            "complete binary tree",
+            "max-heap",
+            "min-heap",
+            "parent node",
+            "children",
+            "priority queues",
+            "heap sort"
         ]
     },
     {
@@ -1489,11 +1804,12 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Recursion",
-            "is",
-            "a",
-            "technique",
-            "where"
+            "recursion",
+            "function calls itself",
+            "smaller instances",
+            "subproblems",
+            "tree traversals",
+            "factorials"
         ]
     },
     {
@@ -1504,11 +1820,13 @@
         "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Synchronous",
-            "programming",
-            "executes",
-            "tasks",
-            "sequentially,"
+            "synchronous",
+            "asynchronous",
+            "sequentially",
+            "blocking",
+            "non-blocking",
+            "file I/O",
+            "network requests"
         ]
     },
     {
@@ -1519,1028 +1837,1118 @@
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "Lambda",
-            "functions",
-            "in",
-            "Python",
-            "are"
+            "lambda functions",
+            "anonymous functions",
+            "`lambda`",
+            "arguments",
+            "one expression",
+            "short-term",
+            "map",
+            "filter",
+            "reduce"
         ]
     },
     {
         "id": 104,
-        "Question text": "What are the differences between Python 2 and Python 3?",
-        "Ideal answer(s)": "Python 3 introduced several changes, such as better Unicode support, a print function, integer division behavior, and more consistent syntax. Python 2, however, is no longer supported, and Python 3 is now the preferred version for new projects.",
+        "Question text": "What is the purpose of the `map()` function in Python?",
+        "Ideal answer(s)": "The `map()` function in Python applies a given function to each item in an iterable (like a list or tuple) and returns an iterator of the results. It’s useful for transforming data without writing explicit loops, improving code conciseness.",
         "Domain": "Software Development",
         "Skills": "python",
         "Difficulty level": "Medium",
         "keywords": [
-            "Python",
-            "3",
-            "introduced",
-            "several",
-            "changes,"
+            "`map()`",
+            "applies function",
+            "iterable",
+            "iterator",
+            "transform data",
+            "conciseness"
         ]
     },
     {
         "id": 105,
-        "Question text": "What are decorators in Python?",
-        "Ideal answer(s)": "Decorators in Python are functions that modify the behavior of other functions or methods. They are typically used to add functionality to an existing function, such as logging, caching, or access control, without modifying the function itself.",
+        "Question text": "What is a generator in Python and how is it different from a list?",
+        "Ideal answer(s)": "A generator in Python is an iterator that generates values on-the-fly using the `yield` keyword, rather than storing them in memory like a list. Generators are memory-efficient for large datasets since they produce one item at a time.",
         "Domain": "Software Development",
         "Skills": "python",
-        "Difficulty level": "Hard",
+        "Difficulty level": "Medium",
         "keywords": [
-            "Decorators",
-            "in",
-            "Python",
-            "are",
-            "functions"
+            "generator",
+            "`yield`",
+            "on-the-fly",
+            "iterator",
+            "memory-efficient",
+            "large datasets"
         ]
     },
     {
         "id": 106,
-        "Question text": "What are the differences between `deepcopy` and `shallow copy` in Python?",
-        "Ideal answer(s)": "A shallow copy creates a new object but does not create copies of nested objects, meaning nested references are shared. A deep copy creates a completely independent copy of the entire object, including all nested objects, ensuring no shared references.",
+        "Question text": "What is the difference between `__init__` and `__new__` in Python?",
+        "Ideal answer(s)": "`__new__` is a static method that creates a new instance of a class, while `__init__` is an instance method that initializes the instance after it’s created. `__new__` is called first, and `__init__` is called afterward to set up the object.",
         "Domain": "Software Development",
         "Skills": "python",
-        "Difficulty level": "Medium",
+        "Difficulty level": "Hard",
         "keywords": [
-            "A",
-            "shallow",
-            "copy",
-            "creates",
-            "a"
+            "`__new__`",
+            "`__init__`",
+            "static method",
+            "instance method",
+            "creates instance",
+            "initializes",
+            "called first"
         ]
     },
     {
         "id": 107,
-        "Question text": "What is the purpose of `__init__` in Python classes?",
-        "Ideal answer(s)": "The `__init__` method is the constructor in Python. It is automatically called when a new instance of a class is created and is used to initialize the instance's attributes and perform any setup required for the object.",
+        "Question text": "What is the purpose of the `reduce()` function in Python?",
+        "Ideal answer(s)": "The `reduce()` function from the `functools` module applies a function of two arguments cumulatively to the items of an iterable, reducing it to a single value. It’s often used for operations like summing or multiplying all elements in a list.",
         "Domain": "Software Development",
         "Skills": "python",
-        "Difficulty level": "Easy",
+        "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "`__init__`",
-            "method",
-            "is",
-            "the"
+            "`reduce()`",
+            "`functools`",
+            "cumulatively",
+            "two arguments",
+            "single value",
+            "summing",
+            "multiplying"
         ]
     },
     {
         "id": 108,
-        "Question text": "What is the difference between `is` and `==` in Python?",
-        "Ideal answer(s)": "`is` checks if two variables point to the same object in memory, while `==` checks if the values of the variables are equal. `is` is used for identity comparison, while `==` is used for equality comparison.",
+        "Question text": "What is the difference between `==` and `is` in Python?",
+        "Ideal answer(s)": "`==` checks for value equality between two objects, while `is` checks for identity equality, meaning whether they are the same object in memory. For example, `a == b` checks if `a` and `b` have the same value, while `a is b` checks if they reference the same object.",
         "Domain": "Software Development",
         "Skills": "python",
-        "Difficulty level": "Easy",
+        "Difficulty level": "Medium",
         "keywords": [
+            "`==`",
             "`is`",
-            "checks",
-            "if",
-            "two",
-            "variables"
+            "value equality",
+            "identity equality",
+            "same object",
+            "memory"
         ]
     },
     {
         "id": 109,
-        "Question text": "What is the purpose of the `map()` function in Python?",
-        "Ideal answer(s)": "The `map()` function applies a given function to all items in an input list (or any iterable) and returns a map object, which can be converted into a list or other iterable. It is useful for applying operations to each element in a collection.",
+        "Question text": "What is the purpose of the `async` keyword in JavaScript?",
+        "Ideal answer(s)": "The `async` keyword in JavaScript declares an asynchronous function that implicitly returns a promise. It allows the use of `await` inside the function to pause execution until a promise resolves, simplifying asynchronous code handling.",
         "Domain": "Software Development",
-        "Skills": "python",
+        "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "`map()`",
-            "function",
-            "applies",
-            "a"
+            "`async`",
+            "asynchronous function",
+            "returns promise",
+            "`await`",
+            "pause execution",
+            "promise resolves"
         ]
     },
     {
         "id": 110,
-        "Question text": "What is the `self` keyword in Python classes?",
-        "Ideal answer(s)": "The `self` keyword in Python refers to the instance of the class. It is used to access attributes and methods of the current object. It must be the first parameter in all instance methods within a class.",
+        "Question text": "What is the difference between `setTimeout` and `setInterval` in JavaScript?",
+        "Ideal answer(s)": "`setTimeout` executes a function once after a specified delay in milliseconds, while `setInterval` repeatedly executes a function at specified intervals until cleared. Both are used for timing events in JavaScript.",
         "Domain": "Software Development",
-        "Skills": "python",
-        "Difficulty level": "Easy",
+        "Skills": "javascript",
+        "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "`self`",
-            "keyword",
-            "in",
-            "Python"
+            "`setTimeout`",
+            "`setInterval`",
+            "executes once",
+            "repeatedly executes",
+            "delay",
+            "intervals",
+            "timing events"
         ]
     },
     {
         "id": 111,
-        "Question text": "What is the difference between `__str__` and `__repr__` in Python?",
-        "Ideal answer(s)": "`__str__` is used to define a user-friendly string representation of an object, while `__repr__` is used to define an unambiguous string representation of the object, often for debugging purposes. If `__str__` is not defined, Python will use `__repr__` as a fallback.",
+        "Question text": "What is the spread operator in JavaScript?",
+        "Ideal answer(s)": "The spread operator (`...`) in JavaScript expands an iterable (like an array or string) into individual elements. It’s commonly used for copying arrays, merging arrays, or passing array elements as arguments to a function.",
         "Domain": "Software Development",
-        "Skills": "python",
+        "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "`__str__`",
-            "is",
-            "used",
-            "to",
-            "define"
+            "spread operator",
+            "`...`",
+            "expands iterable",
+            "copying arrays",
+            "merging arrays",
+            "function arguments"
         ]
     },
     {
         "id": 112,
-        "Question text": "What is the purpose of a class method in Python?",
-        "Ideal answer(s)": "A class method in Python is bound to the class and not the instance. It is used to modify class-level attributes and is defined using the `@classmethod` decorator. The first parameter of a class method is `cls`, which refers to the class itself.",
+        "Question text": "What is the purpose of the `bind()` method in JavaScript?",
+        "Ideal answer(s)": "The `bind()` method creates a new function with a specified `this` value and optional initial arguments. It’s used to ensure a function is called with a particular context, especially in event handlers or callbacks.",
         "Domain": "Software Development",
-        "Skills": "python",
+        "Skills": "javascript",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "class",
-            "method",
-            "in",
-            "Python"
+            "`bind()`",
+            "new function",
+            "`this` value",
+            "context",
+            "event handlers",
+            "callbacks"
         ]
     },
     {
         "id": 113,
-        "Question text": "What is the difference between `append()` and `extend()` methods in Python lists?",
-        "Ideal answer(s)": "`append()` adds a single element to the end of a list, while `extend()` adds all elements from an iterable (e.g., another list) to the end of the list.",
+        "Question text": "What is the difference between `call()` and `apply()` in JavaScript?",
+        "Ideal answer(s)": "`call()` and `apply()` both invoke a function with a specified `this` context, but `call()` takes arguments individually, while `apply()` takes them as an array. They’re useful for borrowing methods from other objects.",
         "Domain": "Software Development",
-        "Skills": "python",
-        "Difficulty level": "Easy",
+        "Skills": "javascript",
+        "Difficulty level": "Medium",
         "keywords": [
-            "`append()`",
-            "adds",
-            "a",
-            "single",
-            "element"
+            "`call()`",
+            "`apply()`",
+            "`this` context",
+            "arguments individually",
+            "arguments array",
+            "borrowing methods"
         ]
     },
     {
         "id": 114,
-        "Question text": "What is the difference between `str()` and `repr()` functions in Python?",
-        "Ideal answer(s)": "`str()` is used to return a user-friendly string representation of an object, intended for display. `repr()` is used to return a more formal or developer-friendly string representation of the object, often used for debugging.",
-        "Domain": "Software Development",
-        "Skills": "python",
+        "Question text": "What is the purpose of the `transition` property in CSS?",
+        "Ideal answer(s)": "The `transition` property in CSS specifies how an element’s property changes (like width or color) occur over time, creating smooth animations. It includes duration, timing function, and the property to transition.",
+        "Domain": "Frontend Development",
+        "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "`str()`",
-            "is",
-            "used",
-            "to",
-            "return"
+            "`transition`",
+            "property changes",
+            "smooth animations",
+            "duration",
+            "timing function"
         ]
     },
     {
         "id": 115,
-        "Question text": "What are the key differences between Angular and React?",
-        "Ideal answer(s)": "Angular is a full-fledged MVC framework, providing more built-in functionality such as dependency injection, two-way data binding, and routing. React is a library focused on building user interfaces, offering a component-based approach, with one-way data flow and requiring external libraries for routing and state management.",
-        "Domain": "Full Stack Developer",
-        "Skills": "react",
+        "Question text": "What is the difference between `relative` and `absolute` units in CSS?",
+        "Ideal answer(s)": "Relative units in CSS (e.g., `%`, `em`, `rem`) are based on another value, like parent size or root font size, making them flexible for responsive design. Absolute units (e.g., `px`, `pt`) are fixed and don’t scale with other elements.",
+        "Domain": "Frontend Development",
+        "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "Angular",
-            "is",
-            "a",
-            "full-fledged",
-            "MVC"
+            "relative units",
+            "absolute units",
+            "`%`",
+            "`em`",
+            "`rem`",
+            "`px`",
+            "responsive design",
+            "fixed size"
         ]
     },
     {
         "id": 116,
-        "Question text": "What is the role of Redux in React applications?",
-        "Ideal answer(s)": "Redux is a state management library used with React to manage the application's global state in a predictable manner. It follows the principles of a unidirectional data flow and centralizes state management, making it easier to handle state changes across complex applications.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the purpose of the `float` property in CSS?",
+        "Ideal answer(s)": "The `float` property in CSS moves an element to the left or right of its container, allowing text and inline elements to wrap around it. It’s historically used for layouts like magazine-style columns.",
+        "Domain": "Frontend Development",
+        "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "Redux",
-            "is",
-            "a",
-            "state",
-            "management"
+            "`float`",
+            "moves element",
+            "left or right",
+            "text wrap",
+            "layouts"
         ]
     },
     {
         "id": 117,
-        "Question text": "What is the purpose of the `useState` hook in React?",
-        "Ideal answer(s)": "The `useState` hook allows functional components in React to maintain local state. It returns an array with the current state value and a function to update that state, enabling dynamic rendering when the state changes and making components interactive.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the `grid-template-areas` property in CSS Grid?",
+        "Ideal answer(s)": "The `grid-template-areas` property in CSS Grid defines a grid layout by naming areas, allowing you to place items using those names. It provides a visual way to structure complex layouts.",
+        "Domain": "Frontend Development",
+        "Skills": "css",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "`useState`",
-            "hook",
-            "allows",
-            "functional"
+            "`grid-template-areas`",
+            "CSS Grid",
+            "defines layout",
+            "naming areas",
+            "place items",
+            "complex layouts"
         ]
     },
     {
         "id": 118,
-        "Question text": "How does React's reconciliation process work?",
-        "Ideal answer(s)": "React's reconciliation process is responsible for updating the UI efficiently by comparing the Virtual DOM with the previous state. It uses an algorithm called the 'diffing algorithm' to determine the minimal number of changes needed to update the real DOM, improving performance.",
-        "Domain": "React",
-        "Skills": "react",
-        "Difficulty level": "Medium",
+        "Question text": "What is the difference between `margin` and `padding` in CSS?",
+        "Ideal answer(s)": "`margin` is the space outside an element’s border, separating it from other elements, while `padding` is the space inside the border, between the content and the border. Both affect layout but serve different purposes.",
+        "Domain": "Frontend Development",
+        "Skills": "css",
+        "Difficulty level": "Easy",
         "keywords": [
-            "React's",
-            "reconciliation",
-            "process",
-            "is",
-            "responsible"
+            "`margin`",
+            "`padding`",
+            "outside border",
+            "inside border",
+            "space",
+            "layout"
         ]
     },
     {
         "id": 119,
-        "Question text": "What is a higher-order component (HOC) in React?",
-        "Ideal answer(s)": "A higher-order component (HOC) is a function that takes a component and returns a new component with enhanced functionality. HOCs are used for code reuse, allowing common logic (like authentication or data fetching) to be shared between components without modifying the original component.",
-        "Domain": "React",
+        "Question text": "What is the purpose of the `useState` hook in React?",
+        "Ideal answer(s)": "The `useState` hook in React allows functional components to manage local state. It returns a state variable and a function to update it, triggering a re-render when the state changes.",
+        "Domain": "Frontend Development",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "higher-order",
-            "component",
-            "(HOC)",
-            "is"
+            "`useState`",
+            "functional components",
+            "local state",
+            "state variable",
+            "update function",
+            "re-render"
         ]
     },
     {
         "id": 120,
-        "Question text": "How does the 'context' API work in React?",
-        "Ideal answer(s)": "The React Context API allows data to be passed through the component tree without manually passing props at each level. It provides a way to share state or methods globally, useful for managing application-wide state like themes, authentication, or user preferences.",
-        "Domain": "React",
+        "Question text": "What is the difference between controlled and uncontrolled components in React?",
+        "Ideal answer(s)": "Controlled components have their value managed by React state, updated via event handlers like `onChange`. Uncontrolled components manage their own state internally, accessed via refs, offering less control but simpler setup.",
+        "Domain": "Frontend Development",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "React",
-            "Context",
-            "API",
-            "allows"
+            "controlled components",
+            "uncontrolled components",
+            "React state",
+            "event handlers",
+            "refs",
+            "internal state"
         ]
     },
     {
         "id": 121,
-        "Question text": "What is the significance of webpack in React applications?",
-        "Ideal answer(s)": "Webpack is a bundler that compiles, bundles, and optimizes the assets (JavaScript, CSS, images) used in React applications. It enables module bundling, transforms modern JavaScript with Babel, supports hot module replacement, and improves load times by minifying and splitting bundles.",
-        "Domain": "Full Stack Developer",
+        "Question text": "What is the purpose of the `useContext` hook in React?",
+        "Ideal answer(s)": "The `useContext` hook in React provides a way to access context values in functional components without prop drilling. It simplifies passing data through the component tree.",
+        "Domain": "Frontend Development",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "Webpack",
-            "is",
-            "a",
-            "bundler",
-            "that"
+            "`useContext`",
+            "context values",
+            "functional components",
+            "prop drilling",
+            "pass data"
         ]
     },
     {
         "id": 122,
-        "Question text": "What are the main differences between a functional component and a class component in React?",
-        "Ideal answer(s)": "Functional components are stateless and simpler, using hooks for managing state and side effects. Class components, on the other hand, are stateful and can use lifecycle methods. React encourages the use of functional components due to their simplicity and the power of hooks.",
-        "Domain": "React",
+        "Question text": "What is a reducer in Redux?",
+        "Ideal answer(s)": "A reducer in Redux is a pure function that takes the current state and an action, returning a new state based on the action type. It defines how the state updates in response to actions.",
+        "Domain": "Frontend Development",
         "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "Functional",
-            "components",
-            "are",
-            "stateless",
-            "and"
+            "reducer",
+            "Redux",
+            "pure function",
+            "current state",
+            "action",
+            "new state",
+            "updates"
         ]
     },
     {
         "id": 123,
-        "Question text": "How do you handle routing in a MERN stack application?",
-        "Ideal answer(s)": "In a MERN stack, routing is handled by React Router on the frontend, allowing for client-side routing and navigation between different components. On the backend, Express.js handles server-side routing for API endpoints, ensuring seamless interaction between the client and server.",
-        "Domain": "Full Stack Developer",
-        "Skills": "mern",
+        "Question text": "What is the purpose of `React.memo`?",
+        "Ideal answer(s)": "`React.memo` is a higher-order component that memoizes a functional component, preventing unnecessary re-renders if its props haven’t changed. It improves performance in React applications.",
+        "Domain": "Frontend Development",
+        "Skills": "react",
         "Difficulty level": "Medium",
         "keywords": [
-            "In",
-            "a",
-            "MERN",
-            "stack,",
-            "routing"
+            "`React.memo`",
+            "memoizes",
+            "functional component",
+            "prevent re-renders",
+            "props",
+            "performance"
         ]
     },
     {
         "id": 124,
-        "Question text": "What is the role of Express.js in the MERN stack?",
-        "Ideal answer(s)": "Express.js is the web framework for Node.js that simplifies the process of handling HTTP requests, middleware, and routing. In the MERN stack, it provides the backend API services, connecting the front-end React application with MongoDB for data handling and CRUD operations.",
-        "Domain": "Full Stack Developer",
-        "Skills": "mern",
+        "Question text": "What is the difference between `GET` and `POST` HTTP methods?",
+        "Ideal answer(s)": "`GET` retrieves data from a server and is idempotent, while `POST` sends data to a server to create or update resources and is not idempotent. `GET` parameters are in the URL, while `POST` data is in the request body.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
         "Difficulty level": "Medium",
         "keywords": [
-            "Express.js",
-            "is",
-            "the",
-            "web",
-            "framework"
+            "`GET`",
+            "`POST`",
+            "retrieve data",
+            "send data",
+            "idempotent",
+            "request body",
+            "URL parameters"
         ]
     },
     {
         "id": 125,
-        "Question text": "What is the difference between SQL joins (INNER JOIN, LEFT JOIN, RIGHT JOIN)?",
-        "Ideal answer(s)": "INNER JOIN returns records that have matching values in both tables, LEFT JOIN returns all records from the left table and the matching records from the right, and RIGHT JOIN returns all records from the right table and the matching records from the left. LEFT JOIN and RIGHT JOIN are particularly useful for ensuring that no data is lost from one of the tables.",
-        "Domain": "Software Developer",
-        "Skills": "sql",
-        "Difficulty level": "Medium",
+        "Question text": "What is the purpose of `npm` in Node.js?",
+        "Ideal answer(s)": "`npm` (Node Package Manager) is used to manage dependencies in Node.js projects. It allows developers to install, update, and share packages, streamlining project setup and collaboration.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
+        "Difficulty level": "Easy",
         "keywords": [
-            "INNER",
-            "JOIN",
-            "returns",
-            "records",
-            "that"
+            "`npm`",
+            "Node Package Manager",
+            "dependencies",
+            "install packages",
+            "update",
+            "collaboration"
         ]
     },
     {
         "id": 126,
-        "Question text": "What are the key features of the MEAN stack?",
-        "Ideal answer(s)": "The MEAN stack consists of MongoDB (NoSQL database), Express.js (backend framework), Angular (frontend framework), and Node.js (JavaScript runtime). It allows full-stack JavaScript development, enabling developers to use a single language, JavaScript, for both frontend and backend development.",
-        "Domain": "Full Stack Developer",
-        "Skills": "mean",
+        "Question text": "What is the difference between `module.exports` and `exports` in Node.js?",
+        "Ideal answer(s)": "`module.exports` is the actual object exported from a module, while `exports` is a shorthand reference to it. Assigning to `exports` overwrites the reference, but `module.exports` defines the final export.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
         "Difficulty level": "Medium",
         "keywords": [
-            "The",
-            "MEAN",
-            "stack",
-            "consists",
-            "of"
+            "`module.exports`",
+            "`exports`",
+            "exported object",
+            "shorthand",
+            "overwrites",
+            "final export"
         ]
     },
     {
         "id": 127,
-        "Question text": "What is the difference between 'var', 'let', and 'const' in JavaScript?",
-        "Ideal answer(s)": "'var' is function-scoped, and its value can be re-assigned and redeclared. 'let' is block-scoped, allowing reassignment but not redeclaration in the same scope. 'const' is block-scoped and cannot be reassigned or redeclared once initialized, making it ideal for constants.",
-        "Domain": "JavaScript",
-        "Skills": "javascript",
+        "Question text": "What is an event loop in Node.js?",
+        "Ideal answer(s)": "The event loop in Node.js handles asynchronous operations by continuously checking the call stack and event queue. It processes callbacks when the stack is empty, enabling non-blocking I/O operations.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
         "Difficulty level": "Medium",
         "keywords": [
-            "'var'",
-            "is",
-            "function-scoped,",
-            "and",
-            "its"
+            "event loop",
+            "asynchronous",
+            "call stack",
+            "event queue",
+            "callbacks",
+            "non-blocking"
         ]
     },
     {
         "id": 128,
-        "Question text": "Explain the event loop in JavaScript.",
-        "Ideal answer(s)": "The event loop in JavaScript is a mechanism that allows non-blocking, asynchronous execution. It constantly checks the message queue and moves callbacks from the queue to the call stack when the stack is empty, ensuring the program remains responsive.",
-        "Domain": "JavaScript",
-        "Skills": "javascript",
+        "Question text": "What is the purpose of the `Buffer` class in Node.js?",
+        "Ideal answer(s)": "The `Buffer` class in Node.js handles raw binary data, allowing manipulation of data streams like files or network packets. It’s essential for working with I/O operations that require byte-level control.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
         "Difficulty level": "Medium",
         "keywords": [
-            "encapsulation",
-            "inheritance",
-            "polymorphism",
-            "abstraction"
+            "`Buffer`",
+            "binary data",
+            "data streams",
+            "I/O operations",
+            "byte-level"
         ]
     },
     {
         "id": 129,
-        "Question text": "What is the use of 'useEffect' hook in React?",
-        "Ideal answer(s)": "'useEffect' is a hook in React that allows side effects to be performed in function components. It can be used to fetch data, interact with the DOM, or perform cleanup when the component unmounts or updates.",
-        "Domain": "React",
-        "Skills": "react",
-        "Difficulty level": "Medium",
+        "Question text": "What is the difference between `process.nextTick` and `setImmediate` in Node.js?",
+        "Ideal answer(s)": "`process.nextTick` queues a callback to run immediately after the current phase of the event loop, while `setImmediate` schedules it for the next iteration. `nextTick` has higher priority.",
+        "Domain": "Backend Development",
+        "Skills": "node.js",
+        "Difficulty level": "Hard",
         "keywords": [
-            "'useEffect'",
-            "is",
-            "a",
-            "hook",
-            "in"
+            "`process.nextTick`",
+            "`setImmediate`",
+            "callback",
+            "event loop",
+            "priority",
+            "next iteration"
         ]
     },
     {
         "id": 130,
-        "Question text": "How do you manage state in React applications?",
-        "Ideal answer(s)": "State in React can be managed using the 'useState' hook for local component state, and more complex state management can be handled using the Context API or third-party libraries like Redux for global application state.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is dependency injection in Angular?",
+        "Ideal answer(s)": "Dependency injection in Angular is a design pattern where services or dependencies are provided to a component via its constructor, managed by Angular’s injector. It promotes modularity and testability.",
+        "Domain": "Full Stack Development",
+        "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "State",
-            "in",
-            "React",
-            "can",
-            "be"
+            "dependency injection",
+            "Angular",
+            "services",
+            "constructor",
+            "injector",
+            "modularity",
+            "testability"
         ]
     },
     {
         "id": 131,
-        "Question text": "What are the advantages of using Node.js?",
-        "Ideal answer(s)": "Node.js allows developers to use JavaScript on both the frontend and backend, leading to a unified development stack. It is lightweight, highly scalable, and suitable for handling I/O-heavy applications due to its non-blocking, event-driven architecture.",
-        "Domain": "Full Stack Developer",
-        "Skills": "node.js",
+        "Question text": "What is the purpose of `ngFor` in Angular?",
+        "Ideal answer(s)": "`ngFor` is an Angular directive used to iterate over a collection (like an array) and render a template for each item. It’s essential for displaying dynamic lists in Angular templates.",
+        "Domain": "Full Stack Development",
+        "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "Node.js",
-            "allows",
-            "developers",
-            "to",
-            "use"
+            "`ngFor`",
+            "Angular directive",
+            "iterate",
+            "collection",
+            "render template",
+            "dynamic lists"
         ]
     },
     {
         "id": 132,
-        "Question text": "Explain how the 'map' function works in JavaScript.",
-        "Ideal answer(s)": "'map' is an array method in JavaScript that creates a new array by applying a provided function to each element of the original array. It does not modify the original array, and it returns a new array containing the results of the function.",
-        "Domain": "JavaScript",
-        "Skills": "javascript",
+        "Question text": "What is a service in Angular?",
+        "Ideal answer(s)": "A service in Angular is a class that encapsulates reusable logic, such as data fetching or business rules, and is injectable into components or other services. It promotes separation of concerns.",
+        "Domain": "Full Stack Development",
+        "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "'map'",
-            "is",
-            "an",
-            "array",
-            "method"
+            "service",
+            "Angular",
+            "reusable logic",
+            "injectable",
+            "data fetching",
+            "separation of concerns"
         ]
     },
     {
         "id": 133,
-        "Question text": "What is a promise in JavaScript?",
-        "Ideal answer(s)": "A promise in JavaScript is an object representing the eventual completion (or failure) of an asynchronous operation. It can be in one of three states: pending, resolved (fulfilled), or rejected, and it provides methods like 'then' and 'catch' to handle success or failure.",
-        "Domain": "JavaScript",
-        "Skills": "javascript",
+        "Question text": "What is the purpose of `pipe` in Angular?",
+        "Ideal answer(s)": "A `pipe` in Angular transforms data in templates, such as formatting dates or numbers, without altering the original value. It’s a reusable way to display data in a user-friendly format.",
+        "Domain": "Full Stack Development",
+        "Skills": "mean",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "promise",
-            "in",
-            "JavaScript",
-            "is"
+            "`pipe`",
+            "Angular",
+            "transforms data",
+            "templates",
+            "formatting",
+            "user-friendly"
         ]
     },
     {
         "id": 134,
-        "Question text": "How can you handle errors in asynchronous JavaScript?",
-        "Ideal answer(s)": "Errors in asynchronous JavaScript can be handled using 'try-catch' blocks inside async functions, or by using the 'catch' method on a promise to handle rejected promises, ensuring the application doesn't crash and can recover gracefully.",
-        "Domain": "JavaScript",
-        "Skills": "javascript",
+        "Question text": "What is the difference between a linked list and an array?",
+        "Ideal answer(s)": "A linked list is a dynamic data structure with nodes connected by pointers, allowing efficient insertions and deletions, while an array is a static, contiguous block of memory with faster access but slower resizing.",
+        "Domain": "Data Structures",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Errors",
-            "in",
-            "asynchronous",
-            "JavaScript",
-            "can"
+            "linked list",
+            "array",
+            "dynamic",
+            "static",
+            "pointers",
+            "insertions",
+            "deletions",
+            "access",
+            "resizing"
         ]
     },
     {
         "id": 135,
-        "Question text": "What is the difference between SQL JOIN types: INNER JOIN, LEFT JOIN, and RIGHT JOIN?",
-        "Ideal answer(s)": "An INNER JOIN returns rows when there is a match in both tables. A LEFT JOIN returns all rows from the left table and matched rows from the right table, with NULLs for unmatched rows. A RIGHT JOIN returns all rows from the right table and matched rows from the left table, with NULLs for unmatched rows.",
-        "Domain": "Database Management",
-        "Skills": "sql",
-        "Difficulty level": "Medium",
+        "Question text": "What is a trie data structure?",
+        "Ideal answer(s)": "A trie (prefix tree) is a tree-like data structure used to store a dynamic set of strings, where each node represents a character. It’s efficient for prefix-based searches, like autocomplete.",
+        "Domain": "Data Structures",
+        "Skills": "general programming",
+        "Difficulty level": "Hard",
         "keywords": [
-            "An",
-            "INNER",
-            "JOIN",
-            "returns",
-            "rows"
+            "trie",
+            "prefix tree",
+            "strings",
+            "node character",
+            "prefix searches",
+            "autocomplete"
         ]
     },
     {
         "id": 136,
-        "Question text": "What is the difference between DELETE and TRUNCATE in SQL?",
-        "Ideal answer(s)": "DELETE removes rows one by one and can be rolled back, while TRUNCATE removes all rows in a table and cannot be rolled back. TRUNCATE is faster but doesn't fire triggers and resets identity columns.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is the time complexity of binary search?",
+        "Ideal answer(s)": "The time complexity of binary search is O(log n), as it repeatedly divides the search space in half, making it highly efficient for sorted arrays.",
+        "Domain": "Algorithms",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "DELETE",
-            "removes",
-            "rows",
-            "one",
-            "by"
+            "binary search",
+            "O(log n)",
+            "divides",
+            "search space",
+            "sorted arrays",
+            "efficient"
         ]
     },
     {
         "id": 137,
-        "Question text": "Explain normalization and denormalization in databases.",
-        "Ideal answer(s)": "Normalization is the process of organizing data to minimize redundancy and dependency by dividing a database into smaller tables and ensuring relationships between them. Denormalization is the process of combining tables to reduce the complexity of queries, typically for performance optimization.",
-        "Domain": "Database Management",
-        "Skills": "sql",
-        "Difficulty level": "Hard",
+        "Question text": "What is memoization in programming?",
+        "Ideal answer(s)": "Memoization is an optimization technique that stores the results of expensive function calls and returns the cached result when the same inputs occur again. It’s commonly used in recursive algorithms.",
+        "Domain": "Algorithms",
+        "Skills": "general programming",
+        "Difficulty level": "Medium",
         "keywords": [
-            "Normalization",
-            "is",
-            "the",
-            "process",
-            "of"
+            "memoization",
+            "optimization",
+            "cached result",
+            "expensive calls",
+            "recursive algorithms"
         ]
     },
     {
         "id": 138,
-        "Question text": "What is the difference between NoSQL and SQL databases?",
-        "Ideal answer(s)": "SQL databases are relational, structured, and use tables, while NoSQL databases are non-relational, flexible, and often store data in JSON, key-value, or graph formats. SQL databases are used for structured data with complex queries, whereas NoSQL is more suited for unstructured or semi-structured data and high scalability.",
-        "Domain": "Database Management",
-        "Skills": "mongodb",
+        "Question text": "What is the difference between merge sort and quicksort?",
+        "Ideal answer(s)": "Merge sort is a stable, divide-and-conquer algorithm with O(n log n) time complexity, splitting the array into halves and merging them. Quicksort is an in-place, unstable algorithm with average O(n log n) time, using a pivot to partition the array.",
+        "Domain": "Algorithms",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "SQL",
-            "databases",
-            "are",
-            "relational,",
-            "structured,"
+            "merge sort",
+            "quicksort",
+            "stable",
+            "unstable",
+            "O(n log n)",
+            "divide-and-conquer",
+            "pivot",
+            "partition"
         ]
     },
     {
         "id": 139,
-        "Question text": "What is the use of indexing in databases?",
-        "Ideal answer(s)": "Indexing in databases improves the speed of data retrieval operations by creating an optimized data structure that allows faster search, lookup, and sorting of rows. However, it can reduce the performance of data modification operations like INSERT, UPDATE, and DELETE.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is a priority queue?",
+        "Ideal answer(s)": "A priority queue is an abstract data type where each element has a priority, and elements with higher priority are dequeued before those with lower priority. It’s often implemented using a heap.",
+        "Domain": "Data Structures",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Indexing",
-            "in",
-            "databases",
-            "improves",
-            "the"
+            "priority queue",
+            "priority",
+            "dequeued",
+            "higher priority",
+            "heap"
         ]
     },
     {
         "id": 140,
-        "Question text": "What is a foreign key in a relational database?",
-        "Ideal answer(s)": "A foreign key is a field in a table that uniquely identifies a row of another table. It creates a relationship between two tables, ensuring referential integrity by restricting the values in the foreign key column to values that exist in the referenced primary key column.",
-        "Domain": "Database Management",
-        "Skills": "sql",
-        "Difficulty level": "Easy",
+        "Question text": "What is the purpose of garbage collection in programming?",
+        "Ideal answer(s)": "Garbage collection automatically manages memory by reclaiming space occupied by objects no longer in use, preventing memory leaks. It’s common in languages like Java and JavaScript.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
+        "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "foreign",
-            "key",
-            "is",
-            "a"
+            "garbage collection",
+            "memory management",
+            "reclaiming space",
+            "memory leaks",
+            "Java",
+            "JavaScript"
         ]
     },
     {
         "id": 141,
-        "Question text": "What are the advantages of using MongoDB over traditional SQL databases?",
-        "Ideal answer(s)": "MongoDB provides flexibility in schema design, scalability, and performance with large datasets. It stores data in JSON-like documents, which allows handling unstructured data and dynamic schema changes without requiring rigid table structures.",
-        "Domain": "Database Management",
-        "Skills": "mongodb",
+        "Question text": "What is the difference between a process and a thread?",
+        "Ideal answer(s)": "A process is an independent program in execution with its own memory space, while a thread is a lightweight unit of execution within a process, sharing the same memory. Threads enable concurrency within a process.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "MongoDB",
-            "provides",
-            "flexibility",
-            "in",
-            "schema"
+            "process",
+            "thread",
+            "independent",
+            "shared memory",
+            "concurrency"
         ]
     },
     {
         "id": 142,
-        "Question text": "Explain the concept of Sharding in MongoDB.",
-        "Ideal answer(s)": "Sharding is the process of distributing data across multiple servers to ensure horizontal scalability. MongoDB splits the data into smaller chunks and stores them across different servers, ensuring that no single server is overloaded and improving read/write performance.",
-        "Domain": "Database Management",
-        "Skills": "mongodb",
-        "Difficulty level": "Hard",
+        "Question text": "What is a singleton pattern?",
+        "Ideal answer(s)": "The singleton pattern is a design pattern that ensures a class has only one instance and provides a global point of access to it. It’s useful for managing shared resources like a configuration object.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
+        "Difficulty level": "Medium",
         "keywords": [
-            "Sharding",
-            "is",
-            "the",
-            "process",
-            "of"
+            "singleton pattern",
+            "one instance",
+            "global access",
+            "shared resources",
+            "configuration"
         ]
     },
     {
         "id": 143,
-        "Question text": "What is a transaction in SQL, and why is it important?",
-        "Ideal answer(s)": "A transaction in SQL is a set of operations performed as a single unit of work. Transactions ensure data integrity, consistency, isolation, and durability (ACID properties). If one operation fails, the entire transaction can be rolled back, preventing partial data updates.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is the factory pattern in software design?",
+        "Ideal answer(s)": "The factory pattern is a creational design pattern that provides an interface for creating objects without specifying their exact classes. It encapsulates object creation, promoting loose coupling.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "transaction",
-            "in",
-            "SQL",
-            "is"
+            "factory pattern",
+            "creational",
+            "interface",
+            "object creation",
+            "loose coupling"
         ]
     },
     {
         "id": 144,
-        "Question text": "How would you improve the performance of a slow SQL query?",
-        "Ideal answer(s)": "To optimize a slow SQL query, you can add appropriate indexes, rewrite the query to reduce complexity, avoid SELECT *, analyze query execution plans, and optimize joins. Partitioning large tables and caching results can also help improve performance.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is the observer pattern?",
+        "Ideal answer(s)": "The observer pattern is a behavioral design pattern where an object (subject) maintains a list of dependents (observers) and notifies them of state changes. It’s used in event handling systems.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "To",
-            "optimize",
-            "a",
-            "slow",
-            "SQL"
+            "observer pattern",
+            "subject",
+            "observers",
+            "state changes",
+            "event handling"
         ]
     },
     {
         "id": 145,
-        "Question text": "What is the difference between the `INNER JOIN` and `OUTER JOIN` in SQL?",
-        "Ideal answer(s)": "An INNER JOIN returns only the rows where there is a match in both tables, while an OUTER JOIN returns all rows from one table and the matched rows from the other. OUTER JOINS can be further divided into LEFT, RIGHT, and FULL OUTER JOIN.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is the difference between monolithic and microservices architecture?",
+        "Ideal answer(s)": "Monolithic architecture is a single, unified application where all components are tightly coupled, while microservices architecture splits an application into small, independent services that communicate via APIs, improving scalability and maintainability.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "An",
-            "INNER",
-            "JOIN",
-            "returns",
-            "only"
+            "monolithic",
+            "microservices",
+            "tightly coupled",
+            "independent services",
+            "APIs",
+            "scalability",
+            "maintainability"
         ]
     },
     {
         "id": 146,
-        "Question text": "How does indexing impact the performance of database queries?",
-        "Ideal answer(s)": "Indexing improves the speed of retrieval operations by creating quick lookup paths. However, it can slow down data modification operations like inserts, updates, and deletes, as the index needs to be updated along with the data.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is continuous integration (CI) in software development?",
+        "Ideal answer(s)": "Continuous integration (CI) is a practice where developers frequently integrate code into a shared repository, automatically building and testing it to catch issues early. It improves collaboration and code quality.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Indexing",
-            "improves",
-            "the",
-            "speed",
-            "of"
+            "continuous integration",
+            "CI",
+            "frequent integration",
+            "shared repository",
+            "build",
+            "test",
+            "collaboration",
+            "code quality"
         ]
     },
     {
         "id": 147,
-        "Question text": "What is a primary key in a database?",
-        "Ideal answer(s)": "A primary key is a unique identifier for a record in a database table. It ensures that each row in the table can be uniquely identified. A primary key cannot have NULL values and must contain unique values for every row.",
-        "Domain": "Database Management",
-        "Skills": "sql",
-        "Difficulty level": "Easy",
+        "Question text": "What is the purpose of unit testing?",
+        "Ideal answer(s)": "Unit testing verifies that individual units of code (e.g., functions or methods) work as expected. It ensures reliability, catches bugs early, and facilitates refactoring by providing a safety net.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
+        "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "primary",
-            "key",
-            "is",
-            "a"
+            "unit testing",
+            "individual units",
+            "reliability",
+            "catch bugs",
+            "refactoring",
+            "safety net"
         ]
     },
     {
         "id": 148,
-        "Question text": "What are the ACID properties of a database transaction?",
-        "Ideal answer(s)": "ACID stands for Atomicity (the transaction is all or nothing), Consistency (the database remains in a valid state before and after the transaction), Isolation (transactions don't interfere with each other), and Durability (committed transactions are permanent).",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is the difference between agile and waterfall methodologies?",
+        "Ideal answer(s)": "Agile is an iterative, flexible methodology with frequent releases and collaboration, while waterfall is a linear, sequential approach with distinct phases like design and implementation. Agile adapts to change; waterfall is rigid.",
+        "Domain": "Software Engineering",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "ACID",
-            "stands",
-            "for",
-            "Atomicity",
-            "(the"
+            "agile",
+            "waterfall",
+            "iterative",
+            "sequential",
+            "flexible",
+            "rigid",
+            "collaboration",
+            "phases"
         ]
     },
     {
         "id": 149,
-        "Question text": "What are the main differences between SQL and NoSQL databases?",
-        "Ideal answer(s)": "SQL databases are structured and use a fixed schema with tables and relationships, while NoSQL databases are more flexible, allowing dynamic schemas and various data formats such as key-value pairs, documents, graphs, etc. NoSQL databases are ideal for unstructured or semi-structured data and scaling horizontally.",
+        "Question text": "What is a SQL JOIN and what are its types?",
+        "Ideal answer(s)": "A SQL JOIN combines rows from two or more tables based on a related column. Types include INNER JOIN (matching rows), LEFT JOIN (all from left, matching from right), RIGHT JOIN (all from right, matching from left), and FULL JOIN (all from both).",
         "Domain": "Database Management",
-        "Skills": "sql, mongodb",
+        "Skills": "database management",
         "Difficulty level": "Medium",
         "keywords": [
-            "SQL",
-            "databases",
-            "are",
-            "structured",
-            "and"
+            "SQL JOIN",
+            "combines rows",
+            "INNER JOIN",
+            "LEFT JOIN",
+            "RIGHT JOIN",
+            "FULL JOIN",
+            "related column"
         ]
     },
     {
         "id": 150,
-        "Question text": "Explain the concept of 'data redundancy' in databases.",
-        "Ideal answer(s)": "Data redundancy refers to the unnecessary duplication of data within a database. It increases storage requirements and can lead to inconsistency. Normalization is often used to eliminate redundancy by organizing data into smaller, related tables.",
+        "Question text": "What is normalization in databases?",
+        "Ideal answer(s)": "Normalization organizes a database into tables and columns to reduce redundancy and improve data integrity. It follows rules like 1NF (atomic values), 2NF (no partial dependency), and 3NF (no transitive dependency).",
         "Domain": "Database Management",
-        "Skills": "sql",
+        "Skills": "database management",
         "Difficulty level": "Medium",
         "keywords": [
-            "Data",
-            "redundancy",
-            "refers",
-            "to",
-            "the"
+            "normalization",
+            "reduce redundancy",
+            "data integrity",
+            "1NF",
+            "2NF",
+            "3NF",
+            "tables"
         ]
     },
     {
         "id": 151,
-        "Question text": "What is the role of a `JOIN` in SQL?",
-        "Ideal answer(s)": "A `JOIN` in SQL is used to combine rows from two or more tables based on a related column. It is essential for querying data from multiple tables that are related by foreign keys or other relationships.",
+        "Question text": "What is an index in a database?",
+        "Ideal answer(s)": "An index in a database is a data structure that improves the speed of data retrieval operations on a table at the cost of additional storage. It’s like a book’s index, pointing to rows based on column values.",
         "Domain": "Database Management",
-        "Skills": "sql",
+        "Skills": "database management",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "`JOIN`",
-            "in",
-            "SQL",
-            "is"
+            "index",
+            "data retrieval",
+            "speed",
+            "additional storage",
+            "column values"
         ]
     },
     {
         "id": 152,
-        "Question text": "How can you handle NULL values in SQL queries?",
-        "Ideal answer(s)": "In SQL, you can handle NULL values using functions like `IS NULL` or `IS NOT NULL` in conditions. You can also use the `COALESCE()` or `IFNULL()` functions to replace NULL values with a default value.",
+        "Question text": "What is the difference between a primary key and a foreign key?",
+        "Ideal answer(s)": "A primary key uniquely identifies each row in a table and cannot be null, while a foreign key is a column that creates a relationship between tables by referencing a primary key in another table.",
         "Domain": "Database Management",
-        "Skills": "sql",
+        "Skills": "database management",
         "Difficulty level": "Medium",
         "keywords": [
-            "In",
-            "SQL,",
-            "you",
-            "can",
-            "handle"
+            "primary key",
+            "foreign key",
+            "uniquely identifies",
+            "cannot be null",
+            "relationship",
+            "references"
         ]
     },
     {
         "id": 153,
-        "Question text": "What is the purpose of `GROUP BY` in SQL?",
-        "Ideal answer(s)": "`GROUP BY` is used to group rows that have the same values into summary rows, like finding the average or sum. It is often used with aggregate functions such as `COUNT()`, `SUM()`, `AVG()`, `MAX()`, and `MIN()`.",
+        "Question text": "What is ACID in database transactions?",
+        "Ideal answer(s)": "ACID stands for Atomicity, Consistency, Isolation, and Durability, ensuring reliable database transactions. Atomicity ensures all-or-nothing execution, Consistency maintains data validity, Isolation prevents interference, and Durability guarantees permanence.",
         "Domain": "Database Management",
-        "Skills": "sql",
+        "Skills": "database management",
         "Difficulty level": "Medium",
         "keywords": [
-            "`GROUP",
-            "BY`",
-            "is",
-            "used",
-            "to"
+            "ACID",
+            "Atomicity",
+            "Consistency",
+            "Isolation",
+            "Durability",
+            "reliable transactions"
         ]
     },
     {
         "id": 154,
-        "Question text": "What is a `subquery` in SQL?",
-        "Ideal answer(s)": "A subquery is a query nested inside another query, typically used in `WHERE`, `HAVING`, or `FROM` clauses to retrieve data that will be used by the outer query. It helps break complex queries into simpler components.",
-        "Domain": "Database Management",
-        "Skills": "sql",
+        "Question text": "What is a virtual machine in computing?",
+        "Ideal answer(s)": "A virtual machine (VM) is a software emulation of a physical computer, running an operating system and applications. It allows multiple OS instances on a single physical machine, improving resource utilization.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "subquery",
-            "is",
-            "a",
-            "query"
+            "virtual machine",
+            "emulation",
+            "operating system",
+            "multiple instances",
+            "resource utilization"
         ]
     },
     {
         "id": 155,
-        "Question text": "What is the significance of 'defaultProps' in React?",
-        "Ideal answer(s)": "'defaultProps' is a property that allows default values to be set for props in React components. If no value is passed for a prop, React will use the value specified in 'defaultProps', making the component more resilient to missing props.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the difference between TCP and UDP?",
+        "Ideal answer(s)": "TCP (Transmission Control Protocol) is connection-oriented, ensuring reliable, ordered data delivery, while UDP (User Datagram Protocol) is connectionless, faster but less reliable, used for streaming or gaming.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "'defaultProps'",
-            "is",
-            "a",
-            "property",
-            "that"
+            "TCP",
+            "UDP",
+            "connection-oriented",
+            "reliable",
+            "connectionless",
+            "faster",
+            "streaming"
         ]
     },
     {
         "id": 156,
-        "Question text": "Explain the difference between a class component and a functional component in React.",
-        "Ideal answer(s)": "Class components have lifecycle methods and are typically used to manage state. Functional components are simpler, do not have lifecycle methods, but can now use hooks like 'useState' and 'useEffect' for managing state and side effects.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is a deadlock in operating systems?",
+        "Ideal answer(s)": "A deadlock is a situation in an operating system where two or more processes are unable to proceed because each is waiting for a resource the other holds. It requires conditions like mutual exclusion and circular wait.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Class",
-            "components",
-            "have",
-            "lifecycle",
-            "methods"
+            "deadlock",
+            "processes",
+            "waiting",
+            "resource",
+            "mutual exclusion",
+            "circular wait"
         ]
     },
     {
         "id": 157,
-        "Question text": "What is the purpose of 'React Router' in a single-page application?",
-        "Ideal answer(s)": "React Router enables navigation between different views or pages in a single-page application (SPA) without full page reloads. It helps to manage routing, track the browser's history, and update the UI based on the URL.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the purpose of a semaphore in programming?",
+        "Ideal answer(s)": "A semaphore is a synchronization tool used to control access to shared resources in concurrent programming. It maintains a count to manage multiple threads or processes accessing the resource.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "React",
-            "Router",
-            "enables",
-            "navigation",
-            "between"
+            "semaphore",
+            "synchronization",
+            "shared resources",
+            "concurrent",
+            "count",
+            "threads"
         ]
     },
     {
         "id": 158,
-        "Question text": "How do you prevent an infinite loop in React when using 'useEffect'?",
-        "Ideal answer(s)": "To prevent infinite loops in React, ensure that dependencies of the 'useEffect' hook are correctly defined in the dependency array. By specifying dependencies, React will only re-run the effect when those dependencies change, preventing unnecessary re-renders.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the difference between a compiler and an interpreter?",
+        "Ideal answer(s)": "A compiler translates an entire program into machine code before execution, while an interpreter executes code line-by-line without prior translation. Compilers are faster at runtime; interpreters are more flexible.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "encapsulation",
-            "inheritance",
-            "polymorphism",
-            "abstraction"
+            "compiler",
+            "interpreter",
+            "machine code",
+            "line-by-line",
+            "runtime",
+            "flexible"
         ]
     },
     {
         "id": 159,
-        "Question text": "What is the difference between a stateless and stateful component in React?",
-        "Ideal answer(s)": "A stateless component is one that does not manage any local state and relies entirely on props passed from its parent. A stateful component manages its own state using the 'useState' hook or class component state, allowing it to change and re-render based on user input or other interactions.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is polymorphism in object-oriented programming?",
+        "Ideal answer(s)": "Polymorphism allows objects of different classes to be treated as objects of a common superclass, typically through method overriding or overloading. It enhances flexibility and reusability in code.",
+        "Domain": "Software Development",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "stateless",
-            "component",
-            "is",
-            "one"
+            "polymorphism",
+            "different classes",
+            "common superclass",
+            "method overriding",
+            "method overloading",
+            "flexibility",
+            "reusability"
         ]
     },
     {
         "id": 160,
-        "Question text": "What are lifecycle methods in React?",
-        "Ideal answer(s)": "Lifecycle methods in React are methods that are automatically called at various stages of a component\u2019s life cycle (e.g., when it is created, updated, or removed). They include methods like 'componentDidMount', 'shouldComponentUpdate', and 'componentWillUnmount' in class components.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is encapsulation in object-oriented programming?",
+        "Ideal answer(s)": "Encapsulation is the bundling of data and methods that operate on that data within a class, restricting direct access to some components (e.g., via private fields). It protects data integrity and hides implementation details.",
+        "Domain": "Software Development",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "Lifecycle",
-            "methods",
-            "in",
-            "React",
-            "are"
+            "encapsulation",
+            "bundling",
+            "data and methods",
+            "restrict access",
+            "private fields",
+            "data integrity"
         ]
     },
     {
         "id": 161,
-        "Question text": "What is the use of 'React.memo'?",
-        "Ideal answer(s)": "'React.memo' is a higher-order component that helps optimize performance by memoizing functional components. It prevents unnecessary re-renders by only re-rendering the component if the props have changed, improving rendering efficiency in large applications.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is inheritance in object-oriented programming?",
+        "Ideal answer(s)": "Inheritance allows a class to inherit properties and methods from another class, promoting code reuse and establishing a hierarchical relationship. The subclass can extend or override the superclass.",
+        "Domain": "Software Development",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "'React.memo'",
-            "is",
-            "a",
-            "higher-order",
-            "component"
+            "inheritance",
+            "inherit properties",
+            "code reuse",
+            "hierarchical",
+            "subclass",
+            "superclass",
+            "override"
         ]
     },
     {
         "id": 162,
-        "Question text": "How does the Virtual DOM improve React performance?",
-        "Ideal answer(s)": "The Virtual DOM is an in-memory representation of the real DOM. React compares the current Virtual DOM with a snapshot taken before updates and only applies the differences to the real DOM, reducing the number of expensive DOM manipulations and improving performance.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is abstraction in object-oriented programming?",
+        "Ideal answer(s)": "Abstraction hides complex implementation details and exposes only the essential features of an object. It’s achieved through abstract classes or interfaces, simplifying interaction with the system.",
+        "Domain": "Software Development",
+        "Skills": "software development",
         "Difficulty level": "Medium",
         "keywords": [
-            "virtual DOM",
-            "React",
-            "performance",
-            "update"
+            "abstraction",
+            "hides details",
+            "essential features",
+            "abstract classes",
+            "interfaces",
+            "simplify interaction"
         ]
     },
     {
         "id": 163,
-        "Question text": "What is the significance of 'props' in React?",
-        "Ideal answer(s)": "Props (short for properties) are read-only attributes passed from a parent component to a child component in React. They allow data to flow in one direction, making components reusable and enabling dynamic rendering based on parent-provided data.",
-        "Domain": "React",
-        "Skills": "react",
-        "Difficulty level": "Easy",
+        "Question text": "What is the difference between overloading and overriding in programming?",
+        "Ideal answer(s)": "Overloading occurs when multiple methods in the same class have the same name but different parameters, while overriding occurs when a subclass redefines a method from its superclass with the same signature.",
+        "Domain": "Software Development",
+        "Skills": "software development",
+        "Difficulty level": "Medium",
         "keywords": [
-            "Props",
-            "(short",
-            "for",
-            "properties)",
-            "are"
+            "overloading",
+            "overriding",
+            "same name",
+            "different parameters",
+            "redefines",
+            "subclass",
+            "superclass"
         ]
     },
     {
         "id": 164,
-        "Question text": "What is the difference between synchronous and asynchronous rendering in React?",
-        "Ideal answer(s)": "Synchronous rendering occurs when React updates the DOM in a blocking manner, preventing the user interface from being responsive. Asynchronous rendering allows React to work on multiple tasks concurrently without blocking, improving the user experience, especially in large applications.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is a regular expression?",
+        "Ideal answer(s)": "A regular expression (regex) is a pattern used to match and manipulate text. It’s widely used for searching, validation, and parsing, such as validating email formats or extracting data.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Synchronous",
-            "rendering",
-            "occurs",
-            "when",
-            "React"
+            "regular expression",
+            "regex",
+            "pattern",
+            "match text",
+            "searching",
+            "validation",
+            "parsing"
         ]
     },
     {
         "id": 165,
-        "Question text": "Explain how 'Redux' works in React applications.",
-        "Ideal answer(s)": "Redux is a predictable state container for JavaScript apps. It manages application state centrally and ensures that state changes are made in a predictable manner using actions and reducers. React components subscribe to the Redux store and render based on the current state.",
-        "Domain": "React",
-        "Skills": "redux",
+        "Question text": "What is the purpose of the `try-catch` block in programming?",
+        "Ideal answer(s)": "The `try-catch` block is used to handle exceptions, allowing a program to attempt risky code in the `try` block and catch errors in the `catch` block to prevent crashes and manage failures gracefully.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Redux",
-            "is",
-            "a",
-            "predictable",
-            "state"
+            "`try-catch`",
+            "exceptions",
+            "risky code",
+            "catch errors",
+            "prevent crashes",
+            "graceful failure"
         ]
     },
     {
         "id": 166,
-        "Question text": "How can you improve the performance of a React application?",
-        "Ideal answer(s)": "You can improve React app performance by using techniques like code splitting, lazy loading, React.memo, use of PureComponent, optimizing images, reducing unnecessary re-renders with shouldComponentUpdate, and utilizing the Virtual DOM efficiently.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is a binary tree?",
+        "Ideal answer(s)": "A binary tree is a hierarchical data structure where each node has at most two children, referred to as the left child and right child. It’s used in applications like expression parsing and binary search trees.",
+        "Domain": "Data Structures",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "You",
-            "can",
-            "improve",
-            "React",
-            "app"
+            "binary tree",
+            "hierarchical",
+            "two children",
+            "left child",
+            "right child",
+            "expression parsing"
         ]
     },
     {
         "id": 167,
-        "Question text": "What is a component in React?",
-        "Ideal answer(s)": "A component in React is a reusable, self-contained unit that manages a piece of the user interface. It can be either stateful or stateless and is typically defined as a function or class. Components are the building blocks of React applications.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the purpose of Big-O notation?",
+        "Ideal answer(s)": "Big-O notation describes the upper bound of an algorithm’s time or space complexity, helping evaluate its efficiency and scalability as input size grows. It focuses on worst-case scenarios.",
+        "Domain": "Algorithms",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "component",
-            "in",
-            "React",
-            "is"
+            "Big-O notation",
+            "upper bound",
+            "time complexity",
+            "space complexity",
+            "efficiency",
+            "scalability",
+            "worst-case"
         ]
     },
     {
         "id": 168,
-        "Question text": "Explain the concept of 'controlled components' in React.",
-        "Ideal answer(s)": "A controlled component is one where form elements like input, textarea, or select have their value controlled by the React state. The value of the form element is bound to the component's state and updated through event handlers.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is a greedy algorithm?",
+        "Ideal answer(s)": "A greedy algorithm makes the locally optimal choice at each step, hoping to find a global optimum. It’s used in problems like minimum spanning trees or Huffman coding, but may not always yield the best solution.",
+        "Domain": "Algorithms",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "A",
-            "controlled",
-            "component",
-            "is",
-            "one"
+            "greedy algorithm",
+            "locally optimal",
+            "global optimum",
+            "minimum spanning trees",
+            "Huffman coding"
         ]
     },
     {
         "id": 169,
-        "Question text": "What is the purpose of 'componentDidMount' in React?",
-        "Ideal answer(s)": "'componentDidMount' is a lifecycle method in React that is called once the component is rendered and added to the DOM. It's often used to perform side effects such as data fetching, subscribing to external events, or setting up timers.",
-        "Domain": "React",
-        "Skills": "react",
+        "Question text": "What is the difference between a stack and a heap in memory management?",
+        "Ideal answer(s)": "The stack is a region of memory for static allocation, managing function calls and local variables with a LIFO structure, while the heap is for dynamic allocation, allowing flexible memory use but requiring manual management.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "'componentDidMount'",
-            "is",
-            "a",
-            "lifecycle",
-            "method"
+            "stack",
+            "heap",
+            "static allocation",
+            "dynamic allocation",
+            "LIFO",
+            "function calls",
+            "manual management"
         ]
     },
     {
         "id": 170,
-        "Question text": "What is Node.js used for in the MERN stack?",
-        "Ideal answer(s)": "In the MERN stack, Node.js is used as the runtime environment for executing JavaScript on the server side. It enables the backend of the application to handle requests, interact with databases, and send responses back to the client, all using JavaScript.",
-        "Domain": "Full Stack Developer",
-        "Skills": "node.js",
+        "Question text": "What is a blockchain?",
+        "Ideal answer(s)": "A blockchain is a decentralized, distributed ledger that records transactions across multiple nodes in a secure, immutable way using cryptographic techniques. It’s the foundation for cryptocurrencies like Bitcoin.",
+        "Domain": "General Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "In",
-            "the",
-            "MERN",
-            "stack,",
-            "Node.js"
+            "blockchain",
+            "decentralized",
+            "distributed ledger",
+            "transactions",
+            "secure",
+            "immutable",
+            "cryptographic"
         ]
     },
     {
         "id": 171,
-        "Question text": "What is the role of Express.js in the MERN stack?",
-        "Ideal answer(s)": "Express.js is a web application framework for Node.js that simplifies routing and handling HTTP requests. In the MERN stack, it acts as the server-side framework that manages routes, handles requests, and communicates with the database (MongoDB).",
-        "Domain": "Full Stack Developer",
-        "Skills": "express.js",
+        "Question text": "What is the purpose of a load balancer?",
+        "Ideal answer(s)": "A load balancer distributes incoming network traffic across multiple servers to ensure no single server is overwhelmed, improving reliability, performance, and scalability in distributed systems.",
+        "Domain": "Systems Programming",
+        "Skills": "general programming",
         "Difficulty level": "Medium",
         "keywords": [
-            "Express.js",
-            "is",
-            "a",
-            "web",
-            "application"
+            "load balancer",
+            "distributes traffic",
+            "multiple servers",
+            "reliability",
+            "performance",
+            "scalability"
         ]
     }
 ]

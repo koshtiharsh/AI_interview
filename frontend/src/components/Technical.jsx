@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import QuestionPanel from "./QuestionPanel";
 import Navbar from "./Navbar";
 import io from "socket.io-client";
 import Alert from "./Alert";
+import { context } from "../context/Context";
 
 function Technical() {
   const [questions, setQuestions] = useState([]);
@@ -13,7 +14,9 @@ function Technical() {
   const videoRef = useRef(null);
   const [level, setLevel] = useState('Easy')
 
-  const fixedSkills = ["java", "css", "python"]; // Fixed array of skills
+  const { skills, email } = useContext(context)
+
+
 
   useEffect(() => {
     fetch("http://localhost:5001/get_questions", {
@@ -21,7 +24,7 @@ function Technical() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ skills: fixedSkills }),
+      body: JSON.stringify({ skills: skills.length > 0 ? skills : ["java", "css", "python"] }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -47,7 +50,7 @@ function Technical() {
         });
       }
     });
-    
+
     const startVideo = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -109,7 +112,7 @@ function Technical() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ question, user_answer: userAnswer }),
+      body: JSON.stringify({ question, user_answer: userAnswer, email: email }),
     })
       .then((response) => response.json())
       .then((feedback) => {
@@ -117,7 +120,7 @@ function Technical() {
 
           if (level == 'Medium') setLevel("Easy");
         } else {
-    
+
           if (level == 'Easy') setLevel('Medium');
         }
         setQuestions((prev) =>
@@ -130,7 +133,7 @@ function Technical() {
   };
 
   return (
-    
+
     <div className="App">
       <Navbar />
       {questions.length > 0 ? (
@@ -141,8 +144,8 @@ function Technical() {
           onSubmitAnswer={handleSubmitAnswer}
           detectedEmotion={detectedEmotion}
           socketRef={socketRef}
-          level ={level}
-          setLevel ={setLevel}
+          level={level}
+          setLevel={setLevel}
         />
       ) : (
         <p>Loading questions...</p>
@@ -150,29 +153,29 @@ function Technical() {
 
       {/* Video feed displaying the user's face */}
       <div
-  style={{
-    position: "absolute",
-    top: 165,  // Position it 10px from the top
-    left: 150, // Position it 10px from the left
-     // Increase the height of the camera window
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
-    overflow: "hidden",
-  }}
->
+        style={{
+          position: "absolute",
+          top: 165,  // Position it 10px from the top
+          left: 150, // Position it 10px from the left
+          // Increase the height of the camera window
+          border: "1px solid #ccc",
+          borderRadius: "8px",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+          overflow: "hidden",
+        }}
+      >
         <video ref={videoRef} autoPlay muted style={{
-      width: "430px",  // Make the video stretch to fill the container
-      height: "330px", // Make the video stretch to fill the container
-      objectFit: "cover"  // Ensure the video covers the entire area without distortion
-    }} />
+          width: "430px",  // Make the video stretch to fill the container
+          height: "330px", // Make the video stretch to fill the container
+          objectFit: "cover"  // Ensure the video covers the entire area without distortion
+        }} />
       </div>
 
       {/* Emotion Display */}
       <div style={{
-       
+
       }}>
-        
+
       </div>
     </div>
   );

@@ -221,11 +221,6 @@ import random
 import difflib
 import os
 import ats
-
-
-
-
-
 # Initialize app and configure CORS and SocketIO
 app = Flask(__name__, static_url_path="/static")
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -290,47 +285,17 @@ def compare_answers(user_answer, correct_answer):
 def handle_transcript(data):
     question = data['hrQuestion']
     user_answer = data['transcript']
-    # feedback_emotion = data['feedback_emotion']
     correct_answer = predefined_answers.get(question)
     feedback = compare_answers(user_answer, correct_answer) if correct_answer else "No predefined answer available."
     print(feedback)
 
     socketio.emit('transcript_feedback', {"feedback": feedback})
 
-    email = data['email']
+    userId = data['userId']
 
-    new_data = {
-        "question": question,
-        "user_answer": user_answer,
-        "feedback": feedback,
-        # "feedback_emotion": feedback_emotion
-    }
-
-    user = user_collection.find_one({'email': email, 'hrQuestions.question': question})
-
-    if user:
-        # If question exists, update only that question's answer and feedback
-        result = user_collection.update_one(
-            {'email': email, 'hrQuestions.question': question},
-            {"$set": {"hrQuestions.$.user_answer": user_answer, "hrQuestions.$.feedback": feedback,
-                      
-                    #    "hrQuestions.$.feedback_emotion":feedback_emotion
-                       }}
-        )
-    else:
-        # If question does not exist, add new entry to hrQuestions array
-        result = user_collection.update_one(
-            {'email': email},
-            {"$push": {"hrQuestions": new_data}}
-        )
-
-    if result:
-        print(f"Updated user {email} record successfully.")
-    else:
-        print(f"User {email} not found or update failed.")
-    # newObject ={"$push":{"hrQuestions":{question:feedback}}}
-    # if correct_answer:
-    #     result = user_collection.find_one_and_update({'userId':userId},newObject)
+    newObject ={"$push":{"hrQuestions":{question:feedback}}}
+    if correct_answer:
+        result = user_collection.find_one_and_update({'userId':userId},newObject)
 
 @socketio.on('request_question')
 def send_random_question(data):
@@ -368,28 +333,6 @@ def run():
     return render_template('index.html')
 
 
-from flask import jsonify, request
-
-@app.route('/get_hr_interview_data', methods=['GET'])
-def get_hr_interview_data():
-    email = request.args.get('email')  # Get userId from request query parameters
-
-    if not email:
-        return jsonify({"error": "userId is required"}), 400
-
-    # Try finding userId as a string or integer
-    user_data = user_collection.find_one(
-        {"$or": [{"email": email}, {"email": email}]},
-        {"_id": 0, "hrQuestions": 1}
-    )
-
-    if not user_data or not user_data.get("hrQuestions"):
-        return jsonify({"error": "User not found or no HR questions available"}), 404
-
-    return jsonify({"email": email, "hrQuestions": user_data["hrQuestions"]})
-
-
-
 
 # **********************************************************************************************************************************
 # **********************************************************************************************************************************
@@ -408,23 +351,22 @@ def allowed_file(filename):
 
 
 
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
+    print(request)
     if "file" not in request.files:
         return redirect(request.url)
-
     file = request.files["file"]
     role = request.form["role"]
-    email = request.form["email"]
-
     if file.filename == "":
         return redirect(request.url)
-
+    print(file.filename)
     if file and allowed_file(file.filename):
         filename = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
         file.save(filename)
-
-        # Resume Processing
+        # Call your processing script here with the filename as an argument
+        # process_resume(filename)
         (
             score,
             match_hard,
@@ -439,28 +381,18 @@ def upload_file():
             sc,
             corrections
         ) = ats.processing(file.filename, 1, role)
+        
+        struct = str(int(sc)) + "%"
+        hsp = str(int(hs)) + "%"
+        ssp = str(int(ss)) + "%"
+        wcp = str(int(wc)) + "%"
+        pdfFileName = file.filename
+        base_name, extension = os.path.splitext(pdfFileName)
 
-        struct = f"{int(sc)}%"
-        hsp = f"{int(hs)}%"
-        ssp = f"{int(ss)}%"
-        wcp = f"{int(wc)}%"
-
-        # Generate new filename with "-1" appended
-        base_name, extension = os.path.splitext(file.filename)
+# Append "-1" to the base name
         pdfFileName = f"{base_name}-1{extension}"
 
-        # Convert skills to a unique list
-        unique_skills = list(set(match_hard))
-
-        # Update user record in MongoDB
-        user_collection.update_one(
-            {"email": email},
-            {
-                "$set": {"resumeFile": pdfFileName},  # Update resume filename
-                "$addToSet": {"technicalSkills": {"$each": unique_skills}}  # Add skills without duplicates
-            }
-        )
-
+        print(word_count)
         return render_template(
             "result.html",
             final=int(score),
@@ -469,16 +401,17 @@ def upload_file():
             ssp=ssp,
             wcp=wcp,
             sections=sections,
-            match_hard=unique_skills,
+            match_hard=list(set(match_hard)),
             missing_hard=missing_hard,
             match_soft=list(set(match_soft)),
             missing_soft=missing_soft,
             word_count=word_count,
             pdfFileName=pdfFileName,
-            corrections=corrections
+            corrections =corrections
         )
+    else:
+        return "Invalid file format! Allowed formats: pdf, docx"
 
-    return "Invalid file format! Allowed formats: pdf, docx"
 # **********************************************************************************************************************************
 # **********************************************************************************************************************************
 # ********************************************************** ats end    ******************************************************************

@@ -172,9 +172,9 @@ function QuestionPanel({
               </p>
 
               {/* Missing Keywords */}
-              {/* <p className="text-gray-800 mt-2">
+              <p className="text-gray-800 mt-2">
                 <strong>Missing Keywords:</strong> {Array.isArray(currentQuestion.feedback?.missing_keywords) ? currentQuestion.feedback.missing_keywords.join(", ") : "N/A"}
-              </p> */}
+              </p>
 
             </div>
           )}

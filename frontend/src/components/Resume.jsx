@@ -10,9 +10,11 @@ const Resume = () => {
 
   const [file, setFile] = useState(null)
 
+
+
   const navigate = useNavigate();
 
-  const { htmlContent, setHtmlContent } = useContext(context)
+  const { htmlContent, setHtmlContent, email } = useContext(context)
   const [jobRole, setJobRole] = useState('')
   const [subRole, setSubRole] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -35,6 +37,7 @@ const Resume = () => {
 
     const formData = new FormData()
     formData.append('role', subRole)
+    formData.append('email', email)
     formData.append('file', file)
 
 
