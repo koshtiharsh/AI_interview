@@ -24,7 +24,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
 
 
-    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start ,email} = useContext(context)
+    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start, email } = useContext(context)
 
 
     const [silenceDetected, setSilenceDetected] = useState(false);
@@ -117,8 +117,12 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
 
         // Listen for new questions and feedback from the server
         socketRef.current.on('new_question', (data) => {
-            setHrQuestion(data.question);
-            setTranscriptCleared(false); // Reset transcriptCleared for the new question
+            if (data.interview_finished) {
+                window.location.href = '/hrfeedback'
+            } else {
+                setHrQuestion(data.question);
+                setTranscriptCleared(false); // Reset transcriptCleared for the new question
+            }
         });
 
         socketRef.current.on('transcript_feedback', (data) => setFeedback(data));
@@ -144,7 +148,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         setShow('feedback');
         setTranscriptCleared(true);
         resetTranscript(); // Clear the transcript for the next question
-        socketRef.current.emit('request_question', { userId: userId }); // Request the next question
+        socketRef.current.emit('request_question', { userId: userId, email }); // Request the next question
         setFeedback(null); // Reset feedback for the new question
 
         // Analyze emotions and update feedback

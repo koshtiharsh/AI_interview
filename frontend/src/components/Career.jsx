@@ -1,31 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { context } from "../context/Context";
+import Navbar from "./Navbar";
 
 const CareerPath = () => {
-    const [resumeText, setResumeText] = useState("");
+    const [resumeText, setResumeText] = useState(null);
     const [careerPaths, setCareerPaths] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState(0);
 
+    const { email } = useContext(context);
+
     // Fetch resume text from DB
     useEffect(() => {
-        const fetchResume = async () => {
-            try {
-                const response = await fetch("http://localhost:2000/api/resume");
-                if (!response.ok) {
-                    throw new Error("Failed to fetch resume text");
-                }
-                const data = await response.json();
-                setResumeText(data.resume);
-            } catch (error) {
-                setError(error.message);
-                setLoading(false);
-            }
-        };
+        if (email) {
+            const fetchResume = async () => {
+                try {
+                    const response = await fetch(`http://localhost:2000/api/resume/${email}`);
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch resume text");
+                    }
+                    const data = await response.json();
 
-        fetchResume();
-    }, []);
+                    if (data.success==false) {
+                        window.location.href = '/resume'
+                    }
+
+                    setResumeText(data.resume);
+                } catch (error) {
+                    setError(error.message);
+                    setLoading(false);
+                }
+            };
+
+            fetchResume();
+        }
+    }, [email]);
 
     // Send resume text to backend for career analysis
     useEffect(() => {
@@ -68,12 +79,12 @@ const CareerPath = () => {
     // Function to format salary display
     const formatSalary = (salary) => {
         if (!salary) return "Not available";
-        
+
         // If salary is an object with min and max
         if (typeof salary === 'object' && salary.min && salary.max) {
             return `${salary.min} - ${salary.max}`;
         }
-        
+
         // If salary is just a number or string
         return salary.toString();
     };
@@ -100,9 +111,11 @@ const CareerPath = () => {
     );
 
     return (
-        <div className="bg-gray-50 min-h-screen">
+       <>
+       <Navbar/>
+        <div className="bg-gray-50 min-h-screen mt-2">
             {/* Header */}
-            <header className="text-center py-8 px-4 bg-white shadow-md">
+            <header className="text-center py-8 px-4 bg-white ">
                 <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
                     Career Compass
                 </h1>
@@ -126,7 +139,7 @@ const CareerPath = () => {
                                             <li
                                                 key={index}
                                                 className={`px-4 py-3 rounded-lg cursor-pointer transition-colors ${activeTab === index
-                                                    ? 'bg-blue-500 text-white'
+                                                    ? 'bg-gradient-to-r from-blue-600 to-violet-600  text-white'
                                                     : 'hover:bg-gray-50 text-gray-700'
                                                     }`}
                                                 onClick={() => setActiveTab(index)}
@@ -147,7 +160,7 @@ const CareerPath = () => {
                         {careerPaths && careerPaths.length > 0 ? (
                             <div className="bg-white rounded-xl shadow-md overflow-hidden">
                                 {/* Career Header */}
-                                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center">
+                                <div className="bg-gradient-to-r from-blue-600 to-violet-600  px-6 py-6 flex flex-col md:flex-row justify-between items-start md:items-center">
                                     <h2 className="text-2xl font-bold text-white">{careerPaths[activeTab].title}</h2>
                                     <div className="mt-2 md:mt-0 bg-blue-600 bg-opacity-20 rounded-full px-4 py-1 text-white font-medium">
                                         Average Salary: {formatSalary(careerPaths[activeTab].salary)} CTC Rs
@@ -194,9 +207,9 @@ const CareerPath = () => {
 
                                     {/* Action Buttons */}
                                     <div className="flex flex-col sm:flex-row gap-4">
-                                        <Link 
-                                            target="_blank" 
-                                            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex-1 text-center" 
+                                        <Link
+                                            target="_blank"
+                                            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex-1 text-center"
                                             to={`/jobsearch?jobpost=${careerPaths[activeTab].title}`}
                                         >
                                             <button>Find Jobs</button>
@@ -220,6 +233,7 @@ const CareerPath = () => {
                 </div>
             </div>
         </div>
+       </>
     );
 };
 

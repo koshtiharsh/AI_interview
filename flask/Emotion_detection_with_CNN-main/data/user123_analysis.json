@@ -1,0 +1,120 @@
+{
+  "user_id": "user123",
+  "profile": {
+    "skills": [
+      "Excel",
+      "SQL",
+      "R",
+      "PHP",
+      "Node.js",
+      "Flask",
+      "Java",
+      "Analytics",
+      "Communication",
+      "React",
+      "CSS",
+      "Python",
+      "HTML",
+      "JavaScript",
+      "Git",
+      "Decision Making"
+    ],
+    "education": "",
+    "experience": "d in full -stack development, Agile methodologies. Proven ability to",
+    "interests": ""
+  },
+  "skill_analysis": {
+    "total_skills": 16,
+    "top_matching_industries": [
+      {
+        "industry": "Technology",
+        "match_percentage": 72.72727272727273,
+        "example_matching_skills": [
+          "SQL",
+          "R",
+          "Java",
+          "React",
+          "Python"
+        ]
+      },
+      {
+        "industry": "Retail",
+        "match_percentage": 66.66666666666666,
+        "example_matching_skills": [
+          "SQL",
+          "Python"
+        ]
+      },
+      {
+        "industry": "Finance",
+        "match_percentage": 60.0,
+        "example_matching_skills": [
+          "Excel",
+          "SQL",
+          "Python"
+        ]
+      },
+      {
+        "industry": "Human Resources",
+        "match_percentage": 33.33333333333333,
+        "example_matching_skills": [
+          "Communication"
+        ]
+      },
+      {
+        "industry": "Marketing",
+        "match_percentage": 30.0,
+        "example_matching_skills": [
+          "Analytics"
+        ]
+      }
+    ],
+    "skill_gap_recommendations": []
+  },
+  "recommendation_history": {
+    "total_recommendations": 5,
+    "recommendation_timeline": [
+      {
+        "timestamp": "2025-03-24T09:20:13.385562",
+        "recommendations": [
+          {
+            "job_title": "Marketing Manager 10",
+            "score": 0.8370002508163452
+          },
+          {
+            "job_title": "HR Specialist 5",
+            "score": 0.8256716132164001
+          },
+          {
+            "job_title": "HR Specialist 13",
+            "score": 0.8245258331298828
+          },
+          {
+            "job_title": "Marketing Manager 18",
+            "score": 0.8223971128463745
+          },
+          {
+            "job_title": "Marketing Manager 2",
+            "score": 0.8170020580291748
+          }
+        ]
+      }
+    ]
+  },
+  "feedback_analysis": {
+    "total_feedback": 1,
+    "positive_feedback": 1,
+    "negative_feedback": 0,
+    "feedback_timeline": [
+      {
+        "timestamp": "2025-03-24T09:20:13.705654",
+        "job_title": "Marketing Manager 10",
+        "feedback_type": "like"
+      }
+    ]
+  },
+  "personalization_impact": {
+    "personalization_applied": false,
+    "message": "Not enough history to calculate personalization impact"
+  }
+}

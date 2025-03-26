@@ -437,8 +437,9 @@ def upload_file():
             ss,
             wc,
             sc,
-            corrections
+            corrections,resume_text_format
         ) = ats.processing(file.filename, 1, role)
+        user_collection.find_one_and_update({'email':email},{'$set':{"resume_text_format":resume_text_format}})
 
         struct = f"{int(sc)}%"
         hsp = f"{int(hs)}%"

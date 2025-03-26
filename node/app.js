@@ -96,108 +96,6 @@ app.post("/api/career-path", async (req, res) => {
     }
 });
 
-app.get('/api/resume', async (req, res) => {
-    const resumetext = ` Harsh ulhas koshti 
-harsh0801004@gmail.com 
- 
-Nashik 
-PROFILE SUMMARY 
-Linkedin 
-Dynamic and ambitious IT professional pursuing a career in web development. Demonstrated proficiency in 
-various languages and tools, with a solid foundation in data structures and algorithms. Excellent 
-communication, leadership, and decision-making abilities. Seeking an internship to leverage my skills and 
-experiences while contributing to the success of a forward-thinking company. 
-SKILLS 
-Web Development: 
-HTML, CSS, PHP, AJAX, Jquery, Bootstrap, Node.js, Express.js 
-Databases: 
-MySQL , MongoDB 
-Testing Tools: 
-Selenium WebDriver , Software Testing 
-Languages: 
-JavaScript, PHP, C, C++, Java, Python 
-Tools/Frameworks: 
-Bootstrap 
-PROJECTS 
-API Based News Application 
-Developed and launched an API-based News Aggregator Website using HTML, CSS, 
-JavaScript, Node.js, and Express.js. This platform integrates thousands of reputable 
-news sources into a single. 
-College Event Management System 
-Tools/Technologies used: Java, MySQL, Spring Boot, HTML/CSS, JavaScript, 
-Bootstrap Developed a comprehensive Event Management System to streamline the 
-organization of college events. 
-E-commerce Website Development 
-Tools/Technologies used: PHP, MySQL, HTML5, CSS3, JavaScript, Bootstrap 
-.Designed and developed a responsive e-commerce website to provide a platform for 
-local artisans to sell their handmade products. 
-Portfolio Website  
-Designed and developed a professional portfolio website to showcase my skills, 
-experiences, and projects. 
-Used HTML, CSS, JavaScript, and Bootstrap to create an engaging and responsive 
-user interface. 
-PROFESSIONAL EXPERIENCE 
-08/2023 
-03/2023 – 05/2023 
-08/2022 – 12/2022 
-12/2021 – 01/2022 
-PHP Developer 
-FILIUMS ENTERPRISES 
-Engaged in a remote internship with Filium Enterprises Pvt. Ltd., a leading software 
-and hi-tech firm based in Dehradun, UK. Diligently executed programming tasks 
-using PHP, AJAX, JS, jQuery, Bootstrap, and JS. 
-Web Developer 
-Raise Digital 
-08/2023 – 10/2023 
-Dehradun, India 
-Wrote frontend for building websites – HTML , CSS , Javascript , php , Bootstrap 
-EDUCATION 
-BE - INFORMATION TECHNOLOGY 
-MVPS KBTCOE 
-12 HSC 
-KTHM COLLEGE 
-90% 
-10 SSC 
-SHRIMAN TJC NASHIK 
-87% 
-CERTIFICATES 
- Data Analysis by Microsoft and 
-LinkedIn  
-SOFT SKILLS 
-Communication 
-Leadership 
-LANGUAGES 
-English 
-Hindi 
-INTERESTS 
- 
- 
-NASHIK, INDIA 
-NASHIK, INDIA 
- 
-NASHIK 
- 
- 
- 
- 
-React.js Essential Training   Test Automation Foundations 
- 
- 
- 
- 
- 
-Decision Making 
-Adaptive 
- 
- 
-Marathi 
- 
- 
-Programming | Reading Book | Sports | Designing Web 
-`;
-
-    res.json({ resume: resumetext });
-});
 
 
 
@@ -255,6 +153,7 @@ const userSchema = new mongoose.Schema({
         type: [String], // Array of strings
         default: [],    // Default to empty array
     },
+    resume_text_format: { type: String },
     resumeFile: {
         type: String,   // String to store the PDF file name
         default: '',    // Default to empty string (or null if preferred)
@@ -442,6 +341,26 @@ app.get('/api/skills/:email', async (req, res) => {
 
 
 // user authtentication end ********************************************************************************************
+
+
+
+
+app.get('/api/resume/:email', async (req, res) => {
+
+    const { email } = req.params;
+
+    const user = await User.findOne({ email: email })
+
+    if (user.resume_text_format && user.resume_text_format.length > 0) {
+        res.json({ resume: user.resume_text_format, success: true });
+    }
+    else {
+        res.json({ resume: user.resume_text_format, success: false });
+    }
+
+
+});
+
 
 const PORT = 2000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

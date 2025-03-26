@@ -31,6 +31,7 @@ from fuzzywuzzy import fuzz
 # nltk.download('words')
 # nltk.download('punkt_tab')
 
+
 # Load spaCy model
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -160,6 +161,10 @@ soft_skills_list =  [
     "Project Management", "Agile Mindset", "Scrum Methodology", "Stakeholder Management", "Business Acumen",
     "Technical Writing", "Attention to Detail", "Presentation Design", "Continuous Learning","Decision-Making"
 ]
+
+resume_text_format = ""
+
+
 def processing(resume_copy, choice, role):
     # Enhanced preprocessing
     def clean_text(text):
@@ -402,6 +407,7 @@ def processing(resume_copy, choice, role):
     def extract_text(file_path, file_type):
         """Extract text from different file formats with better handling"""
         try:
+            global resume_text_format 
             if file_type == 1:  # PDF
                 with open(file_path, "rb") as pdf:
                     reader = PdfReader(pdf)
@@ -409,6 +415,7 @@ def processing(resume_copy, choice, role):
                     for page in reader.pages:
                         content = page.extract_text()
                         if content:
+                            resume_text_format += content + "\n"
                             text.append(content)
                     
                     # Handle PDFs with poor text extraction
@@ -630,5 +637,5 @@ def processing(resume_copy, choice, role):
         soft_skill_score,
         word_count_score,
         section_score,
-        corrections
+        corrections,resume_text_format,
     )
