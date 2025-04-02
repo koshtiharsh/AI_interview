@@ -52,7 +52,7 @@
 }
 
 .bg {
-    background-color: rgb(225 225 225);
+    background-color: #dee0ea !important;
 
     bottom: 0;
     left: -50%;
@@ -217,7 +217,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      background-color: rgb(126, 240, 95);
+      background-color: #4361ee;
       height: 100%;
       width: var(--before-width);
       border-radius: 15px;
@@ -232,7 +232,7 @@
   padding-bottom: 40px;
   border-radius: 15px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  border-left: orange 7px solid;
+  border-left: #4361ee  7px solid;
 
   .smresult{
     display: block;
@@ -402,7 +402,7 @@ span img{
               </div>
               <div class="points">
                 <ul>
-                  {% set unique_corrections = corrections| unique %}
+                  {% set unique_corrections = corrections|unique %}
                   {% for item in unique_corrections %}
                       {% if ' to ' in item %}
                           {% set parts = item.split(' to ') %}
@@ -663,10 +663,50 @@ span img{
       }, 25);
     </script>
     <script>
-      function openDropdown(element) {
-        var child = element.querySelector(".points");
-        child.style.display = child.style.display === "none" ? "block" : "none";
+     function openDropdown(element) {
+  // Find the points container within the clicked keypoint
+  const pointsContainer = element.querySelector('.points');
+  
+  // Find the dropdown arrow icon
+  const dropdownIcon = element.querySelector('.material-symbols-outlined');
+  
+  // Toggle visibility of points
+  if (pointsContainer.style.display === 'none' || pointsContainer.style.display === '') {
+    // Show points and rotate arrow down
+    pointsContainer.style.display = 'block';
+    dropdownIcon.style.transform = 'rotate(180deg)';
+    dropdownIcon.style.transition = 'transform 0.3s ease';
+  } else {
+    // Hide points and rotate arrow back
+    pointsContainer.style.display = 'none';
+    dropdownIcon.style.transform = 'rotate(0deg)';
+  }
+}
+
+// Add event listeners to all keypoint sections on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const keypoints = document.querySelectorAll('.keypoint');
+  
+  keypoints.forEach(keypoint => {
+    // Initially hide points
+    const pointsContainer = keypoint.querySelector('.points');
+    if (pointsContainer) {
+      pointsContainer.style.display = 'none';
+    }
+    
+    // Add accessibility attributes
+    keypoint.setAttribute('tabindex', '0');
+    keypoint.setAttribute('role', 'button');
+    keypoint.setAttribute('aria-expanded', 'false');
+    
+    // Add keyboard support
+    keypoint.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        openDropdown(keypoint);
       }
+    });
+  });
+});
       // for single score
       var struct = document.getElementsByClassName("rel")[0];
 

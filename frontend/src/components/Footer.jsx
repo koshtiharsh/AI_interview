@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div style={{ marginTop: '30px', backgroundColor: '#2d2d32', padding: '4rem' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        
+
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { context } from "../context/Context";
 import InterviewFeedbackDashboard from "./HrfeedbackComponent";
+import EmotionInsightsFeedback from "./EmotionFeedback";
 
 const Hrfeedback = () => {
     const [feedbackData, setFeedbackData] = useState([]);
@@ -62,11 +63,21 @@ const Hrfeedback = () => {
                         Resume Report
                     </a>
                 </nav>
+                <EmotionInsightsFeedback
+                    emotions={{
+                        "Neutral": 16,
+                        "Angry": 0,
+                        "Happy": 13,
+                        "Surprised": 5,
+                        "Fearful": 1,
+                        "Sad": 0,
+                        "Disgusted": 0
+                    }}
+                />
 
+                <InterviewFeedbackDashboard />
 
-                <InterviewFeedbackDashboard/>
-
-                </div>
+            </div>
         </>
     );
 };

@@ -6,6 +6,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import useClipboard from "react-use-clipboard";
 import { io } from 'socket.io-client';
 import { context } from "../context/Context";
+import SpeakingPaceIndicator from "./PaceIndicator";
 
 const feedbackMap = new Map([
     ["Angry", "You seem to be feeling defensive. This could be a sign that you are stressed or overwhelmed. Consider taking a moment to relax your facial muscles and breathe deeply. Practicing mindfulness can also help manage feelings of anger."],
@@ -22,7 +23,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     const [feedback, setFeedback] = useState(null);
     const { transcript, resetTranscript, browserSupportsSpeechRecognition, stopListening, interimTranscript, listening } = useSpeechRecognition();
     // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
-
+    const [resetCounter, setResetCounter] = useState(0);
 
     const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start, email } = useContext(context)
 
@@ -135,6 +136,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     }, []);
 
     const handleStopListening = () => {
+        setResetCounter(prev => prev + 1);
         const userId = 1;
         SpeechRecognition.stopListening();
 
@@ -243,13 +245,13 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
 
                 </div>
 
-                {feedback && (
+                {/* {feedback && (
                     <div className="mt-4 bg-yellow-100 p-3 rounded-lg text-yellow-800">
                         <h4 className="font-semibold">Feedback:</h4>
                         <p className="text-justify">{feedback.feedback} </p>
                     </div>
-                )}
-
+                )} */}
+                <SpeakingPaceIndicator userTranscript={transcript} isInterviewInProgress={true} resetTrigger={resetCounter} />
                 <div className="mt-4 p-3 bg-gray-100 border rounded-lg">
                 </div>
             </div>

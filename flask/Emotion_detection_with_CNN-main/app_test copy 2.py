@@ -69,10 +69,20 @@ face_detector = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_defa
 
 @socketio.on('image_frame')
 def handle_image_frame(data):
-    img_data = base64.b64decode(data.split(',')[1])
+    # Extract image data and email from received data
+    img_data = data.get('imgData')  # Image data in base64 format
+    email = data.get('email')  # User email
+
+    if not img_data or not email:
+        emit('emotion_result', {"error": "Missing image data or email"})
+        return
+
+    # Decode the image
+    img_data = base64.b64decode(img_data.split(',')[1])
     frame = cv2.imdecode(np.frombuffer(img_data, np.uint8), cv2.IMREAD_COLOR)
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     num_faces = face_detector.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
+
     results = []
 
     for (x, y, w, h) in num_faces:
@@ -82,11 +92,19 @@ def handle_image_frame(data):
         emotion = emotion_dict[maxindex]
         results.append(emotion)
         
+        # Update the emotion count in the database based on the user's email
         if maxindex > 0:
-            user_collection.find_one_and_update({"name": 'harsh'}, {'$inc': {f'emotion.{emotion}': 1}})
+            user_collection.find_one_and_update(
+                {"email": email},  # Find the user by email
+                {'$inc': {f'emotion.{emotion}': 1}}  # Increment the detected emotion count
+            )
 
-    emit('emotion_result', {"detected_faces": len(num_faces), "emotions": results})
-
+    # Emit result with detected emotions
+    emit('emotion_result', {
+        "detected_faces": len(num_faces),
+        "emotions": results,
+        "email": email  # Include email in response for tracking
+    })
 
 
 questions_db = {
@@ -1040,7 +1058,7 @@ def get_user_feedback(email):
                 question['timestamp'] = question['timestamp'].isoformat()
         
         # Return the feedback data
-        return jsonify({"feedback": hr_questions}), 200
+        return jsonify({"feedback": hr_questions,"emotion": user.get("emotion", {})}), 200
     
     except Exception as e:
         print(f"Error fetching feedback: {e}")

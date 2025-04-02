@@ -124,6 +124,20 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    emotion: {
+        type: Object,
+        default: {
+            Neutral: 0,
+            Angry: 0,
+            Happy: 0,
+            Surprised: 0,
+            Fearful: 0,
+            Sad: 0,
+            Disgusted: 0
+        }
+    }
+    ,
     email: {
         type: String,
         required: true,

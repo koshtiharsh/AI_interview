@@ -1,1 +1,0 @@
-E:/reactjs/Final Year/AI_interview/flask/Emotion_detection_with_CNN-main/testing/data/career_data.csv
