@@ -1,59 +1,32 @@
-import React from 'react';
-import img1 from '../assets/Resume2.jpg'
-import img2 from '../assets/Tech1.jpg'
-import img3 from '../assets/Interview3.jpg'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
 const Cards = () => {
+  const navigate = useNavigate();
+
+  const cardItems = [
+    { name: "HR Interview", path: "/hr" },
+    { name: "Technical Interview", path: "/technical" },
+    { name: "Resume Optimization", path: "/resume" }
+  ];
+
   return (
-    <div className="flex justify-center flex-wrap gap-6 mt-24">
-      
-      {/* Card 1 */}
-      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
-        <img
-          src={img1}
-          alt="Card Image"
-          className="w-full h-auto object-cover"
-        />
-        <div className="p-5">
-          <h1 className="text-xl mb-2 text-center">Resume Optimization</h1>
-          <p className="text-sm text-gray-600 mb-5">Description for the first card goes here.</p>
-          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
-            Learn More
-          </a>
+    <div className="flex flex-col space-y-3 items-center mt-2">
+      {cardItems.map((card, index) => (
+        <div
+          key={index}
+          className="w-40 h-32 rounded-full border border-gray-500 shadow-lg bg-opacity-10 backdrop-blur-lg 
+          text-white flex flex-col items-center justify-center text-center p-3"
+        >
+          <h3 className="text-lg font-bold">{card.name}</h3>
+          <button
+            onClick={() => navigate(card.path)}
+            className="mt-1 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded-full transition"
+          >
+            Take Test
+          </button>
         </div>
-      </div>
-
-      {/* Card 2 */}
-      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
-        <img
-          src={img2}
-          alt="Card Image"
-          className="w-full h-auto object-cover"
-        />
-        <div className="p-5">
-          <h1 className="text-xl mb-2 text-center">Technical Interview</h1>
-          <p className="text-sm text-gray-600 mb-5">Description for the second card goes here.</p>
-          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
-            Learn More
-          </a>
-        </div>
-      </div>
-
-      {/* Card 3 */}
-      <div className="w-[350px] bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform transform hover:-translate-y-5">
-        <img
-          src={img3}
-          alt="Card Image"
-          className="w-full h-auto object-cover"
-        />
-        <div className="p-5">
-          <h1 className="text-xl mb-2 text-center">Hr Interview</h1>
-          <p className="text-sm text-gray-600 mb-5">Description for the third card goes here.</p>
-          <a href="#" className="inline-block bg-blue-600 text-white rounded px-4 py-2">
-            Learn More
-          </a>
-        </div>
-      </div>
-      
+      ))}
     </div>
   );
 };

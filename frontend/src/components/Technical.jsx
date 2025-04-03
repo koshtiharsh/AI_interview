@@ -141,7 +141,7 @@ function Technical() {
       <div
   style={{
     position: "absolute",
-    top: 165,  // Position it 10px from the top
+    top: 135,  // Position it 10px from the top
     left: 150, // Position it 10px from the left
      // Increase the height of the camera window
     border: "1px solid #ccc",
