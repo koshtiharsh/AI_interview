@@ -8,11 +8,14 @@ const SignupForm = () => {
         email: '',
         degree: '',
         specialization: '',
+        jobRole: '',
+        customJobRole: '',
         additionalInfo: '',
-        password: '' // Added password to formData
+        password: ''
     });
     const [errors, setErrors] = useState({});
     const [isSignedIn, setIsSignedIn] = useState(false);
+    const [showCustomJobRole, setShowCustomJobRole] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -20,6 +23,16 @@ const SignupForm = () => {
             verifyToken(token);
         }
     }, []);
+
+    useEffect(() => {
+        // Handle toggling of custom job role field
+        if (formData.jobRole === 'Other') {
+            setShowCustomJobRole(true);
+        } else {
+            setShowCustomJobRole(false);
+            setFormData(prev => ({ ...prev, customJobRole: '' }));
+        }
+    }, [formData.jobRole]);
 
     const verifyToken = async (token) => {
         try {
@@ -70,6 +83,10 @@ const SignupForm = () => {
 
         if (!formData.degree) newErrors.degree = 'Please select your degree';
         if (!formData.specialization) newErrors.specialization = 'Please select your specialization';
+        if (!formData.jobRole) newErrors.jobRole = 'Please select your desired job role';
+        if (formData.jobRole === 'Other' && !formData.customJobRole.trim())
+            newErrors.customJobRole = 'Please specify your job role';
+
         if (!formData.password) newErrors.password = 'Password is required';
         else if (formData.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
 
@@ -85,11 +102,17 @@ const SignupForm = () => {
             return;
         }
 
+        // Prepare data for submission with proper job role handling
+        const submissionData = { ...formData };
+        if (formData.jobRole === 'Other') {
+            submissionData.jobRole = "Other";
+        }
+
         try {
             const response = await fetch('http://localhost:2000/api/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData) // Now includes password from formData
+                body: JSON.stringify(submissionData)
             });
 
             const data = await response.json();
@@ -114,46 +137,109 @@ const SignupForm = () => {
         localStorage.removeItem('token');
         setIsSignedIn(false);
     };
+    const degreeOptions = [
+        'Bachelor of Science (B.Sc)', 'Master of Science (M.Sc)',
+        'Bachelor of Arts (B.A)', 'Master of Arts (M.A)',
+        'Bachelor of Commerce (B.Com)', 'Master of Commerce (M.Com)',
+        'Bachelor of Technology (B.Tech)', 'Master of Technology (M.Tech)',
+        'Bachelor of Engineering (B.E)', 'Master of Engineering (M.E)',
+        'Bachelor of Business Administration (BBA)', 'Master of Business Administration (MBA)',
+        'Bachelor of Computer Applications (BCA)', 'Master of Computer Applications (MCA)',
+        'Other'
+    ];
 
-    const degreeOptions = ['Bachelor of Science', 'Bachelor of Arts', 'Bachelor of Commerce', 'Bachelor of Technology', 'Bachelor of Engineering', 'Other'];
     const specializationOptions = {
-        'Bachelor of Science': [
+        'Bachelor of Science (B.Sc)': [
             'Computer Science', 'Physics', 'Mathematics', 'Chemistry', 'Biology',
-            'Environmental Science', 'Geology', 'Astronomy', 'Statistics', 'Botany',
-            'Zoology', 'Microbiology', 'Biochemistry', 'Biotechnology', 'Data Science',
-            'Neuroscience', 'Marine Biology', 'Forensic Science', 'Genetics', 'Ecology'
+            'Environmental Science', 'Geology', 'Statistics', 'Botany', 'Zoology',
+            'Microbiology', 'Biochemistry', 'Biotechnology', 'Data Science', 'Forensic Science'
         ],
-        'Bachelor of Arts': [
+        'Master of Science (M.Sc)': [
+            'Computer Science', 'Physics', 'Mathematics', 'Chemistry', 'Biotechnology',
+            'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Statistics', 'Data Science'
+        ],
+        'Bachelor of Arts (B.A)': [
             'English', 'History', 'Political Science', 'Psychology', 'Sociology',
-            'Philosophy', 'Economics', 'Anthropology', 'Geography', 'Linguistics',
-            'Literature', 'Journalism', 'International Relations', 'Archaeology', 'Fine Arts',
-            'Music', 'Theatre', 'Religious Studies', 'Gender Studies', 'Cultural Studies'
+            'Philosophy', 'Economics', 'Geography', 'Journalism', 'Fine Arts'
         ],
-        'Bachelor of Commerce': [
-            'Accounting', 'Finance', 'Marketing', 'Economics', 'Business Administration',
-            'Human Resource Management', 'International Business', 'Entrepreneurship', 'Banking', 'Insurance',
-            'Supply Chain Management', 'Management Information Systems', 'Taxation', 'Financial Planning', 'E-commerce',
-            'Retail Management', 'Business Analytics', 'Corporate Law', 'Investment Banking', 'Auditing'
+        'Master of Arts (M.A)': [
+            'English', 'History', 'Political Science', 'Psychology', 'Sociology',
+            'Public Administration', 'International Relations', 'Journalism & Mass Communication'
         ],
-        'Bachelor of Technology': [
-            'Information Technology', 'Mechanical', 'Electrical', 'Civil', 'Electronics',
-            'Computer Science', 'Aerospace', 'Biotechnology', 'Chemical', 'Automobile',
-            'Robotics', 'Telecommunication', 'Petroleum', 'Textile', 'Software Engineering',
+        'Bachelor of Commerce (B.Com)': [
+            'Accounting', 'Finance', 'Marketing', 'Economics', 'Banking & Insurance',
+            'Business Analytics', 'Taxation', 'Corporate Law', 'E-commerce'
+        ],
+        'Master of Commerce (M.Com)': [
+            'Accounting', 'Finance', 'Taxation', 'Auditing', 'International Business'
+        ],
+        'Bachelor of Technology (B.Tech)': [
+            'Computer Science', 'Mechanical', 'Electrical', 'Civil', 'Electronics',
             'Artificial Intelligence', 'Cybersecurity', 'Data Engineering', 'Biomedical', 'Nanotechnology'
         ],
-        'Bachelor of Engineering': [
-            'Computer Engineering', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Chemical Engineering',
-            'Aerospace Engineering', 'Biomedical Engineering', 'Environmental Engineering', 'Industrial Engineering', 'Software Engineering',
-            'Structural Engineering', 'Automotive Engineering', 'Electronics Engineering', 'Petroleum Engineering', 'Mining Engineering',
-            'Marine Engineering', 'Nuclear Engineering', 'Robotics Engineering', 'Geotechnical Engineering', 'Systems Engineering'
+        'Master of Technology (M.Tech)': [
+            'Computer Science', 'Mechanical', 'Electronics', 'Data Science', 'Robotics'
+        ],
+        'Bachelor of Engineering (B.E)': [
+            'Computer Engineering', 'Mechanical Engineering', 'Electrical Engineering', 'Civil Engineering', 'Chemical Engineering'
+        ],
+        'Master of Engineering (M.E)': [
+            'Computer Engineering', 'Mechanical Engineering', 'Electronics & Communication', 'Structural Engineering'
+        ],
+        'Bachelor of Business Administration (BBA)': [
+            'Marketing', 'Finance', 'Human Resource Management', 'International Business', 'Entrepreneurship'
+        ],
+        'Master of Business Administration (MBA)': [
+            'Marketing', 'Finance', 'Human Resource Management', 'Operations', 'Business Analytics'
+        ],
+        'Bachelor of Computer Applications (BCA)': [
+            'Software Development', 'Cybersecurity', 'Data Science', 'Artificial Intelligence', 'Web Development'
+        ],
+        'Master of Computer Applications (MCA)': [
+            'Software Engineering', 'Cybersecurity', 'Machine Learning', 'Cloud Computing'
         ],
         'Other': [
-            'Education', 'Law', 'Medicine', 'Nursing', 'Pharmacy',
-            'Architecture', 'Design', 'Agriculture', 'Veterinary Science', 'Public Health',
-            'Social Work', 'Hospitality Management', 'Fashion Design', 'Animation', 'Sports Science',
-            'Culinary Arts', 'Film Studies', 'Aviation', 'Dentistry', 'Physiotherapy'
+            'Medicine (MBBS)', 'Dentistry (BDS)', 'Pharmacy (B.Pharm)', 'Nursing (B.Sc Nursing)',
+            'Law (LLB)', 'Education (B.Ed)', 'Architecture (B.Arch)', 'Agriculture (B.Sc Agriculture)',
+            'Veterinary Science', 'Physiotherapy (BPT)', 'Hospitality Management', 'Fashion Design',
+            'Animation & Multimedia', 'Sports Science', 'Culinary Arts', 'Aviation'
         ]
     };
+
+
+    const jobRoleOptions = [
+        'Software Developer', 'Web Developer', 'Full Stack Developer', 
+        'Frontend Developer', 'Backend Developer', 'Mobile App Developer', 
+        'Cloud Engineer', 'DevOps Engineer', 'Data Scientist', 
+        'Machine Learning Engineer', 'AI Engineer', 'Cybersecurity Analyst', 
+        'Network Administrator', 'Database Administrator', 'UI/UX Designer', 
+        'IT Support Engineer', 'Software Tester', 'QA Engineer', 
+        'Blockchain Developer', 'Game Developer', 'Embedded Systems Engineer', 
+        'Product Manager', 'Project Manager', 'Business Analyst', 
+        'Operations Manager', 'Supply Chain Manager', 'HR Manager', 
+        'Recruitment Specialist', 'Training and Development Manager', 
+        'Strategy Consultant', 'Financial Analyst', 'Investment Analyst', 
+        'Chartered Accountant', 'Auditor', 'Risk Analyst', 'Tax Consultant', 
+        'Banking Associate', 'Wealth Manager', 'Stock Market Trader', 
+        'Marketing Specialist', 'Digital Marketing Manager', 'SEO Specialist', 
+        'Content Marketer', 'Social Media Manager', 'Brand Manager', 
+        'Market Research Analyst', 'Advertising Executive', 'Teacher', 
+        'Professor', 'Academic Counselor', 'Trainer', 'Research Associate', 
+        'Librarian', 'Education Consultant', 'Doctor', 'Nurse', 'Pharmacist', 
+        'Medical Researcher', 'Physiotherapist', 'Radiologist', 'Pathologist', 
+        'Healthcare Administrator', 'Medical Coder', 'Sales Executive', 
+        'Business Development Executive', 'Key Account Manager', 'Retail Manager', 
+        'Customer Support Specialist', 'Client Relationship Manager', 
+        'Inside Sales Representative', 'Lawyer', 'Corporate Legal Advisor', 
+        'Paralegal', 'Legal Consultant', 'Civil Engineer', 'Mechanical Engineer', 
+        'Electrical Engineer', 'Electronics Engineer', 'Chemical Engineer', 
+        'Automobile Engineer', 'Aerospace Engineer', 'Production Engineer', 
+        'Quality Engineer', 'Journalist', 'Content Writer', 'Copywriter', 
+        'Video Editor', 'Graphic Designer', 'Animator', 'Film Director', 
+        'Music Producer', 'Photographer', 'Government Officer', 
+        'Defense Personnel',  'Other'
+    ];
+    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-100 to-purple-100 p-4">
@@ -285,6 +371,46 @@ const SignupForm = () => {
                                         </select>
                                         {errors.specialization && <p className="mt-1 text-sm text-red-500">{errors.specialization}</p>}
                                     </div>
+                                </div>
+                            </div>
+
+                            {/* Career Information */}
+                            <div className="space-y-6">
+                                <h3 className="text-xl font-semibold text-violet-800 border-b border-violet-200 pb-2">
+                                    Career Information
+                                </h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-violet-700 mb-1">Desired Job Role</label>
+                                        <select
+                                            name="jobRole"
+                                            value={formData.jobRole}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-2 rounded-lg border border-violet-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-violet-50/50 transition-all duration-200"
+                                        >
+                                            <option value="">Select Job Role</option>
+                                            {jobRoleOptions.map((option) => (
+                                                <option key={option} value={option}>{option}</option>
+                                            ))}
+                                        </select>
+                                        {errors.jobRole && <p className="mt-1 text-sm text-red-500">{errors.jobRole}</p>}
+                                    </div>
+
+                                    {showCustomJobRole && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-violet-700 mb-1">Specify Job Role</label>
+                                            <input
+                                                type="text"
+                                                name="customJobRole"
+                                                value={formData.customJobRole}
+                                                onChange={handleChange}
+                                                className="w-full px-4 py-2 rounded-lg border border-violet-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-violet-50/50 transition-all duration-200"
+                                                placeholder="Enter your desired job role"
+                                            />
+                                            {errors.customJobRole && <p className="mt-1 text-sm text-red-500">{errors.customJobRole}</p>}
+                                        </div>
+                                    )}
+
                                     <div>
                                         <label className="block text-sm font-medium text-violet-700 mb-1">Additional Information (Optional)</label>
                                         <textarea
@@ -293,7 +419,7 @@ const SignupForm = () => {
                                             onChange={handleChange}
                                             className="w-full px-4 py-2 rounded-lg border border-violet-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-violet-50/50 transition-all duration-200"
                                             rows="3"
-                                            placeholder="Any additional information you'd like to share"
+                                            placeholder="Any additional information you'd like to share about your career goals"
                                         />
                                     </div>
                                 </div>

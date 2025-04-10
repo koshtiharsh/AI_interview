@@ -123,15 +123,13 @@ def extract_json_from_text(text):
         # If still can't parse, return None
         return None
 
-def generate_hr_questions(degree,specialization,num_questions=5, job_role="Software Engineer"):
+def generate_hr_questions(num_questions=5, job_role="Software Engineer"):
     """Generate HR interview questions using Gemini API"""
     prompt = f"""Generate {num_questions} unique HR interview questions for a {job_role} position. 
-    users has done degree {degree}  and specialization in {specialization}
     For each question, provide:
     1. The question text (first question should be tell me about your self)
     2. A list of 5-7 key points that should be covered in an ideal answer
     3. An example ideal answer (150-200 words)
-    
     
     Format your response as a valid JSON object with the following structure:
     ```json
@@ -248,8 +246,6 @@ def evaluate_response(question, user_answer, question_details):
     5. 2-3 strengths of the answer
     6. 2-3 areas for improvement
     7. Any red flags noticed in the response
-
-  
     
     Format your response as a valid JSON object with the following structure:
     ```json
@@ -290,11 +286,11 @@ def evaluate_response(question, user_answer, question_details):
             "red_flags_triggered": []
         }
 
-def get_user_questions(email,degree,specialization , job_role="Software Engineer"):
+def get_user_questions(email, job_role="Software Engineer"):
     """Get or generate questions for a specific user"""
     if email not in user_questions_cache:
         # Generate new questions for this user
-        questions = generate_hr_questions(num_questions=5, job_role=job_role,degree=degree,specialization=specialization)
+        questions = generate_hr_questions(num_questions=5, job_role=job_role)
         user_questions_cache[email] = {
             "question_count": 0,
             "questions": questions
@@ -308,11 +304,9 @@ def send_next_question(data):
     try:
         email = data['email']
         job_role = data.get('job_role', 'Software Engineer')
-        degree = data.get('degree','BE')
-        specialization = data.get('specialization',"IT")
         
         # Get the user's questions or generate new ones
-        user_data = get_user_questions(email,degree,specialization, job_role)
+        user_data = get_user_questions(email, job_role)
         
         # Get current question count and questions
         question_count = user_data["question_count"]
@@ -361,95 +355,206 @@ def process_answer(data):
         email = data.get('email')
         overAllEmotion = data.get('overAllEmotion')
             
-
         # Validate required data
         if not (email and question and user_answer):
+            print(f"Missing required fields for user {email}")
             socketio.emit('error', {'message': 'Missing required fields: email, question, or answer'})
             return
+
+        print(f"Processing answer for user {email}")
 
         # Get the question details from cache
         user_data = user_questions_cache.get(email, None)
         if not user_data:
+            print(f"Session expired for user {email}")
             socketio.emit('error', {'message': 'Session expired. Please refresh the page.'})
             return
 
         # Find the question in the user's session data
         question_details = next((q for q in user_data.get("questions", []) if q.get("question") == question), None)
         if not question_details:
+            print(f"Question not found for user {email}")
             socketio.emit('error', {'message': 'Question not found in session.'})
             return
 
+        print(f"Evaluating answer for user {email}")
         # Evaluate the answer
         evaluation = evaluate_response(question, user_answer, question_details)
         print("Full evaluation:", evaluation)
+        
+        # Store the score for adaptive question selection
+        score = evaluation.get("score", 50)
+        user_data["performance_scores"] = user_data.get("performance_scores", [])
+        user_data["performance_scores"].append(score)
+        
+        # Update the difficulty for next questions based on performance
+        current_difficulty = question_details.get("difficulty", "Medium")
+        next_difficulty = determine_next_question_difficulty(score, current_difficulty)
+        user_data["current_difficulty"] = next_difficulty
+        
+        print(f"User {email} score: {score}, next difficulty: {next_difficulty}")
+        
+        # If there are remaining questions, potentially adjust their difficulty
+        remaining_q_count = len(user_data["questions"]) - user_data.get("question_count", 0)
+        if remaining_q_count > 0:
+            # Find appropriate difficulty questions for next selection
+            difficulty_questions = [q for q in user_data["questions"] 
+                                   if q.get("difficulty") == next_difficulty and 
+                                   user_data["questions"].index(q) >= user_data.get("question_count", 0)]
+            
+            if difficulty_questions:
+                # Reorder remaining questions to prioritize new difficulty level
+                current_index = user_data.get("question_count", 0)
+                next_questions = user_data["questions"][current_index:]
+                next_questions.sort(key=lambda q: 0 if q.get("difficulty") == next_difficulty else 1)
+                user_data["questions"] = user_data["questions"][:current_index] + next_questions
 
         # Add metadata to the evaluation
         evaluation.update({
             "question": question,
             "user_answer": user_answer,
+            "difficulty": question_details.get("difficulty", "Medium"),
             "ideal_answer": question_details.get("ideal_answer", ""),
-            "timestamp": datetime.datetime.utcnow()
+            "timestamp": datetime.datetime.utcnow(),
+            "verified": False  # Initial verification status
         })
 
-        # Check if the user exists and if the question is already present
-        user = user_collection.find_one({'email': email, 'hrQuestions.question': question})
+        print(f"Storing evaluation data for user {email}")
+        # Store the evaluation in the database without waiting for verification
+        store_hr_evaluation_in_db(email, question, evaluation, user_answer, overAllEmotion, question_details)
 
-        if user and any(q.get('question') == question for q in user.get('hrQuestions', [])):
-            # If question exists, update only the existing entry
-            # Access fields directly from evaluation, not through nested "details"
-            user_collection.update_one(
-                {'email': email, 'hrQuestions.question': question},
-                {"$set": {
-                    "hrQuestions.$.user_answer": user_answer,
-                    "hrQuestions.$.overAllEmotion": overAllEmotion,
-                    "hrQuestions.$.feedback": evaluation.get("feedback", []),
-                    "hrQuestions.$.score": evaluation.get("score", 0),
-                    "hrQuestions.$.matching_points": evaluation.get("matching_points", []),
-                    "hrQuestions.$.missing_points": evaluation.get("missing_points", []),
-                    "hrQuestions.$.strengths": evaluation.get("strengths", []),
-                    "hrQuestions.$.improvement_areas": evaluation.get("improvement_areas", []),
-                    "hrQuestions.$.red_flags_triggered": evaluation.get("red_flags_triggered", []),
-                    "hrQuestions.$.ideal_answer": question_details.get('ideal_answer', ''),
-                    "hrQuestions.$.timestamp": evaluation["timestamp"]
-                }}
-            )
-        else:
-            # For new questions, we need to ensure the document structure is consistent
-            question_document = {
-                "question": question,
-                "overAllEmotion": overAllEmotion,
-                "user_answer": user_answer,
-                "feedback": evaluation.get("feedback", []),
-                "score": evaluation.get("score", 0),
-                "matching_points": evaluation.get("matching_points", []),
-                "missing_points": evaluation.get("missing_points", []),
-                "strengths": evaluation.get("strengths", []),
-                "improvement_areas": evaluation.get("improvement_areas", []),
-                "red_flags_triggered": evaluation.get("red_flags_triggered", []),
-                "ideal_answer": question_details.get('ideal_answer', ''),
-                "timestamp": evaluation["timestamp"]
-            }
-
-            # If the question doesn't exist, insert the structured document
-            user_collection.update_one(
-                {'email': email},
-                {'$push': {'hrQuestions': question_document}},
-                upsert=True  # Ensures a new document is created if the user doesn't exist
-            )
-
+        print(f"Sending feedback to user {email}")
         # Send feedback to the user using the same structure
         socketio.emit('answer_feedback', {
             'feedback': evaluation.get("feedback", []),
             'score': evaluation.get("score", 0),
             'strengths': evaluation.get("strengths", []),
-            'improvement_areas': evaluation.get("improvement_areas", [])
+            'improvement_areas': evaluation.get("improvement_areas", []),
+            'red_flags_triggered': evaluation.get("red_flags_triggered", []),
+            'next_difficulty': next_difficulty
         })
+
+        # Start asynchronous verification process
+        # This runs in the background without blocking the main flow
+        socketio.start_background_task(
+            verify_hr_evaluation, 
+            email, 
+            question, 
+            evaluation
+        )
 
     except Exception as e:
         print(f"Error processing answer: {e}")
         traceback.print_exc()  # Add full stack trace for debugging
         socketio.emit('error', {'message': f'An error occurred processing your answer: {str(e)}'})
 
+# Helper function to store HR evaluation in DB
+def store_hr_evaluation_in_db(email, question, evaluation, user_answer, overAllEmotion, question_details):
+    # Check if the user exists and if the question is already present
+    user = user_collection.find_one({'email': email, 'hrQuestions.question': question})
+
+    if user and any(q.get('question') == question for q in user.get('hrQuestions', [])):
+        # If question exists, update only the existing entry
+        user_collection.update_one(
+            {'email': email, 'hrQuestions.question': question},
+            {"$set": {
+                "hrQuestions.$.user_answer": user_answer,
+                "hrQuestions.$.overAllEmotion": overAllEmotion,
+                "hrQuestions.$.feedback": evaluation.get("feedback", []),
+                "hrQuestions.$.score": evaluation.get("score", 0),
+                "hrQuestions.$.matching_points": evaluation.get("matching_points", []),
+                "hrQuestions.$.missing_points": evaluation.get("missing_points", []),
+                "hrQuestions.$.strengths": evaluation.get("strengths", []),
+                "hrQuestions.$.improvement_areas": evaluation.get("improvement_areas", []),
+                "hrQuestions.$.red_flags_triggered": evaluation.get("red_flags_triggered", []),
+                "hrQuestions.$.difficulty": question_details.get('difficulty', 'Medium'),
+                "hrQuestions.$.ideal_answer": question_details.get('ideal_answer', ''),
+                "hrQuestions.$.timestamp": evaluation["timestamp"],
+                "hrQuestions.$.verified": evaluation.get("verified", False)
+            }}
+        )
+    else:
+        # For new questions, we need to ensure the document structure is consistent
+        question_document = {
+            "question": question,
+            "overAllEmotion": overAllEmotion,
+            "user_answer": user_answer,
+            "feedback": evaluation.get("feedback", []),
+            "score": evaluation.get("score", 0),
+            "matching_points": evaluation.get("matching_points", []),
+            "missing_points": evaluation.get("missing_points", []),
+            "strengths": evaluation.get("strengths", []),
+            "improvement_areas": evaluation.get("improvement_areas", []),
+            "red_flags_triggered": evaluation.get("red_flags_triggered", []),
+            "difficulty": question_details.get('difficulty', 'Medium'),
+            "ideal_answer": question_details.get('ideal_answer', ''),
+            "timestamp": evaluation["timestamp"],
+            "verified": evaluation.get("verified", False)
+        }
+
+        # If the question doesn't exist, insert the structured document
+        user_collection.update_one(
+            {'email': email},
+            {'$push': {'hrQuestions': question_document}},
+            upsert=True  # Ensures a new document is created if the user doesn't exist
+        )
+
+# Asynchronous verification function for HR questions
+def verify_hr_evaluation(email, question, evaluation):
+    try:
+        print(f"Starting HR verification process for user {email}, question: {question}")
+        
+        # Prepare the prompt for verification
+        verification_prompt = f"""
+        Review this HR interview feedback for accuracy and fairness:
+        
+        Question: {evaluation.get('question')}
+        User Answer: {evaluation.get('user_answer')}
+        
+        Feedback given:
+        - Feedback: {evaluation.get('feedback', [])}
+        - Score: {evaluation.get('score', 0)}
+        - Strengths: {evaluation.get('strengths', [])}
+        - Improvement areas: {evaluation.get('improvement_areas', [])}
+        - Red flags triggered: {evaluation.get('red_flags_triggered', [])}
+        
+        Ideal answer: {evaluation.get('ideal_answer', 'Not specified')}
+        
+        Is this feedback accurate, fair, and helpful? Respond with ONLY 'Yes' or 'No'.
+        """
+        
+        # Call your verification API with the prompt
+        import requests
+        response = requests.post(
+            "http://localhost:2000/chat",  # Replace with your actual endpoint
+            json={"prompt": verification_prompt},
+            headers={"Content-Type": "application/json"}
+        )
+        
+        if response.status_code == 200:
+            verification_result = response.json()
+            is_verified = verification_result.get("response") == "Yes"
+            
+            print(f"HR verification result for user {email}: {is_verified}")
+            
+            # Update the database with verification result
+            user_collection.update_one(
+                {'email': email, 'hrQuestions.question': question},
+                {"$set": {"hrQuestions.$.verified": is_verified}}
+            )
+            
+            # Optionally notify the user of verification completion
+            socketio.emit('hr_evaluation_verified', {
+                'email': email,
+                'question': question,
+                'verified': is_verified
+            })
+        else:
+            print(f"Verification API error: {response.status_code}, {response.text}")
+    
+    except Exception as e:
+        print(f"Error in HR verification process: {e}")
+        traceback.print_exc()
 
 @app.route('/api/interview_status/<email>', methods=['GET'])
 def get_interview_status(email):
@@ -762,8 +867,6 @@ def generate_tech_questions(num_questions=5, tech_role="Software Engineer", tech
     3. A brief ideal answer (100-150 words max)
     4. A difficulty rating (Easy, Medium, Hard)
     5. A short code snippet if relevant (under 15 lines)
-        4. "Important " Please Keep One coding question"  
-    4. "Important " Please Keep One coding question"  
     
     Return ONLY the JSON below with no additional text before or after:
     {{
@@ -999,6 +1102,7 @@ def send_next_tech_question(data):
         traceback.print_exc()
         socketio.emit('tech_error', {'message': f'An error occurred: {str(e)}'})
         
+
 @socketio.on('send_tech_answer')
 def process_tech_answer(data):
     """Process the user's answer to a technical question and provide feedback"""
@@ -1073,60 +1177,13 @@ def process_tech_answer(data):
             "code_solution": code_solution,
             "difficulty": question_details.get("difficulty", "Medium"),
             "ideal_answer": question_details.get("ideal_answer", ""),
-            "timestamp": datetime.datetime.utcnow()
+            "timestamp": datetime.datetime.utcnow(),
+            "verified": False  # Initial verification status
         })
 
         print(f"Storing evaluation data for user {email}")
-        # Check if the user exists and if the question is already present
-        user = user_collection.find_one({'email': email, 'techQuestions.question': question})
-
-        if user and any(q.get('question') == question for q in user.get('techQuestions', [])):
-            # If question exists, update only the existing entry
-            user_collection.update_one(
-                {'email': email, 'techQuestions.question': question},
-                {"$set": {
-                    "techQuestions.$.user_answer": user_answer,
-                    "techQuestions.$.code_solution": code_solution,
-                    "techQuestions.$.overAllEmotion": overAllEmotion,
-                    "techQuestions.$.technical_feedback": evaluation.get("technical_feedback", []),
-                    "techQuestions.$.score": evaluation.get("score", 0),
-                    "techQuestions.$.matching_concepts": evaluation.get("matching_concepts", []),
-                    "techQuestions.$.missing_concepts": evaluation.get("missing_concepts", []),
-                    "techQuestions.$.strengths": evaluation.get("strengths", []),
-                    "techQuestions.$.improvement_areas": evaluation.get("improvement_areas", []),
-                    "techQuestions.$.misconceptions": evaluation.get("misconceptions", []),
-                    "techQuestions.$.learning_resources": evaluation.get("learning_resources", []),
-                    "techQuestions.$.difficulty": question_details.get('difficulty', 'Medium'),
-                    "techQuestions.$.ideal_answer": question_details.get('ideal_answer', ''),
-                    "techQuestions.$.timestamp": evaluation["timestamp"]
-                }}
-            )
-        else:
-            # For new questions, we need to ensure the document structure is consistent
-            question_document = {
-                "question": question,
-                "user_answer": user_answer,
-                "overAllEmotion": overAllEmotion,
-                "code_solution": code_solution,
-                "technical_feedback": evaluation.get("technical_feedback", []),
-                "score": evaluation.get("score", 0),
-                "matching_concepts": evaluation.get("matching_concepts", []),
-                "missing_concepts": evaluation.get("missing_concepts", []),
-                "strengths": evaluation.get("strengths", []),
-                "improvement_areas": evaluation.get("improvement_areas", []),
-                "misconceptions": evaluation.get("misconceptions", []),
-                "learning_resources": evaluation.get("learning_resources", []),
-                "difficulty": question_details.get('difficulty', 'Medium'),
-                "ideal_answer": question_details.get('ideal_answer', ''),
-                "timestamp": evaluation["timestamp"]
-            }
-
-            # If the question doesn't exist, insert the structured document
-            user_collection.update_one(
-                {'email': email},
-                {'$push': {'techQuestions': question_document}},
-                upsert=True  # Ensures a new document is created if the user doesn't exist
-            )
+        # Store the evaluation in the database without waiting for verification
+        store_evaluation_in_db(email, question, evaluation, user_answer, code_solution, overAllEmotion, question_details)
 
         print(f"Sending feedback to user {email}")
         # Send feedback to the user
@@ -1140,11 +1197,132 @@ def process_tech_answer(data):
             'next_difficulty': next_difficulty
         })
 
+        # Start asynchronous verification process
+        # This runs in the background without blocking the main flow
+        socketio.start_background_task(
+            verify_evaluation, 
+            email, 
+            question, 
+            evaluation
+        )
+
     except Exception as e:
         print(f"Error processing technical answer: {e}")
         traceback.print_exc()  # Add full stack trace for debugging
         socketio.emit('tech_error', {'message': f'An error occurred processing your answer: {str(e)}'})
 
+# Helper function to store evaluation in DB (extracted from the original function)
+def store_evaluation_in_db(email, question, evaluation, user_answer, code_solution, overAllEmotion, question_details):
+    # Check if the user exists and if the question is already present
+    user = user_collection.find_one({'email': email, 'techQuestions.question': question})
+
+    if user and any(q.get('question') == question for q in user.get('techQuestions', [])):
+        # If question exists, update only the existing entry
+        user_collection.update_one(
+            {'email': email, 'techQuestions.question': question},
+            {"$set": {
+                "techQuestions.$.user_answer": user_answer,
+                "techQuestions.$.code_solution": code_solution,
+                "techQuestions.$.overAllEmotion": overAllEmotion,
+                "techQuestions.$.technical_feedback": evaluation.get("technical_feedback", []),
+                "techQuestions.$.score": evaluation.get("score", 0),
+                "techQuestions.$.matching_concepts": evaluation.get("matching_concepts", []),
+                "techQuestions.$.missing_concepts": evaluation.get("missing_concepts", []),
+                "techQuestions.$.strengths": evaluation.get("strengths", []),
+                "techQuestions.$.improvement_areas": evaluation.get("improvement_areas", []),
+                "techQuestions.$.misconceptions": evaluation.get("misconceptions", []),
+                "techQuestions.$.learning_resources": evaluation.get("learning_resources", []),
+                "techQuestions.$.difficulty": question_details.get('difficulty', 'Medium'),
+                "techQuestions.$.ideal_answer": question_details.get('ideal_answer', ''),
+                "techQuestions.$.timestamp": evaluation["timestamp"],
+                "techQuestions.$.verified": evaluation.get("verified", False)
+            }}
+        )
+    else:
+        # For new questions, we need to ensure the document structure is consistent
+        question_document = {
+            "question": question,
+            "user_answer": user_answer,
+            "overAllEmotion": overAllEmotion,
+            "code_solution": code_solution,
+            "technical_feedback": evaluation.get("technical_feedback", []),
+            "score": evaluation.get("score", 0),
+            "matching_concepts": evaluation.get("matching_concepts", []),
+            "missing_concepts": evaluation.get("missing_concepts", []),
+            "strengths": evaluation.get("strengths", []),
+            "improvement_areas": evaluation.get("improvement_areas", []),
+            "misconceptions": evaluation.get("misconceptions", []),
+            "learning_resources": evaluation.get("learning_resources", []),
+            "difficulty": question_details.get('difficulty', 'Medium'),
+            "ideal_answer": question_details.get('ideal_answer', ''),
+            "timestamp": evaluation["timestamp"],
+            "verified": evaluation.get("verified", False)
+        }
+
+        # If the question doesn't exist, insert the structured document
+        user_collection.update_one(
+            {'email': email},
+            {'$push': {'techQuestions': question_document}},
+            upsert=True  # Ensures a new document is created if the user doesn't exist
+        )
+
+# Asynchronous verification function
+def verify_evaluation(email, question, evaluation):
+    try:
+        print(f"Starting verification process for user {email}, question: {question}")
+        
+        # Prepare the prompt for verification
+        verification_prompt = f"""
+        Review this technical interview feedback for accuracy and fairness:
+        
+        Question: {evaluation.get('question')}
+        User Answer: {evaluation.get('user_answer')}
+        Code Solution: {evaluation.get('code_solution', 'None provided')}
+        
+        Feedback given:
+        - Technical feedback: {evaluation.get('technical_feedback', [])}
+        - Score: {evaluation.get('score', 0)}
+        - Strengths: {evaluation.get('strengths', [])}
+        - Improvement areas: {evaluation.get('improvement_areas', [])}
+        - Misconceptions: {evaluation.get('misconceptions', [])}
+        
+        Ideal answer: {evaluation.get('ideal_answer', 'Not specified')}
+        
+        Is this feedback accurate, fair, and helpful? Respond with ONLY 'Yes' or 'No'.
+        """
+        
+        # Call your verification API with the prompt
+        import requests
+        response = requests.post(
+            "http://localhost:2000/chat",  # Replace with your actual endpoint
+            json={"prompt": verification_prompt},
+            headers={"Content-Type": "application/json"}
+        )
+        
+        if response.status_code == 200:
+            verification_result = response.json()
+            is_verified = verification_result.get("response") == "Yes"
+            
+            print(f"Verification result for user {email}: {is_verified}")
+            
+            # Update the database with verification result
+            user_collection.update_one(
+                {'email': email, 'techQuestions.question': question},
+                {"$set": {"techQuestions.$.verified": is_verified}}
+            )
+            
+            # Optionally notify the user of verification completion
+            socketio.emit('evaluation_verified', {
+                'email': email,
+                'question': question,
+                'verified': is_verified
+            })
+        else:
+            print(f"Verification API error: {response.status_code}, {response.text}")
+    
+    except Exception as e:
+        print(f"Error in verification process: {e}")
+        traceback.print_exc()
 
 @app.route('/api/tech_interview_status/<email>', methods=['GET'])
 def get_tech_interview_status(email):

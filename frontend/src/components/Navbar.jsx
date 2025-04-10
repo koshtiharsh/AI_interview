@@ -26,7 +26,7 @@ const Navbar = () => {
 
 
       <header className="top-0 left-0 w-full p-3 px-4 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] flex justify-evenly items-center z-50 ">
-        <a href="/" className="text-2xl font-bold text-slate-500"><img src={logo} alt="" className='w-[140px]' /></a>
+        <a href="/" className="text-2xl font-bold text-slate-500"><img src={logo} alt="" className='w-[165px]' /></a>
 
         <nav className="hidden md:flex space-x-5 ">
           <a href="/home" className="relative font-medium text-md text-slate-500  transition duration-300">
@@ -37,15 +37,32 @@ const Navbar = () => {
             Contact us
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a> */}
-          <a href="/aboutus" className="relative font-medium text-md text-slate-500  transition duration-300">
+          {/* <a href="/aboutus" className="relative font-medium text-md text-slate-500  transition duration-300">
             About us
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
-          </a>
+          </a> */}
 
           {/* <a href="/login" className="relative font-medium text-md text-slate-500  transition duration-300">
             Login
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a> */}
+
+          {session && (
+            <a href="/userprofile" className="relative font-medium text-md text-slate-500  transition duration-300">
+              Profile
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+            </a>
+          )}
+          <a href="/resume" className="relative font-medium text-md text-slate-500  transition duration-300">
+            Resume Analyzer
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+          </a>
+          {
+            localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-md text-slate-500  transition duration-300">
+              ResumeMetrics
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+            </a> : ''
+          }
           <a href="/hr" className="relative font-medium text-md text-slate-500  transition duration-300">
             Hr Interview
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
@@ -55,23 +72,15 @@ const Navbar = () => {
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           <a href="/hrfeedback" className="relative font-medium text-md text-slate-500  transition duration-300">
-            InterviewFeedback
+            PerformanceReview
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           <a href="/careerpath" className="relative font-medium text-md text-slate-500  transition duration-300">
             Career Compass
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
-          <a href="/resume" className="relative font-medium text-md text-slate-500  transition duration-300">
-            Upload Resume
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
-          </a>
-          {
-            localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-md text-slate-500  transition duration-300">
-              Resume Report
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
-            </a> : ''
-          }
+
+
         </nav>
 
         {!session && (<div className="hidden md:flex items-center">

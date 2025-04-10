@@ -219,7 +219,22 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
     const videoRef = useRef(null);
     const isVideoActive = useRef(false);
     const [lightingWarning, setLightingWarning] = useState('');
-    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion, email } = useContext(context);
+    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion, email, overAllEmotion, setOverAllEmotion } = useContext(context);
+
+    // useEffect(() => {
+
+    //     if (emotion.length > 0) {
+    //         const newEmotionData = {
+    //             time: Date.now(), // Current timestamp in milliseconds
+    //             emotion: emotion
+    //         };
+
+    //         // Update the state correctly
+    //         setOverAllEmotion(prevEmotions => [...prevEmotions, newEmotionData]);
+    //         console.log(overAllEmotion)
+    //     }
+
+    // }, [emotion]);
 
     const checkLightingConditions = (imageData) => {
         const width = imageData.width;
@@ -282,7 +297,7 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
         }
 
         console.log(variance + "this is var")
-
+        console.log(overAllEmotion)
         // Check extreme brightness variations
         const maxBrightness = Math.max(...brightnessValues);
         const minBrightness = Math.min(...brightnessValues);
@@ -339,6 +354,17 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
             if (data.emotions && data.emotions.length > 0) {
                 const detectedEmotion = data.emotions[0];
                 setEmotion(detectedEmotion);
+                // Create a new emotion data point
+
+                const newEmotionData = {
+                    time: Date.now(), // Current timestamp in milliseconds
+                    emotion: detectedEmotion
+                };
+
+                // Update the state correctly
+                setOverAllEmotion(prevEmotions => [...prevEmotions, newEmotionData]);
+
+
 
                 setEmotionCounts(prevCounts => {
                     const newCounts = {

@@ -112,9 +112,6 @@ const userSchema = new mongoose.Schema({
         type: [String], // Array of strings
         default: [],    // Default to empty array
     },
-    jobRole: String,
-
-    customJobRole: String,
     projects: {
         type: [String], // Array of strings
         default: [],    // Default to empty array
@@ -176,8 +173,8 @@ const validateSignup = (req, res, next) => {
 // Signup Route
 app.post('/api/signup', validateSignup, async (req, res) => {
     try {
-        const { name, age, mobile, email, degree, specialization, additionalInfo, password, jobRole, customJobRole } = req.body;
-        console.log(req.body)
+        const { name, age, mobile, email, degree, specialization, additionalInfo, password } = req.body;
+
         // Check if email already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -198,8 +195,6 @@ app.post('/api/signup', validateSignup, async (req, res) => {
             specialization,
             additionalInfo,
             password: hashedPassword,
-            jobRole,
-            customJobRole
             // emotion and hrQuestions will be automatically added with defaults
         });
 
@@ -319,92 +314,6 @@ app.get('/api/skills/:email', async (req, res) => {
 
     }
 })
-// Middleware to extract email from request
-const extractEmail = (req, res, next) => {
-    // Get email from request body, query, or headers depending on your implementation
-    const email = req.body.email || req.query.email || req.headers['x-user-email'];
-
-    if (!email) {
-        return res.status(400).json({ message: 'Email is required' });
-    }
-
-    req.userEmail = email;
-    next();
-};
-
-// GET user profile using email
-app.get('/user', extractEmail, async (req, res) => {
-    try {
-        const user = await User.findOne(
-            { email: req.userEmail },
-            'name age mobile email degree specialization additionalInfo technicalSkills jobRole customJobRole'
-        );
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-});
-
-// PUT update user profile using email
-app.put('/user', extractEmail, async (req, res) => {
-    try {
-        const {
-            name,
-            age,
-            mobile,
-            degree,
-            specialization,
-            additionalInfo,
-            technicalSkills,
-            customJobRole,
-            jobRole
-        } = req.body;
-
-        // Find the user by email
-        let user = await User.findOne({ email: req.userEmail });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        // Only update the fields that are allowed to be updated
-        // Note: We're not updating the email as it's being used as an identifier
-        if (name !== undefined) user.name = name;
-        if (age !== undefined) user.age = age;
-        if (mobile !== undefined) user.mobile = mobile;
-        if (degree !== undefined) user.degree = degree;
-        if (specialization !== undefined) user.specialization = specialization;
-        if (additionalInfo !== undefined) user.additionalInfo = additionalInfo;
-        if (technicalSkills !== undefined) user.technicalSkills = technicalSkills;
-        if (customJobRole !== undefined) user.customJobRole = customJobRole;
-        if (jobRole !== undefined) user.jobRole = jobRole;
-
-        // Save the updated user
-        await user.save();
-
-        // Return the updated user without sensitive information
-        res.status(200).json({
-            name: user.name,
-            age: user.age,
-            mobile: user.mobile,
-            email: user.email,
-            degree: user.degree,
-            specialization: user.specialization,
-            additionalInfo: user.additionalInfo,
-            technicalSkills: user.technicalSkills
-        });
-    } catch (error) {
-        console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
-    }
-});
-
 
 
 // user authtentication end ********************************************************************************************
@@ -501,12 +410,9 @@ async function addSummarizeDataToDB(email, careerData) {
 
 
 
-/// Enhanced aggregation pipeline for feedback with guardrails
+/// aggreation pipeline for feedback
 async function getCareerPath(resumeText, email) {
     try {
-        // Sanitize resume text to remove personal information
-        const sanitizedResumeText = sanitizeResumeText(resumeText);
-
         // First, retrieve user data including feedback
         const user = await User.findOne({ email });
 
@@ -543,9 +449,9 @@ async function getCareerPath(resumeText, email) {
 
         const prompt = `
         Based on the following resume text, extract key skills and recommend suitable career paths. Salary should be in Indian Rupees
-        and description of each should be in 100 words minimum. The Number of careers should be 5 five not less not more please.
+        and description of each should be in 100 words minimum. The Nubmer of careers should be 5 five not less not more please .
         
-        Resume: ${sanitizedResumeText}
+        Resume: ${resumeText}
         
         ${feedbackSummary ? `User Feedback Context: ${feedbackSummary}` : ''}
         
@@ -555,16 +461,7 @@ async function getCareerPath(resumeText, email) {
         ${dislikedCareers.length > 0 ?
                 `Please avoid recommending careers similar to these negatively rated careers: ${dislikedCareers.map(c => c.title).join(', ')}` : ''}
         
-        For each career path, include multiple career progression paths. Each should be described with stages from entry-level (mention the job role) to leadership, including timelines, skills required, and salary progression in Indian Rupees give it randomly 3-5 number of progressions. Give me different paths like some traditional, some specialization and one more anything you think is important.
-        
-        CONTENT GUIDELINES:
-        1. All information must be professional and factually accurate regarding Indian job market
-        2. Salary ranges must be realistic for the Indian market as of 2024
-        3. Do not include any potentially discriminatory information related to age, gender, religion, or ethnicity
-        4. Focus on skills and qualifications only
-        5. Keep all language professional and constructive
-        6. Do not recommend illegal, unethical, or harmful career paths
-        7. Do not include personal opinions or biases in recommendations
+        For each career path, include multiple career progression paths. Each should be described with stages from entry-level (mention the job role) to leadership, including timelines, skills required, and salary progression in Indian Rupees give it randomly 3 -5 number of progressions. Give me different paths like some traditional , some specialization and one more anything you thing is imp .
         
         VERY IMPORTANT: You must provide the response in valid JSON format. Follow the exact structure below and ensure all arrays and objects have proper brackets and commas.
         
@@ -578,10 +475,10 @@ async function getCareerPath(resumeText, email) {
               "salary": "Salary range in INR",
               "progressionPaths": [ 
                 {
-                  "pathName": "Career Progression Path Name",
+                  "pathName": "Career Progression Paths",
                   "stages": [
                     {
-                      "level": "Job Role/Level",
+                      "level": "or can have job role",
                       "timeframe": "1-2 years",
                       "requiredSkills": ["skill1", "skill2"],
                       "salary": "Salary range in INR",
@@ -599,6 +496,7 @@ async function getCareerPath(resumeText, email) {
 
         const result = await model.generateContent(prompt);
         const responseText = result.response.text();
+        console.log(prompt)
 
         // Clean up the response - remove markdown code blocks if present
         let cleanedResponse = responseText;
@@ -610,54 +508,15 @@ async function getCareerPath(resumeText, email) {
             cleanedResponse = match[1];
         }
 
-        // Validate the JSON structure and apply guardrails to content
-        const parsedResponse = JSON.parse(cleanedResponse);
-        const validatedData = validateAndCleanseOutput(parsedResponse);
 
-        addSummarizeDataToDB(email, JSON.stringify(validatedData))
+        addSummarizeDataToDB(email, JSON.stringify(JSON.parse(cleanedResponse)))
             .catch(err => console.error("Background summary process failed:", err));
 
-        return validatedData;
+        return JSON.parse(cleanedResponse);
     } catch (error) {
         console.error("Error in getCareerPath:", error);
-
-        // Return a fallback response instead of throwing an error
-        if (error.message.includes("JSON")) {
-            return {
-                careerPaths: [],
-                error: "Failed to generate career recommendations. Please try again later."
-            };
-        }
-
         throw new Error(`Failed to process career path: ${error.message}`);
     }
-}
-
-// Helper function to sanitize resume text - remove personal information
-function sanitizeResumeText(text) {
-    if (!text) return "";
-
-    // Remove email addresses
-    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-    let sanitized = text.replace(emailRegex, "[EMAIL REDACTED]");
-
-    // Remove URLs/links
-    const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/g;
-    sanitized = sanitized.replace(urlRegex, "[URL REDACTED]");
-
-    // Remove phone numbers (various formats)
-    const phoneRegex = /(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g;
-    sanitized = sanitized.replace(phoneRegex, "[PHONE REDACTED]");
-
-    // Remove social media handles
-    const socialHandleRegex = /(@[a-zA-Z0-9_]{1,15})/g;
-    sanitized = sanitized.replace(socialHandleRegex, "[SOCIAL HANDLE REDACTED]");
-
-    // Remove physical addresses (basic pattern)
-    const addressRegex = /\d+\s+[a-zA-Z\s,]+\s+(?:Road|Rd|Street|St|Avenue|Ave|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct|Plaza|Plz|Square|Sq)\s*,\s*[a-zA-Z\s]+\s*,\s*[A-Z]{2}\s+\d{5,6}(-\d{4})?/gi;
-    sanitized = sanitized.replace(addressRegex, "[ADDRESS REDACTED]");
-
-    return sanitized;
 }
 
 // Helper function to extract common themes from feedback
@@ -668,8 +527,8 @@ function summarizeFeedbackThemes(careerFeedback) {
     // This is a simplified approach - in production you might use NLP
     const feedbackText = careerFeedback.map(item => item.feedback).join(' ').toLowerCase();
 
-    const positiveKeywords = ['like', 'good', 'excellent', 'interested', 'passion', 'enjoy', 'love', 'satisfying'];
-    const negativeKeywords = ['dislike', 'bad', 'not interested', 'boring', 'difficult', 'hate', 'avoid', 'challenging'];
+    const positiveKeywords = ['like', 'good', 'excellent', 'interested', 'passion'];
+    const negativeKeywords = ['dislike', 'bad', 'not interested', 'boring', 'difficult'];
 
     const foundPositive = positiveKeywords.filter(word => feedbackText.includes(word));
     const foundNegative = negativeKeywords.filter(word => feedbackText.includes(word));
@@ -679,136 +538,6 @@ function summarizeFeedbackThemes(careerFeedback) {
         foundNegative.length > 0 ?
             `Negative mentions of ${foundNegative.join(', ')}` :
             "Mixed feedback";
-}
-
-// New function to validate and apply guardrails to LLM output
-function validateAndCleanseOutput(data) {
-    try {
-        // Validate overall structure
-        if (!data || !data.careerPaths || !Array.isArray(data.careerPaths)) {
-            throw new Error("Invalid response structure");
-        }
-
-        // Ensure we have exactly 5 career paths
-        const careerPaths = data.careerPaths.slice(0, 5);
-        while (careerPaths.length < 5) {
-            careerPaths.push({
-                title: "General Career Option",
-                description: "This is a placeholder for a career option. Our system was unable to generate a complete recommendation. Please try again or consult with a career counselor for more personalized advice.",
-                skills: ["communication", "problem-solving", "adaptability"],
-                salary: "Varies based on experience and qualification",
-                progressionPaths: [{
-                    pathName: "Standard Progression",
-                    stages: [{
-                        level: "Entry Level",
-                        timeframe: "1-2 years",
-                        requiredSkills: ["basic skills"],
-                        salary: "Entry level salary",
-                        responsibilities: ["Basic responsibilities"]
-                    }]
-                }]
-            });
-        }
-
-        // Process each career path
-        const cleanCareerPaths = careerPaths.map(career => {
-            // Validate and cleanse career title
-            const title = typeof career.title === 'string' ?
-                career.title.substring(0, 100) : "Career Option";
-
-            // Ensure description has minimum length
-            let description = typeof career.description === 'string' ?
-                career.description : "No description provided";
-            if (description.length < 100) {
-                description += " This career path requires strong analytical skills and continuous learning. Professionals in this field need to stay updated with industry trends and develop expertise in specialized areas. Success depends on both technical proficiency and soft skills like communication and problem-solving.";
-            }
-
-            // Validate skills array
-            const skills = Array.isArray(career.skills) ?
-                career.skills.filter(skill => typeof skill === 'string').slice(0, 10) :
-                ["analytical skills", "communication", "problem-solving"];
-
-            // Validate salary format for Indian Rupees
-            let salary = typeof career.salary === 'string' ? career.salary : "Varies based on experience";
-            if (!salary.includes("INR") && !salary.includes("₹")) {
-                salary = salary + " INR per annum";
-            }
-
-            // Validate progression paths
-            const progressionPaths = Array.isArray(career.progressionPaths) ?
-                career.progressionPaths.map(path => {
-                    // Validate path name
-                    const pathName = typeof path.pathName === 'string' ?
-                        path.pathName : "Career Progression";
-
-                    // Validate stages
-                    const stages = Array.isArray(path.stages) ?
-                        path.stages.map(stage => {
-                            return {
-                                level: typeof stage.level === 'string' ? stage.level : "Career Level",
-                                timeframe: typeof stage.timeframe === 'string' ? stage.timeframe : "1-2 years",
-                                requiredSkills: Array.isArray(stage.requiredSkills) ?
-                                    stage.requiredSkills.filter(skill => typeof skill === 'string') :
-                                    ["relevant skills"],
-                                salary: typeof stage.salary === 'string' ? stage.salary : "Competitive salary",
-                                responsibilities: Array.isArray(stage.responsibilities) ?
-                                    stage.responsibilities.filter(resp => typeof resp === 'string') :
-                                    ["Key responsibilities"]
-                            };
-                        }) :
-                        [{
-                            level: "Entry Level",
-                            timeframe: "1-2 years",
-                            requiredSkills: ["basic skills"],
-                            salary: "Entry level salary",
-                            responsibilities: ["Basic responsibilities"]
-                        }];
-
-                    return { pathName, stages };
-                }) :
-                [{
-                    pathName: "Standard Progression",
-                    stages: [{
-                        level: "Entry Level",
-                        timeframe: "1-2 years",
-                        requiredSkills: ["basic skills"],
-                        salary: "Entry level salary",
-                        responsibilities: ["Basic responsibilities"]
-                    }]
-                }];
-
-            return {
-                title,
-                description,
-                skills,
-                salary,
-                progressionPaths
-            };
-        });
-
-        return { careerPaths: cleanCareerPaths };
-    } catch (error) {
-        console.error("Error validating output:", error);
-        // Return fallback data structure
-        return {
-            careerPaths: [{
-                title: "Technical Professional",
-                description: "A technical professional role involves applying specialized knowledge in fields like IT, engineering, or science. This path requires continuous learning and adaptation to new technologies and methodologies. Success depends on both technical expertise and soft skills like problem-solving and communication. This career offers opportunities to work across various industries and often provides good work-life balance with competitive compensation.",
-                skills: ["technical knowledge", "problem-solving", "analytical thinking", "communication"],
-                salary: "₹4,00,000 - ₹25,00,000 per annum depending on experience",
-                progressionPaths: [{
-                    pathName: "Standard Progression",
-                    stages: [{
-                        level: "Entry Level Professional",
-                        timeframe: "1-3 years",
-                        requiredSkills: ["foundational skills", "technical knowledge"],
-                        salary: "₹4,00,000 - ₹7,00,000 per annum",
-                        responsibilities: ["Learning core processes", "Supporting senior team members"]
-                    }]
-                }]
-            }]
-        };
-    }
 }
 
 app.post("/api/career-path", async (req, res) => {
@@ -827,11 +556,18 @@ app.post("/api/career-path", async (req, res) => {
     } catch (error) {
         console.error("Error processing career path:", error);
         res.status(500).json({
-            error: "There was an issue processing your request",
-            details: "Our career recommendation system is currently experiencing difficulties. Please try again later."
+            error: error.message,
+            details: "There was an issue processing your request with the AI model"
         });
     }
 });
+
+
+
+
+
+
+
 
 //**********************************************************chatbot code for career compass****************************** */
 

@@ -25,7 +25,7 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     // const startListening = () => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
     const [resetCounter, setResetCounter] = useState(0);
 
-    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start, email } = useContext(context)
+    const { transcriptCleared, setTranscriptCleared, hrQuestion, setHrQuestion, ts, setTs, emotion, setEmotion, prevTs, setPrevTs, ans, setAns, start, email, overAllEmotion, setOverAllEmotion, userData } = useContext(context)
 
 
     const [silenceDetected, setSilenceDetected] = useState(false);
@@ -115,10 +115,16 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
     useEffect(() => {
         // Request the first question on component mount
 
-
+        async function resetI() {
+            await fetch('http://localhost:5000/reset_interview/harshkoshti@gmail.com', {
+                method: 'post'
+            })
+        }
         // Listen for new questions and feedback from the server
-        socketRef.current.on('new_question', (data) => {
+        socketRef.current.on('new_question', async (data) => {
             if (data.interview_finished) {
+
+                await resetI()
                 window.location.href = '/hrfeedback'
             } else {
                 setHrQuestion(data.question);
@@ -143,14 +149,21 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         setPrevTs(0)
 
         if (!transcriptCleared) {
-            socketRef.current.emit('send_transcript', { transcript, hrQuestion, email });
+            socketRef.current.emit('send_transcript', { transcript, hrQuestion, email, overAllEmotion });
         }
 
 
         setShow('feedback');
+
         setTranscriptCleared(true);
         resetTranscript(); // Clear the transcript for the next question
-        socketRef.current.emit('request_question', { userId: userId, email }); // Request the next question
+
+        if (userData) {
+            let job_role = userData.customJobRole.length > 0 ? userData.customJobRole : userData.jobRole;
+            let specialization = userData.specialization;
+            let degree = userData.degree;
+            socketRef.current.emit('request_question', { userId: userId, email, job_role, specialization, degree }); // Request the next question
+        }
         setFeedback(null); // Reset feedback for the new question
 
         // Analyze emotions and update feedback
@@ -166,6 +179,9 @@ const VoiceDetection = ({ model, setModel, feedback_emotion, socketRef, setFeedb
         setEmotionCounts({ ...emotionCounts, [most]: 0 }); // Reset the count for the most detected emotion
         setFeedback_emotion('Most of the time ' + feedbackMap.get(most));
 
+        setTimeout(() => {
+            setOverAllEmotion([])
+        }, 2000)
 
     };
 

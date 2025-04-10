@@ -11,23 +11,17 @@ const Hrfeedback = () => {
 
     const { email } = useContext(context)
 
-    useEffect(() => {
-        if (email) {
-            fetch(`http://localhost:5001/get_feedback?email=${email}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.feedback && Array.isArray(data.feedback)) {
-                        setFeedbackData(data.feedback);
-                    } else {
-                        setFeedbackData([]);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching feedback:", error);
-                    setFeedbackData([]); // Ensure fallback data
-                });
-        }
-    }, [email]);
+    const [allEmotion, setAllEmotion] = useState({
+        "Neutral": 16,
+        "Angry": 0,
+        "Happy": 13,
+        "Surprised": 5,
+        "Fearful": 1,
+        "Sad": 0,
+        "Disgusted": 0
+    })
+
+   
 
     return (
         <>
@@ -64,18 +58,10 @@ const Hrfeedback = () => {
                     </a>
                 </nav>
                 <EmotionInsightsFeedback
-                    emotions={{
-                        "Neutral": 16,
-                        "Angry": 0,
-                        "Happy": 13,
-                        "Surprised": 5,
-                        "Fearful": 1,
-                        "Sad": 0,
-                        "Disgusted": 0
-                    }}
+                    emotions={allEmotion}
                 />
 
-                <InterviewFeedbackDashboard />
+                <InterviewFeedbackDashboard allEmotion={allEmotion} setAllEmotion={setAllEmotion} />
 
             </div>
         </>

@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp, Star, AlertTriangle, Award, BarChart2, ArrowUp,
 import { context } from '../context/Context';
 import EmotionQuestionAnalysis from './EmotionGraph';
 
-const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
+const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
   const [feedbackData, setFeedbackData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,16 +18,14 @@ const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
       if (email) {
         try {
           setLoading(true);
-          const response = await fetch(`http://localhost:5000/api/user_feedback/${userEmail}`);
+          const response = await fetch(`http://localhost:5000/api/tech_feedback/${userEmail}`);
           if (!response.ok) throw new Error('Failed to fetch feedback data');
           const data = await response.json();
           const hrQuestions = data.feedback || [];
           setFeedbackData(hrQuestions);
-
-          if (data.emotion) {
+          if(data.emotion){
             setAllEmotion(data.emotion)
           }
-
         } catch (err) {
           setError(err.message);
         } finally {
@@ -223,7 +221,7 @@ const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
 
                 <div className="mb-5">
                   <h4 className="text-sm font-semibold text-gray-700 mb-2">Feedback</h4>
-                  <p className="p-4 bg-blue-50 rounded-lg text-sm text-gray-800 border border-blue-200 whitespace-pre-line">{formatFeedbackArray(item.feedback)}</p>
+                  <p className="p-4 bg-blue-50 rounded-lg text-sm text-gray-800 border border-blue-200 whitespace-pre-line">{formatFeedbackArray(item.technical_feedback)}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -249,22 +247,22 @@ const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
                     </div>
                   )}
 
-                  {item.matching_points?.length > 0 && (
+                  {item.matching_concepts?.length > 0 && (
                     <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                       <h4 className="flex items-center text-sm font-semibold text-blue-700 mb-3"><CheckCircle size={16} className="mr-2" /> Matching Points</h4>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {item.matching_points.map((point, i) => (
+                        {item.matching_concepts.map((point, i) => (
                           <li key={i} className="flex items-start"><span className="w-5 h-5 mr-2 bg-blue-200 text-blue-800 rounded-full flex items-center justify-center text-xs">{i + 1}</span>{point}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
-                  {item.missing_points?.length > 0 && (
+                  {item.missing_concepts?.length > 0 && (
                     <div className="p-4 bg-red-50 rounded-lg border border-red-200">
                       <h4 className="flex items-center text-sm font-semibold text-red-700 mb-3"><AlertTriangle size={16} className="mr-2" /> Missing Points</h4>
                       <ul className="space-y-2 text-sm text-gray-700">
-                        {item.missing_points.map((point, i) => (
+                        {item.missing_concepts.map((point, i) => (
                           <li key={i} className="flex items-start"><span className="w-5 h-5 mr-2 bg-red-200 text-red-800 rounded-full flex items-center justify-center text-xs">{i + 1}</span>{point}</li>
                         ))}
                       </ul>
@@ -292,4 +290,4 @@ const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
   );
 };
 
-export default InterviewFeedbackDashboard;
+export default TechFeedbackComponent;

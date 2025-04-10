@@ -8,66 +8,137 @@ import {
     Zap,
     User
 } from 'lucide-react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
-// Expanded insight generation helpers
+// Professional terminology mapping for emotions
+const professionalTerminology = {
+    "Neutral": "Curious & Calm",
+    "Happy": "Confident & Excited",
+    "Surprised": "Curious", // Will be normalized, but keeping a mapping for edge cases
+    "Fearful": "Nervous",
+    "Sad": "Frustration",
+    "Angry": "Assertive",
+    "Disgusted": "Critical"
+};
+
+// Expanded insight generation helpers with professional terminology
 const generateInsightVariations = {
     "Neutral": [
         {
-            interpretation: "Professional Composure",
+            interpretation: "Active Listening",
             descriptions: [
-                "Demonstrated exceptional self-control and emotional stability throughout the interview.",
-                "Maintained a balanced demeanor, showcasing maturity and professional restraint.",
-                "Exhibited a calm and collected approach, indicating strong emotional intelligence."
+                "Your expressions indicate curiosity and calmness. This can be a great state for listening and absorbing information.",
+                "Maintained a balanced demeanor, showcasing attentiveness and professional engagement.",
+                "Exhibited a calm and collected approach, indicating strong communication intelligence."
             ],
             professionalImplications: [
-                "Suggests ability to handle high-pressure situations with grace",
+                "Suggests ability to handle complex information with focus",
                 "Indicates potential for leadership roles requiring emotional regulation",
                 "Demonstrates adaptability in complex professional environments"
             ]
         },
         {
-            interpretation: "Strategic Reservedness",
+            interpretation: "Strategic Engagement",
             descriptions: [
-                "Maintained a measured emotional response, suggesting strategic thinking.",
-                "Displayed a nuanced approach to communication, balancing openness with discretion.",
-                "Showed remarkable ability to process information without emotional reactivity."
+                "Displayed curiosity and open-mindedness, suggesting engagement with the material.",
+                "Showed a nuanced approach to communication, staying open to new information.",
+                "Demonstrated remarkable ability to remain present and attentive throughout."
             ],
             professionalImplications: [
-                "Potential strength in roles requiring diplomatic communication",
-                "Indicates analytical mindset and careful decision-making",
-                "Suggests capability in navigating complex interpersonal dynamics"
+                "Potential strength in roles requiring careful analysis",
+                "Indicates receptiveness to new ideas and perspectives",
+                "Suggests capability in navigating complex information"
             ]
         }
     ],
     "Happy": [
         {
-            interpretation: "Vibrant Enthusiasm",
+            interpretation: "Positive Presence",
             descriptions: [
-                "Radiated genuine excitement and positive energy throughout the interview.",
-                "Demonstrated infectious optimism and passion for potential opportunities.",
-                "Showed remarkable ability to maintain high spirits and positive outlook."
+                "Your expressions show confidence and excitement, which can positively influence those around you.",
+                "Demonstrated assured communication style with balanced self-assurance.",
+                "Showed remarkable ability to maintain professional enthusiasm and constructive outlook."
             ],
             professionalImplications: [
                 "Indicates potential as a motivational team player",
-                "Suggests strong potential in client-facing or collaborative roles",
+                "Suggests strength in client-facing or collaborative roles",
                 "Demonstrates ability to create positive workplace environments"
             ]
         },
         {
-            interpretation: "Authentic Passion",
+            interpretation: "Professional Enthusiasm",
             descriptions: [
-                "Displayed deep genuine enthusiasm that goes beyond surface-level excitement.",
-                "Communicated with natural warmth and sincere engagement.",
-                "Showed ability to connect emotionally while maintaining professional boundaries."
+                "Projected confidence and positive energy throughout the interaction.",
+                "Communicated with appropriate warmth and sincere professional engagement.",
+                "Showed ability to convey enthusiasm while maintaining professional boundaries."
             ],
             professionalImplications: [
-                "Strong potential in roles requiring genuine interpersonal connection",
-                "Indicates natural ability to inspire and motivate others",
-                "Suggests emotional intelligence and authentic communication skills"
+                "Strong potential in roles requiring authentic stakeholder engagement",
+                "Indicates natural ability to build rapport and trust",
+                "Suggests emotional intelligence and effective communication skills"
             ]
         }
     ],
-    // Similar expansions for other emotions...
+    "Fearful": [
+        {
+            interpretation: "Thoughtful Caution",
+            descriptions: [
+                "It looks like you're experiencing some nervousness or anxiety. This might be affecting your confidence.",
+                "Showed attentiveness to potential challenges, indicating foresight.",
+                "Exhibited awareness of nuances that might escape less perceptive candidates."
+            ],
+            professionalImplications: [
+                "Valuable for roles requiring risk assessment and mitigation",
+                "Indicates detail-oriented thinking and preventative approach",
+                "Suggests ability to identify potential issues before they escalate"
+            ]
+        }
+    ],
+    "Sad": [
+        {
+            interpretation: "Reflective Analysis",
+            descriptions: [
+                "It seems you might be feeling frustration or disappointment. Acknowledging these feelings is the first step to overcoming them.",
+                "Showed nuanced understanding of complex situations with appropriate seriousness.",
+                "Exhibited emotional depth that suggests empathy and interpersonal awareness."
+            ],
+            professionalImplications: [
+                "Well-suited for roles requiring empathetic leadership",
+                "Indicates potential for thoughtful problem-solving",
+                "Suggests capacity for understanding complex human dynamics"
+            ]
+        }
+    ],
+    "Angry": [
+        {
+            interpretation: "Assertive",
+            descriptions: [
+                "You seem to be feeling defensive. This could be a sign that you are stressed or overwhelmed.",
+                "Demonstrated clear boundaries and decisive approach to challenging topics.",
+                "Showed capacity for direct and focused engagement when addressing key points."
+            ],
+            professionalImplications: [
+                "Potential strength in advocacy positions",
+                "Indicates ability to maintain focus under pressure",
+                "Suggests passion and commitment to outcomes"
+            ]
+        }
+    ],
+    "Disgusted": [
+        {
+            interpretation: "Critical Evaluation",
+            descriptions: [
+                "Demonstrated refined judgment and careful evaluation of standards.",
+                "Showed clear understanding of quality benchmarks and professional expectations.",
+                "Exhibited discerning perspective that suggests attention to excellence."
+            ],
+            professionalImplications: [
+                "Well-suited for quality assurance or evaluation roles",
+                "Indicates potential strength in maintaining professional standards",
+                "Suggests commitment to excellence and integrity"
+            ]
+        }
+    ]
 };
 
 // Function to randomly select an insight variation
@@ -76,9 +147,9 @@ const getRandomInsightVariation = (emotion) => {
     return variations.length > 0
         ? variations[Math.floor(Math.random() * variations.length)]
         : {
-            interpretation: "Unique Emotional Perspective",
-            descriptions: ["Displayed a distinctive emotional approach to the interview."],
-            professionalImplications: ["Suggests individuality and unique communication style"]
+            interpretation: "Unique Professional Approach",
+            descriptions: ["Displayed a distinctive communication style during the interaction."],
+            professionalImplications: ["Suggests individuality and unique professional perspective"]
         };
 };
 
@@ -88,66 +159,111 @@ const EmotionInsightsFeedback = ({ emotions }) => {
         "Neutral": {
             icon: <Meh className="text-gray-500" size={40} />,
             color: "bg-gray-100",
+            chartColor: "#9CA3AF"
         },
         "Happy": {
             icon: <Smile className="text-green-500" size={40} />,
             color: "bg-green-50",
+            chartColor: "#10B981"
         },
         "Surprised": {
             icon: <Zap className="text-yellow-500" size={40} />,
             color: "bg-yellow-50",
+            chartColor: "#F59E0B"
         },
         "Fearful": {
             icon: <Thermometer className="text-blue-400" size={40} />,
             color: "bg-blue-50",
+            chartColor: "#60A5FA"
         },
         "Sad": {
             icon: <Frown className="text-indigo-500" size={40} />,
             color: "bg-indigo-50",
+            chartColor: "#6366F1"
         },
         "Angry": {
             icon: <TrendingUp className="text-red-500" size={40} />,
             color: "bg-red-50",
+            chartColor: "#EF4444"
         },
         "Disgusted": {
             icon: <User className="text-purple-500" size={40} />,
             color: "bg-purple-50",
+            chartColor: "#8B5CF6"
         }
     };
 
-    // Use useMemo to generate consistent but dynamic insights per render
+    // Use useMemo to normalize emotions and generate insights
     const dynamicInsights = useMemo(() => {
-        return Object.entries(emotions)
+        // Create a copy of emotions to work with
+        let normalizedEmotions = { ...emotions };
+
+        // Handle "Surprised" misclassification issue
+        if (normalizedEmotions["Surprised"] > 0) {
+            // Distribute "Surprised" values to "Neutral" and "Happy"
+            const surprisedCount = normalizedEmotions["Surprised"];
+            normalizedEmotions["Neutral"] = (normalizedEmotions["Neutral"] || 0) + Math.floor(surprisedCount * 0.6);
+            normalizedEmotions["Happy"] = (normalizedEmotions["Happy"] || 0) + Math.floor(surprisedCount * 0.4);
+            normalizedEmotions["Surprised"] = 0; // Remove the surprised classification
+        }
+
+        return Object.entries(normalizedEmotions)
             .filter(([_, count]) => count > 0)
             .sort((a, b) => b[1] - a[1])
             .map(([emotion, count]) => ({
                 emotion,
+                professionalLabel: professionalTerminology[emotion],
                 count,
                 ...emotionInsights[emotion],
                 ...getRandomInsightVariation(emotion)
             }));
     }, [emotions]);
 
-    const totalEmotions = dynamicInsights.reduce((sum, insight) => sum + insight.count, 0);
+    const totalEmotions = Object.values(emotions).reduce((sum, count) => sum + count, 0);
+
+    // Prepare data for the pie chart
+    const chartData = useMemo(() => {
+        return dynamicInsights.map(insight => ({
+            name: insight.professionalLabel,
+            value: insight.count,
+            color: insight.chartColor
+        }));
+    }, [dynamicInsights]);
+
+    // Custom tooltip for the pie chart
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-white p-2 shadow-md rounded border text-sm">
+                    <p className="font-semibold">{payload[0].name}</p>
+                    <p className="text-gray-600">Count: {payload[0].value}</p>
+                    <p className="text-gray-600">
+                        {((payload[0].value / totalEmotions) * 100).toFixed(1)}%
+                    </p>
+                </div>
+            );
+        }
+        return null;
+    };
 
     return (
         <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-100 to-white p-6 border-b">
                 <h1 className="text-2xl font-bold text-gray-800">
-                    Comprehensive Emotional Intelligence Report
+                    Comprehensive Professional Presence Analysis
                 </h1>
                 <p className="text-sm text-gray-600 mt-1">
-                    Insights derived from advanced emotional analysis
+                    Insights derived from advanced communication style assessment
                 </p>
             </div>
 
             {/* Content */}
             <div className="p-6 space-y-6">
-                {/* Top Emotions Section */}
+                {/* Top Communication Styles Section */}
                 <div>
                     <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                        Primary Emotional Highlights
+                        Primary Communication Highlights
                     </h2>
                     <div className="grid md:grid-cols-2 gap-6">
                         {dynamicInsights.slice(0, 2).map((insight) => (
@@ -159,7 +275,7 @@ const EmotionInsightsFeedback = ({ emotions }) => {
                                     {insight.icon}
                                     <div className="ml-4">
                                         <h3 className="text-lg font-bold text-gray-800">
-                                            {insight.emotion}
+                                            {insight.professionalLabel}
                                         </h3>
                                         <p className="text-sm text-gray-600">
                                             {((insight.count / totalEmotions) * 100).toFixed(1)}% of interactions
@@ -189,36 +305,67 @@ const EmotionInsightsFeedback = ({ emotions }) => {
                     </div>
                 </div>
 
-                {/* Comprehensive Emotion Breakdown */}
-                <div>
-                    <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                        Comprehensive Emotional Landscape
-                    </h2>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        {dynamicInsights.map((insight) => (
-                            <div
-                                key={insight.emotion}
-                                className={`${insight.color} rounded-lg p-4 border hover:scale-105 transition-transform`}
-                            >
-                                <div className="flex items-center mb-2">
-                                    {insight.icon}
-                                    <span className="ml-2 font-semibold text-gray-800">
-                                        {insight.emotion}
-                                    </span>
-                                </div>
-                                <div>
+                {/* Additional insights if more than 2 emotions detected */}
+                {dynamicInsights.length > 2 && (
+                    <div>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                            Secondary Communication Patterns
+                        </h2>
+                        <div className="space-y-4">
+                            {dynamicInsights.slice(2).map((insight) => (
+                                <div
+                                    key={insight.emotion}
+                                    className={`${insight.color} border rounded-lg p-4 shadow-sm`}
+                                >
+                                    <div className="flex items-center mb-2">
+                                        {insight.icon}
+                                        <div className="ml-3">
+                                            <h3 className="text-md font-bold text-gray-800">
+                                                {insight.professionalLabel}
+                                            </h3>
+                                            <p className="text-xs text-gray-600">
+                                                {((insight.count / totalEmotions) * 100).toFixed(1)}% of interactions
+                                            </p>
+                                        </div>
+                                    </div>
                                     <p className="text-sm text-gray-600">
-                                        {insight.count} occurrences ({((insight.count / totalEmotions) * 100).toFixed(1)}%)
-                                    </p>
-                                    <p className="text-xs text-blue-600 mt-1">
-                                        {insight.interpretation}
-                                    </p>
-                                    <p className="text-xs text-gray-500 mt-1">
                                         {insight.descriptions[0]}
                                     </p>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Chart Section */}
+                <div>
+                    <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                        Communication Style Distribution
+                    </h2>
+                    <div className="border rounded-lg p-4 bg-white shadow-md">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={chartData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    outerRadius={90}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    nameKey="name"
+                                >
+                                    {chartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip content={<CustomTooltip />} />
+                                <Legend layout="vertical" verticalAlign="middle" align="right" />
+                            </PieChart>
+                        </ResponsiveContainer>
+                        <p className="text-center text-sm text-gray-600 mt-4">
+                            Distribution of communication styles based on {totalEmotions} analyzed interactions
+                        </p>
                     </div>
                 </div>
             </div>

@@ -19,6 +19,11 @@ import CareerPath from './components/Career';
 import Hrfeedback from './components/Hrfeedback';
 import Techfeedback from './components/Techfeedback';
 import SignupForm from './components/SignupForm ';
+import CareerChatbot from './components/CareerChatbot';
+import TechnicalInterview from './components/Test';
+import Emotion from './components/Emotion';
+import UserProfile from './components/UserProfile';
+import ResumeAnalysisReport from './components/TestResume';
 // Component to handle routing logic
 const RouteHandler = () => {
   const location = useLocation();
@@ -109,7 +114,7 @@ const router = createBrowserRouter([
     element: (
       <>
         <RouteHandler />
-        <CandidateFeedbackUI />
+        <TechnicalInterview />
       </>
     ),
   },
@@ -164,6 +169,42 @@ const router = createBrowserRouter([
       <>
 
         <SignupForm />
+      </>
+    ),
+  },
+  {
+    path: "/chat",
+    element: (
+      <>
+
+        <CareerChatbot />
+      </>
+    ),
+  },
+  {
+    path: "/emotiontest",
+    element: (
+      <>
+
+        <Emotion />
+      </>
+    ),
+  },
+  {
+    path: "/userprofile",
+    element: (
+      <>
+        <RouteHandler />
+        <UserProfile />
+      </>
+    ),
+  },
+  {
+    path: "/testresume",
+    element: (
+      <>
+        <RouteHandler />
+        <ResumeAnalysisReport />
       </>
     ),
   },

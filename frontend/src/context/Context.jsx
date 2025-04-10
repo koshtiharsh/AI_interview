@@ -8,6 +8,9 @@ export default function Context({ children }) {
   const [email, setEmail] = useState(null); // Store email centrally
 
   const [skills, setSkills] = useState(['html', 'css', "javascript"]);
+  const [tech_stack, set_tech_stack] = useState('html, css, javascript');
+  const [userData, setUserData] = useState(null);
+  const [showCustomJobRole, setShowCustomJobRole] = useState(false);
 
 
   useEffect(() => {
@@ -20,12 +23,54 @@ export default function Context({ children }) {
         const data = await res.json();
 
         setSkills(data.skills)
+
+        const joined = data.skills.join(", ");
+        set_tech_stack(joined)
         console.log(data)
       }
     }
     getSkills()
 
   }, [email])
+
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+
+        const response = await fetch(`http://localhost:2000/user?email=${encodeURIComponent(email)}`, {
+          headers: {
+            'x-user-email': email
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const data = await response.json();
+        setUserData(data);
+
+
+
+        // Check if job role is 'Other' to display custom job role field
+        if (data.customJobRole.length > 0) {
+          setShowCustomJobRole(true);
+        }
+      } catch (err) {
+
+      }
+    };
+
+    if (email) {
+      fetchUserData();
+    }
+  }, [email]);
+
+
+
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -93,7 +138,7 @@ export default function Context({ children }) {
     }
   }, []);
   */
-
+  const [overAllEmotion, setOverAllEmotion] = useState([])
   const [ans, setAns] = useState("notset");
   const [start, setStart] = useState(false);
   const [prevTs, setPrevTs] = useState(0);
@@ -105,6 +150,7 @@ export default function Context({ children }) {
   const [hrQuestion, setHrQuestion] = useState("");
   const [ts, setTs] = useState("");
   const [emotion, setEmotion] = useState("");
+  console.log(userData)
 
   const values = {
     session,
@@ -126,7 +172,9 @@ export default function Context({ children }) {
     start,
     setStart,
     skills,
-
+    overAllEmotion, setOverAllEmotion,
+    tech_stack, set_tech_stack,
+    userData,
   };
 
   return <context.Provider value={values}>{children}</context.Provider>;
