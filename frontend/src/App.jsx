@@ -111,7 +111,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/test",
+    path: "/technical",
     element: (
       <>
         <RouteHandler />
@@ -119,15 +119,15 @@ const router = createBrowserRouter([
       </>
     ),
   },
-  {
-    path: "/technical",
-    element: (
-      <>
-        <RouteHandler />
-        <Technical />
-      </>
-    ),
-  },
+  // {
+  //   path: "/technical",
+  //   element: (
+  //     <>
+  //       <RouteHandler />
+  //       <Technical />
+  //     </>
+  //   ),
+  // },
   {
     path: "/careerpath",
     element: (
@@ -213,7 +213,7 @@ const router = createBrowserRouter([
     path: "/hrdemo",
     element: (
       <>
-        <HrDemo/>
+        <HrDemo />
       </>
     ),
   },
