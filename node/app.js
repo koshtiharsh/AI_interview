@@ -22,24 +22,71 @@ const ADZUNA_BASE_URL = "https://api.adzuna.com/v1/api/jobs/in/search/1"; // Cha
 
 app.get("/jobs", async (req, res) => {
     try {
-        const { what = "", where = "" } = req.query;
+        let { what = "", where = "" } = req.query;
 
-        const response = await axios.get(ADZUNA_BASE_URL, {
-            params: {
-                app_id: ADZUNA_APP_ID,
-                app_key: ADZUNA_API_KEY,
-                what,
-                where,
-                results_per_page: 100
+        // Define keywords to try in order if results are empty
+        const fallbackKeywords = ["junior", "entry-level", "graduate", "trainee", "internship"];
+        let results = [];
+        let keywordUsed = "";
+
+        // Try each keyword until we get results
+        for (const keyword of fallbackKeywords) {
+            const searchTerm = keyword + " " + what;
+            console.log(`Trying search term: "${searchTerm}"`);
+
+            const response = await axios.get(ADZUNA_BASE_URL, {
+                params: {
+                    app_id: ADZUNA_APP_ID,
+                    app_key: ADZUNA_API_KEY,
+                    what: searchTerm.trim(),
+                    where,
+                    results_per_page: 100
+                }
+            });
+
+            results = response.data.results || [];
+
+            console.log(results)
+
+            // If we got results, store which keyword worked and break the loop
+            if (results.length > 0) {
+                keywordUsed = keyword;
+                break;
             }
+        }
+
+        // If we still have no results after trying all keywords, try the original query
+        if (results.length === 0) {
+            console.log(`No results with any keyword, trying original term: "${what}"`);
+            const response = await axios.get(ADZUNA_BASE_URL, {
+                params: {
+                    app_id: ADZUNA_APP_ID,
+                    app_key: ADZUNA_API_KEY,
+                    what,
+                    where,
+                    results_per_page: 100
+                }
+            });
+            results = response.data.results || [];
+            keywordUsed = "none";
+        }
+
+        // Return results along with information about which keyword was used
+        res.json({
+            keywordUsed,
+            count: results.length,
+            results
         });
 
-        res.json(response.data.results);
+
+        console.log(results)
+
+        console.log(`Found ${results.length} results using keyword: ${keywordUsed || "none"}`);
     } catch (error) {
+        console.error("Error fetching jobs:", error);
         res.status(500).json({ error: "Error fetching jobs", details: error.message });
     }
 });
-
 // Set your Gemini API key
 const GEMINI_API_KEY = "AIzaSyAkc9L05OE3Nnlvkk15QxfwT7EDoFSzWug";
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -129,6 +176,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    resume_analysis_data: Object,
 
     recommendationFeedback: [{
         careerTitle: String,
@@ -137,6 +185,8 @@ const userSchema = new mongoose.Schema({
         timestamp: String,
         recommendationId: String
     }],
+    resume_recommendations: [],
+
 }, {
     timestamps: true, // Optional: adds createdAt and updatedAt fields
 });
@@ -209,7 +259,7 @@ app.post('/api/signup', validateSignup, async (req, res) => {
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
 
         res.status(201).json({
@@ -254,7 +304,7 @@ app.post('/api/login', async (req, res) => {
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
         );
 
         res.status(200).json({
@@ -337,7 +387,7 @@ app.get('/user', extractEmail, async (req, res) => {
     try {
         const user = await User.findOne(
             { email: req.userEmail },
-            'name age mobile email degree specialization additionalInfo technicalSkills jobRole customJobRole'
+            'name age mobile email degree specialization additionalInfo technicalSkills jobRole customJobRole '
         );
 
         if (!user) {
@@ -350,6 +400,28 @@ app.get('/user', extractEmail, async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
+app.get('/resumereport/:email', async (req, res) => {
+
+    try {
+
+        const { email } = req.params;
+
+        const data = await User.findOne({ email: email },
+            "resume_analysis_data"
+        )
+
+
+        if (data.resume_analysis_data) {
+            res.status(200).json({ success: true, data: data.resume_analysis_data })
+        } else {
+            res.status(200).json({ success: false })
+        }
+
+    } catch (error) {
+        console.log("error at resumeerpot get api", error)
+    }
+})
 
 // PUT update user profile using email
 app.put('/user', extractEmail, async (req, res) => {
@@ -1032,6 +1104,192 @@ app.post("/chat", async (req, res) => {
 });
 /*                    ***************************LLm response verifier*///////////////////////////////////////////////////////////
 
+// start *******************************************llama versatile 70b model LLM 
+
+
+app.post("/prompt", async (req, res) => {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+        return res.status(400).json({ error: "Prompt is required" });
+    }
+
+    try {
+        // First, get the evaluation from the model
+        const response = await axios.post(
+            API_URL,
+            {
+                model: "llama-3.3-70b-versatile", // Using a different model that may follow instructions better
+                messages: [
+                    {
+                        role: "system",
+                        content: ""
+                    },
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ],
+                // We only need a short response
+                temperature: 0.8, // Very low temperature for consistent output
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${GROQ_API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const aiResponse = response.data.choices[0].message.content.trim();
+
+
+
+        // Create our own JSON response
+        const jsonResponse = { response: aiResponse, raw: aiResponse };
+        console.log(jsonResponse)
+        res.json(jsonResponse);
+
+    } catch (error) {
+        console.error("Error:", error.response?.data || error.message);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+});
+// end *******************************************end llama versatile 70b model LLM 
+
+
+
+
+////// resume recomendations using llm start 
+
+app.post('/recommendations', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+
+        // Find the resume analysis data for the given email
+        const resumeData = await User.findOne({ email }).sort({ createdAt: -1 });
+
+        if (!resumeData) {
+            return res.status(404).json({ error: 'No resume analysis found for this email' });
+        }
+
+        // Prepare the prompt for the LLM
+        const promptData = {
+            prompt: `Generate 7-8 actionable recommendations for improving a resume based on the following analysis:
+        
+  Overall Score: ${resumeData.resume_analysis_data.final}/100
+  Hard Skills Match: ${resumeData.resume_analysis_data.hsp}/100
+  Soft Skills Match: ${resumeData.resume_analysis_data.ssp}/100
+  Word Count: ${resumeData.resume_analysis_data.word_count} (Word Count Score: ${resumeData.resume_analysis_data.wcp}/100)
+  
+  Present Skills: ${resumeData.resume_analysis_data.match_hard.join(', ')}
+  Missing Skills: ${resumeData.resume_analysis_data.missing_hard.join(', ')}
+  Present Soft Skills: ${resumeData.resume_analysis_data.match_soft.join(', ')}
+  Missing Soft Skills: ${resumeData.resume_analysis_data.missing_soft.length > 0 ? resumeData.resume_analysis_data.missing_soft.join(', ') : 'None'}
+  
+  Sections Found: ${resumeData.resume_analysis_data.sections.join(', ')}
+  Spelling/Grammar Corrections Needed: ${resumeData.resume_analysis_data.corrections.length}
+  Important : dont mention anything about the structure of resume because i am just sharing the extracted information 
+  Please return your response in JSON format with an array of recommendation statements. Each statement should be specific, actionable, and directly tied to improving the resume based on the analysis. Focus on the missing skills, any low scores, and potential improvements to structure and content.
+  
+  Format your response like this:
+  {
+    "recommendations": [
+      "Recommendation 1",
+      "Recommendation 2",
+      ...
+    ]
+  }
+  `
+        };
+
+        // Call the LLM API
+        const llmResponse = await axios.post('http://localhost:2000/prompt', promptData);
+
+        // Extract the actual response content
+        let responseContent = llmResponse.data.response || llmResponse.data;
+
+        // Handle code blocks in the response (remove markdown formatting)
+        if (typeof responseContent === 'string') {
+            responseContent = responseContent.replace(/```(?:json)?\n|\n```/g, '');
+        }
+
+        // Parse the JSON response
+        let recommendations;
+        try {
+            if (typeof responseContent === 'string') {
+                recommendations = JSON.parse(responseContent);
+            } else {
+                recommendations = responseContent;
+            }
+
+            // Save recommendations to the database
+            resumeData.resume_recommendations = recommendations.recommendations;
+            await resumeData.save();
+
+            return res.status(200).json({
+                message: 'Recommendations generated and saved successfully',
+                recommendations: recommendations.recommendations
+            });
+        } catch (e) {
+            console.error('Error parsing LLM response:', e);
+            return res.status(500).json({
+                error: 'Invalid response format from LLM API',
+                rawResponse: responseContent
+            });
+        }
+    } catch (error) {
+        console.error('Error generating recommendations:', error);
+        return res.status(500).json({ error: 'Error generating recommendations', details: error.message });
+    }
+});
+// Route to get all resume analyses for an email
+app.get('/analyses/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const analyses = await User.findOne({ email }, "resume_recommendations")
+        res.json({ data: analyses.resume_recommendations, success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+////// resume recomendations using llm end
+
+
+
+
+
+/////extra
+
+const NEW_GEMINI_API_KEY = "AIzaSyCpOz987KQ6EHbEuhmiLzPi28XkTMzT02Q";
+const newgenAI = new GoogleGenerativeAI(NEW_GEMINI_API_KEY);
+const new_model = newgenAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+app.post("/gemini-prompt", async (req, res) => {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+        return res.status(400).json({ error: "Prompt is required" });
+    }
+
+    try {
+        const result = await new_model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text().trim();
+
+        const jsonResponse = { response: text, raw: text };
+        console.log(jsonResponse);
+        res.json(jsonResponse);
+
+    } catch (error) {
+        console.error("Error:", error?.message || error);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+});
 
 
 const PORT = 2000;

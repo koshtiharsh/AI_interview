@@ -24,6 +24,7 @@ import TechnicalInterview from './components/Test';
 import Emotion from './components/Emotion';
 import UserProfile from './components/UserProfile';
 import ResumeAnalysisReport from './components/TestResume';
+import HrDemo from './components/HrTesting';
 // Component to handle routing logic
 const RouteHandler = () => {
   const location = useLocation();
@@ -200,11 +201,19 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/testresume",
+    path: "/resume/resumereport",
     element: (
       <>
         <RouteHandler />
         <ResumeAnalysisReport />
+      </>
+    ),
+  },
+  {
+    path: "/hrdemo",
+    element: (
+      <>
+        <HrDemo/>
       </>
     ),
   },

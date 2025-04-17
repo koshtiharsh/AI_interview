@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ChevronDown, ChevronUp, Star, AlertTriangle, Award, BarChart2, ArrowUp, ArrowDown, TrendingUp, Calendar, CheckCircle, Flag } from 'lucide-react';
+import { ChevronDown, ChevronUp, Star, AlertTriangle, Award, BarChart2, ArrowUp, ArrowDown, TrendingUp, Calendar, CheckCircle, Flag, Code, BookOpen, FileCheck } from 'lucide-react';
 import { context } from '../context/Context';
 import EmotionQuestionAnalysis from './EmotionGraph';
 
@@ -21,8 +21,9 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
           const response = await fetch(`http://localhost:5000/api/tech_feedback/${userEmail}`);
           if (!response.ok) throw new Error('Failed to fetch feedback data');
           const data = await response.json();
-          const hrQuestions = data.feedback || [];
-          setFeedbackData(hrQuestions);
+          // Filter out items where verified is not true
+          const verifiedFeedback = (data.feedback || []).filter(item => item.verified === true);
+          setFeedbackData(verifiedFeedback);
           if(data.emotion){
             setAllEmotion(data.emotion)
           }
@@ -118,9 +119,20 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
     return feedbackArray.join("\n");
   };
 
+  // Check if question is a coding question
+  const isCodingQuestion = (item) => {
+    return !!item.code_solution;
+  };
+
+  // Format code with proper indentation
+  const formatCode = (code) => {
+    if (!code) return "";
+    return code.trim();
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64 text-lg font-medium text-gray-600">Loading feedback...</div>;
   if (error) return <div className="p-4 bg-red-100 border border-red-400 rounded-md text-red-700">Error: {error}</div>;
-  if (!feedbackData.length) return <div className="p-8 text-center bg-gray-50 rounded-lg text-lg text-gray-600">No feedback available yet. Start practicing!</div>;
+  if (!feedbackData.length) return <div className="p-8 text-center bg-gray-50 rounded-lg text-lg text-gray-600">No verified feedback available yet. Start practicing!</div>;
 
   const bestQuestion = getHighestScoreQuestion();
   const progressTrend = getProgressTrend();
@@ -130,7 +142,7 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
       <header className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900">HR Interview Feedback Dashboard</h1>
         <span className="px-4 py-1 text-sm font-semibold text-blue-700 bg-blue-100 rounded-full">
-          {feedbackData.length} Responses
+          {feedbackData.length} Verified Responses
         </span>
       </header>
 
@@ -192,7 +204,22 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
           <div key={index} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all">
             <div className="flex items-center justify-between p-5 cursor-pointer" onClick={() => toggleExpand(index)}>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
+                <div className="flex items-center">
+                  <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
+                  {isCodingQuestion(item) && (
+                    <span className="ml-3 px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 rounded-md flex items-center">
+                      <Code size={14} className="mr-1" /> Coding
+                    </span>
+                  )}
+                  {item.difficulty && (
+                    <span className={`ml-2 px-2 py-1 text-xs font-medium rounded-md flex items-center
+                      ${item.difficulty === 'Easy' ? 'bg-green-100 text-green-800' : 
+                        item.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' : 
+                        'bg-red-100 text-red-800'}`}>
+                      {item.difficulty}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center mt-1 text-sm text-gray-500">
                   <Calendar size={16} className="mr-2" /> {formatDate(item.timestamp)}
                 </div>
@@ -211,6 +238,17 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
                   <h4 className="text-sm font-semibold text-gray-700 mb-2">Your Answer</h4>
                   <p className="p-4 bg-gray-50 rounded-lg text-sm text-gray-800 border border-gray-200">{item.user_answer}</p>
                 </div>
+
+                {isCodingQuestion(item) && (
+                  <div className="mb-5">
+                    <h4 className="flex items-center text-sm font-semibold text-indigo-700 mb-2">
+                      <Code size={16} className="mr-2" /> Your Code Solution
+                    </h4>
+                    <div className="p-4 bg-gray-900 rounded-lg text-sm text-gray-100 border border-gray-700 font-mono whitespace-pre overflow-x-auto">
+                      {formatCode(item.code_solution)}
+                    </div>
+                  </div>
+                )}
 
                 {item.ideal_answer && (
                   <div className="mb-5">
@@ -269,6 +307,22 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
                     </div>
                   )}
 
+                  {item.misconceptions?.length > 0 && (
+                    <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                      <h4 className="flex items-center text-sm font-semibold text-orange-700 mb-3">
+                        <AlertTriangle size={16} className="mr-2" /> Misconceptions
+                      </h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        {item.misconceptions.map((point, i) => (
+                          <li key={i} className="flex items-start">
+                            <span className="w-5 h-5 mr-2 bg-orange-200 text-orange-800 rounded-full flex items-center justify-center text-xs">{i + 1}</span>
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                   {item.red_flags_triggered?.length > 0 && (
                     <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
                       <h4 className="flex items-center text-sm font-semibold text-purple-700 mb-3"><Flag size={16} className="mr-2" /> Red Flags</h4>
@@ -280,6 +334,25 @@ const TechFeedbackComponent = ({ allEmotion, setAllEmotion }) => {
                     </div>
                   )}
                 </div>
+
+                {item.learning_resources?.length > 0 && (
+                  <div className="mt-5 p-4 bg-teal-50 rounded-lg border border-teal-200">
+                    <h4 className="flex items-center text-sm font-semibold text-teal-700 mb-3">
+                      <BookOpen size={16} className="mr-2" /> Learning Resources
+                    </h4>
+                    <ul className="space-y-2 text-sm text-teal-800">
+                      {item.learning_resources.map((resource, i) => (
+                        <li key={i} className="flex items-start">
+                          <span className="w-5 h-5 mr-2 bg-teal-200 text-teal-800 rounded-full flex items-center justify-center text-xs">{i + 1}</span>
+                          <a href={resource} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                            {resource}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
                 {item.overAllEmotion && item.overAllEmotion.length > 0 && <EmotionQuestionAnalysis emotion={item.overAllEmotion} />}
               </div>
             )}

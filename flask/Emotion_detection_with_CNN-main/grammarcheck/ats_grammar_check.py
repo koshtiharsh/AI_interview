@@ -97,7 +97,7 @@ def apply_corrections_to_pdf(pdf_path, matches, output_path):
 def check_and_correct_pdf(pdf_path, output_path):
     # Extract text from PDF
     text = extract_text_from_pdf(pdf_path)
-    
+    extract_text_from_pdf
     # LanguageTool API endpoint
     url = "https://api.languagetool.org/v2/check"
     
@@ -117,9 +117,9 @@ def check_and_correct_pdf(pdf_path, output_path):
         # Process corrections
         result = response.json()
         if result['matches']:
-            apply_corrections_to_pdf(pdf_path, result['matches'], output_path)
-            print(f"Corrections applied successfully. Output saved to: {output_path}")
-            print(f"Number of corrections made: {len(result['matches'])}")
+            # apply_corrections_to_pdf(pdf_path, result['matches'], output_path)
+            # print(f"Corrections applied successfully. Output saved to: {output_path}")
+            # print(f"Number of corrections made: {len(result['matches'])}")
             
             # Print corrections for verification
             print("\nCorrections made:")
@@ -138,6 +138,7 @@ def check_and_correct_pdf(pdf_path, output_path):
         print(f"Error accessing LanguageTool API: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
+    print(corrections)
     return corrections 
 
 # # Usage

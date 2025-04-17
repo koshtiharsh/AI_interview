@@ -1,53 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Volume2, Pause, Play } from 'lucide-react';
 
 const SpeakingPaceIndicator = ({
     userTranscript = '',
+    interimTranscript = '',
     isInterviewInProgress = true,
-    resetTrigger = null // New prop to trigger reset
+    resetTrigger = null // Prop to trigger reset
 }) => {
     // State to track speaking metrics
     const [wordCount, setWordCount] = useState(0);
     const [duration, setDuration] = useState(0);
     const [wordsPerMinute, setWordsPerMinute] = useState(0);
     const [isRecording, setIsRecording] = useState(false);
-
+    
+    // Use ref to track the current transcript including interim results
+    const currentTranscriptRef = useRef('');
+    
     // Reset effect triggered by resetTrigger prop
     useEffect(() => {
-        // Reset all metrics when resetTrigger changes
         if (resetTrigger !== null) {
             setWordCount(0);
             setDuration(0);
             setWordsPerMinute(0);
             setIsRecording(false);
+            currentTranscriptRef.current = '';
         }
     }, [resetTrigger]);
 
     // Update word count when transcript changes
     useEffect(() => {
-        // Count words in the transcript
-        const words = userTranscript.trim().split(/\s+/);
+        // Combine user transcript with interim for live word counting
+        currentTranscriptRef.current = userTranscript + ' ' + (interimTranscript || '');
+        
+        // Count words in the combined transcript
+        const words = currentTranscriptRef.current.trim().split(/\s+/);
         const filteredWords = words.filter(word => word.length > 0);
         setWordCount(filteredWords.length);
-    }, [userTranscript]);
+    }, [userTranscript, interimTranscript]);
 
-    // Track duration and calculate WPM
+    // Handle recording state based on interview progress
+    useEffect(() => {
+        setIsRecording(isInterviewInProgress);
+    }, [isInterviewInProgress]);
+
+    // Timer effect - separate from WPM calculation
     useEffect(() => {
         let intervalId;
         if (isInterviewInProgress) {
+            setIsRecording(true);
             intervalId = setInterval(() => {
                 setDuration(prev => prev + 1);
-
-                // Calculate words per minute
-                const wpm = duration > 0
-                    ? Math.floor((wordCount / duration) * 60)
-                    : 0;
-                setWordsPerMinute(wpm);
             }, 1000);
+        } else {
+            setIsRecording(false);
         }
 
         return () => clearInterval(intervalId);
-    }, [isInterviewInProgress, wordCount, duration]);
+    }, [isInterviewInProgress]);
+
+    // Calculate WPM separately when duration or wordCount changes
+    useEffect(() => {
+        if (duration > 0) {
+            const wpm = Math.floor((wordCount / duration) * 60);
+            setWordsPerMinute(wpm);
+        }
+    }, [duration, wordCount]);
 
     // Pace categories
     const getPaceCategory = (wpm) => {
@@ -80,18 +97,12 @@ const SpeakingPaceIndicator = ({
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto mt-4">
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Speaking Pace Analyzer</h2>
-                {/* Optional recording toggle, now controlled by interview progress */}
-                {/* {isInterviewInProgress && (
-                    <button
-                        onClick={() => setIsRecording(!isRecording)}
-                        className={`p-2 rounded-full ${isRecording
-                            ? 'bg-red-500 hover:bg-red-600'
-                            : 'bg-green-500 hover:bg-green-600'
-                            } text-white transition`}
-                    >
-                        {isRecording ? <Pause size={20} /> : <Play size={20} />}
-                    </button>
-                )} */}
+                {isInterviewInProgress && (
+                    <div className="flex items-center">
+                        <div className={`w-3 h-3 rounded-full mr-2 ${isRecording ? 'bg-red-500 animate-pulse' : 'bg-gray-300'}`}></div>
+                        <span className="text-sm text-gray-600">{isRecording ? 'Recording' : 'Paused'}</span>
+                    </div>
+                )}
             </div>
 
             {/* Pace Visualization */}
@@ -137,13 +148,6 @@ const SpeakingPaceIndicator = ({
                     Ideal interview pace is typically 125-150 words per minute
                 </p>
             </div>
-
-            {/* Transcript Preview */}
-            {/* <div className="mt-4 p-3 bg-gray-50 rounded-lg max-h-32 overflow-y-auto">
-                <p className="text-xs text-gray-700 italic">
-                    {userTranscript || "No transcript available"}
-                </p>
-            </div> */}
         </div>
     );
 };

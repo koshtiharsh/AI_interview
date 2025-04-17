@@ -22,7 +22,9 @@ const InterviewFeedbackDashboard = ({ allEmotion, setAllEmotion }) => {
           if (!response.ok) throw new Error('Failed to fetch feedback data');
           const data = await response.json();
           const hrQuestions = data.feedback || [];
-          setFeedbackData(hrQuestions);
+
+          const verifiedData = hrQuestions.filter(item => item.verified === true)
+          setFeedbackData(verifiedData);
 
           if (data.emotion) {
             setAllEmotion(data.emotion)

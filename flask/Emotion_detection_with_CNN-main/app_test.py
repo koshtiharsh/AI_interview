@@ -1276,14 +1276,14 @@ def allowed_file(filename):
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
-        return redirect(request.url)
+        return jsonify({"error": "No file part"}), 400
 
     file = request.files["file"]
     role = request.form["role"]
     email = request.form["email"]
 
     if file.filename == "":
-        return redirect(request.url)
+        return jsonify({"error": "No selected file"}), 400
 
     if file and allowed_file(file.filename):
         filename = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
@@ -1328,24 +1328,32 @@ def upload_file():
             }
         )
 
-        return render_template(
-            "result.html",
-            final=int(score),
-            struct=struct,
-            hsp=hsp,
-            ssp=ssp,
-            wcp=wcp,
-            sections=sections,
-            match_hard=unique_skills,
-            missing_hard=missing_hard,
-            match_soft=list(set(match_soft)),
-            missing_soft=missing_soft,
-            word_count=word_count,
-            pdfFileName=pdfFileName,
-            corrections=corrections
+        # Create JSON response object
+        response_data = {
+            "score": int(score),
+            "structure_score": struct,
+            "hard_skills_percentage": hsp,
+            "soft_skills_percentage": ssp,
+            "word_count_percentage": wcp,
+            "sections": sections,
+            "matched_hard_skills": unique_skills,
+            "missing_hard_skills": missing_hard,
+            "matched_soft_skills": list(set(match_soft)),
+            "missing_soft_skills": missing_soft,
+            "word_count": word_count,
+            "pdf_file_name": pdfFileName,
+            "corrections": corrections
+        }
+        user_collection.update_one(
+            {"email": email},
+            {
+                "$set": {"resume_analysis_data": response_data},  # Update resume filename
+               
+            }
         )
+        return jsonify(response_data), 200
 
-    return "Invalid file format! Allowed formats: pdf, docx"
+    return jsonify({"error": "Invalid file format! Allowed formats: pdf, docx"}), 400
 # **********************************************************************************************************************************
 # **********************************************************************************************************************************
 # ********************************************************** ats end    ******************************************************************

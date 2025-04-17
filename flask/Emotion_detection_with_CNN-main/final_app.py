@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 import base64
 from keras.models import model_from_json
-
+import requests
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -123,13 +123,16 @@ def extract_json_from_text(text):
         # If still can't parse, return None
         return None
 
-def generate_hr_questions(num_questions=5, job_role="Software Engineer"):
+def generate_hr_questions(degree,specialization,num_questions=5, job_role="Software Engineer"):
     """Generate HR interview questions using Gemini API"""
+    
     prompt = f"""Generate {num_questions} unique HR interview questions for a {job_role} position. 
+    users has done degree {degree}  and specialization in {specialization}
     For each question, provide:
     1. The question text (first question should be tell me about your self)
     2. A list of 5-7 key points that should be covered in an ideal answer
     3. An example ideal answer (150-200 words)
+    
     
     Format your response as a valid JSON object with the following structure:
     ```json
@@ -147,6 +150,7 @@ def generate_hr_questions(num_questions=5, job_role="Software Engineer"):
     
     Ensure your response can be directly parsed as JSON. Do not include any explanatory text before or after the JSON.
     """
+    
     
     try:
         response = model.generate_content(prompt)
@@ -286,11 +290,11 @@ def evaluate_response(question, user_answer, question_details):
             "red_flags_triggered": []
         }
 
-def get_user_questions(email, job_role="Software Engineer"):
+def get_user_questions(email,degree,specialization , job_role="Software Engineer"):
     """Get or generate questions for a specific user"""
     if email not in user_questions_cache:
         # Generate new questions for this user
-        questions = generate_hr_questions(num_questions=5, job_role=job_role)
+        questions = generate_hr_questions(num_questions=5, job_role=job_role,degree=degree,specialization=specialization)
         user_questions_cache[email] = {
             "question_count": 0,
             "questions": questions
@@ -304,9 +308,11 @@ def send_next_question(data):
     try:
         email = data['email']
         job_role = data.get('job_role', 'Software Engineer')
-        
+        degree = data.get('degree','BE')
+        specialization = data.get('specialization',"IT")
+        print(data)
         # Get the user's questions or generate new ones
-        user_data = get_user_questions(email, job_role)
+        user_data = get_user_questions(email,degree,specialization, job_role)
         
         # Get current question count and questions
         question_count = user_data["question_count"]
@@ -865,8 +871,11 @@ def generate_tech_questions(num_questions=5, tech_role="Software Engineer", tech
     1. The question text (increasing difficulty: #1 Easy, #2-3 Medium, #4-5 Hard)
     2. A list of 4-5 key concepts (not long phrases)
     3. A brief ideal answer (100-150 words max)
-    4. A difficulty rating (Easy, Medium, Hard)
+    4. A difficulty rating (Easy, Medium, Hard) adjust number questions as per difficulty
     5. A short code snippet if relevant (under 15 lines)
+    6. "Important " Please Keep 3 coding questions for easy"  
+    7. "Important " Please Keep 2 coding questions medium level" 
+    8. "Important " Please Keep 1 coding questions hard level" 
     
     Return ONLY the JSON below with no additional text before or after:
     {{
@@ -1028,21 +1037,111 @@ def determine_next_question_difficulty(current_score, current_difficulty):
     reverse_difficulty = {1: "Easy", 2: "Medium", 3: "Hard"}
     return reverse_difficulty[next_level]
 
+# def get_user_tech_questions(email, tech_role="Software Engineer", tech_stack="Python"):
+#     """Get or generate technical questions for a specific user"""
+#     if email not in user_tech_questions_cache:
+#         # Generate new questions for this user
+#         questions = generate_tech_questions(num_questions=5, tech_role=tech_role, tech_stack=tech_stack)
+        
+#         # Sort questions by difficulty for adaptive progression
+#         difficulty_order = {"Easy": 0, "Medium": 1, "Hard": 2}
+#         questions.sort(key=lambda q: difficulty_order.get(q.get("difficulty", "Medium"), 1))
+        
+#         user_tech_questions_cache[email] = {
+#             "question_count": 0,
+#             "questions": questions,
+#             "current_difficulty": "Easy", # Start with Easy questions
+#             "performance_scores": []
+#         }
+    
+#     return user_tech_questions_cache[email]
+
+# @socketio.on('request_tech_question')
+# def send_next_tech_question(data):
+#     """Send the next technical question to the user or notify completion"""
+#     try:
+#         email = data['email']
+#         tech_role = data.get('tech_role')
+#         tech_stack = data.get('tech_stack')
+        
+#         print(f"Processing tech question request for {email}")
+        
+#         # Get the user's questions or generate new ones
+#         user_data = get_user_tech_questions(email, tech_role, tech_stack)
+        
+#         # Get current question count and questions
+#         question_count = user_data["question_count"]
+#         questions = user_data["questions"]
+        
+#         total_questions = 5  # Fixed at 5 questions per interview session
+        
+#         # Check if user has completed all questions
+#         if question_count >= total_questions:
+#             print(f"User {email} has completed all questions")
+#             socketio.emit('new_tech_question', {
+#                 'question': None,
+#                 'questionNumber': total_questions,
+#                 'totalQuestions': total_questions,
+#                 'message': 'Congratulations! You have completed all technical interview questions. Check your feedback in the progress section.',
+#                 'tech_interview_finished': True
+#             })
+#             return
+        
+#         # Get the next question
+#         current_question = questions[question_count]
+#         print(f"Sending question {question_count + 1} to user {email}")
+        
+#         # Emit the question to the user
+#         socketio.emit('new_tech_question', {
+#             'question': current_question["question"],
+#             'difficulty': current_question.get("difficulty", "Medium"),
+#             'code_snippet': current_question.get("code_snippet", ""),
+#             'questionNumber': question_count + 1,
+#             'totalQuestions': total_questions
+#         })
+        
+#         # Update question count in the cache
+#         user_tech_questions_cache[email]["question_count"] = question_count + 1
+    
+#     except KeyError as e:
+#         print(f"Key error in request_tech_question: {e}")
+#         socketio.emit('tech_error', {'message': f'Required information missing: {str(e)}'})
+#     except Exception as e:
+#         print(f"Unexpected error in request_tech_question: {e}")
+#         traceback.print_exc()
+#         socketio.emit('tech_error', {'message': f'An error occurred: {str(e)}'})
+        
 def get_user_tech_questions(email, tech_role="Software Engineer", tech_stack="Python"):
     """Get or generate technical questions for a specific user"""
     if email not in user_tech_questions_cache:
-        # Generate new questions for this user
-        questions = generate_tech_questions(num_questions=5, tech_role=tech_role, tech_stack=tech_stack)
+        # Generate a larger pool of questions (15 instead of 5)
+        questions = generate_tech_questions(num_questions=15, tech_role=tech_role, tech_stack=tech_stack)
         
-        # Sort questions by difficulty for adaptive progression
-        difficulty_order = {"Easy": 0, "Medium": 1, "Hard": 2}
-        questions.sort(key=lambda q: difficulty_order.get(q.get("difficulty", "Medium"), 1))
+        # Organize questions by difficulty
+        questions_by_difficulty = {
+            "Easy": [q for q in questions if q.get("difficulty") == "Easy"],
+            "Medium": [q for q in questions if q.get("difficulty") == "Medium"],
+            "Hard": [q for q in questions if q.get("difficulty") == "Hard"]
+        }
+        
+        # Ensure we have at least one question of each difficulty
+        if not questions_by_difficulty["Easy"]:
+            print("No Easy questions generated, using default")
+            questions_by_difficulty["Easy"] = [q for q in get_default_questions() if q.get("difficulty") == "Easy"]
+        if not questions_by_difficulty["Medium"]:
+            print("No Medium questions generated, using default")
+            questions_by_difficulty["Medium"] = [q for q in get_default_questions() if q.get("difficulty") == "Medium"]
+        if not questions_by_difficulty["Hard"]:
+            print("No Hard questions generated, using default")
+            questions_by_difficulty["Hard"] = [q for q in get_default_questions() if q.get("difficulty") == "Hard"]
         
         user_tech_questions_cache[email] = {
-            "question_count": 0,
-            "questions": questions,
-            "current_difficulty": "Easy", # Start with Easy questions
-            "performance_scores": []
+            "questions_pool": questions,              # Complete pool of questions
+            "questions_by_difficulty": questions_by_difficulty,  # Organized by difficulty
+            "selected_questions": [],                 # Questions already asked
+            "current_difficulty": "Medium",           # Start with Medium difficulty
+            "performance_scores": [],                 # Track user scores
+            "last_question": None                     # Track last question asked
         }
     
     return user_tech_questions_cache[email]
@@ -1060,14 +1159,10 @@ def send_next_tech_question(data):
         # Get the user's questions or generate new ones
         user_data = get_user_tech_questions(email, tech_role, tech_stack)
         
-        # Get current question count and questions
-        question_count = user_data["question_count"]
-        questions = user_data["questions"]
-        
         total_questions = 5  # Fixed at 5 questions per interview session
         
         # Check if user has completed all questions
-        if question_count >= total_questions:
+        if len(user_data["selected_questions"]) >= total_questions:
             print(f"User {email} has completed all questions")
             socketio.emit('new_tech_question', {
                 'question': None,
@@ -1078,21 +1173,60 @@ def send_next_tech_question(data):
             })
             return
         
-        # Get the next question
-        current_question = questions[question_count]
-        print(f"Sending question {question_count + 1} to user {email}")
+        # Select next question based on current difficulty
+        current_difficulty = user_data["current_difficulty"]
+        questions_of_difficulty = user_data["questions_by_difficulty"][current_difficulty]
+        
+        # Filter out questions already asked
+        available_questions = [q for q in questions_of_difficulty 
+                             if q not in user_data["selected_questions"]]
+        
+        # If no questions of current difficulty, try adjacent difficulties
+        if not available_questions:
+            adjacent_difficulties = {
+                "Easy": ["Medium", "Hard"],
+                "Medium": ["Easy", "Hard"],
+                "Hard": ["Medium", "Easy"]
+            }
+            
+            for diff in adjacent_difficulties.get(current_difficulty, ["Medium"]):
+                available_questions = [q for q in user_data["questions_by_difficulty"][diff] 
+                                     if q not in user_data["selected_questions"]]
+                if available_questions:
+                    current_difficulty = diff  # Update current difficulty
+                    break
+        
+        # Last resort - pick any unused question from the pool
+        if not available_questions:
+            available_questions = [q for q in user_data["questions_pool"] 
+                                 if q not in user_data["selected_questions"]]
+        
+        if not available_questions:
+            print(f"No more available questions for user {email}")
+            socketio.emit('tech_error', {'message': 'No more questions available'})
+            return
+            
+        # Choose the first available question (could implement more complex selection logic)
+        current_question = available_questions[0]
+        
+        # Add to selected questions
+        user_data["selected_questions"].append(current_question)
+        user_data["last_question"] = current_question
+        question_count = len(user_data["selected_questions"])
+        
+        print(f"Sending question {question_count} (difficulty: {current_question.get('difficulty')}) to user {email}")
         
         # Emit the question to the user
         socketio.emit('new_tech_question', {
             'question': current_question["question"],
             'difficulty': current_question.get("difficulty", "Medium"),
             'code_snippet': current_question.get("code_snippet", ""),
-            'questionNumber': question_count + 1,
+            'questionNumber': question_count,
             'totalQuestions': total_questions
         })
         
-        # Update question count in the cache
-        user_tech_questions_cache[email]["question_count"] = question_count + 1
+        # Update the current difficulty in the cache
+        user_data["current_difficulty"] = current_difficulty
     
     except KeyError as e:
         print(f"Key error in request_tech_question: {e}")
@@ -1101,7 +1235,115 @@ def send_next_tech_question(data):
         print(f"Unexpected error in request_tech_question: {e}")
         traceback.print_exc()
         socketio.emit('tech_error', {'message': f'An error occurred: {str(e)}'})
+
+
+# @socketio.on('send_tech_answer')
+# def process_tech_answer(data):
+#     """Process the user's answer to a technical question and provide feedback"""
+#     try:
+#         question = data.get('techQuestion')
+#         user_answer = data.get('answer')
+#         email = data.get('email')
+#         code_solution = data.get('codeSolution', '')  # Optional code solution
+#         overAllEmotion = data.get('overAllEmotion')
+            
+#         # Validate required data
+#         if not (email and question and user_answer):
+#             print(f"Missing required fields for user {email}")
+#             socketio.emit('tech_error', {'message': 'Missing required fields: email, question, or answer'})
+#             return
+
+#         print(f"Processing answer for user {email}")
+
+#         # Get the question details from cache
+#         user_data = user_tech_questions_cache.get(email, None)
+#         if not user_data:
+#             print(f"Session expired for user {email}")
+#             socketio.emit('tech_error', {'message': 'Session expired. Please refresh the page.'})
+#             return
+
+#         # Find the question in the user's session data
+#         question_details = next((q for q in user_data.get("questions", []) if q.get("question") == question), None)
+#         if not question_details:
+#             print(f"Question not found for user {email}")
+#             socketio.emit('tech_error', {'message': 'Question not found in session.'})
+#             return
+
+#         # Combine user's text answer with any code solution
+#         full_answer = user_answer
+#         if code_solution:
+#             full_answer += f"\n\nCode Solution:\n{code_solution}"
+
+#         print(f"Evaluating answer for user {email}")
+#         # Evaluate the answer
+#         evaluation = evaluate_tech_response(question, full_answer, question_details)
         
+#         # Store the score for adaptive question selection
+#         score = evaluation.get("score", 50)
+#         user_data["performance_scores"].append(score)
+        
+#         # Update the difficulty for next questions based on performance
+#         current_difficulty = question_details.get("difficulty", "Medium")
+#         next_difficulty = determine_next_question_difficulty(score, current_difficulty)
+#         user_data["current_difficulty"] = next_difficulty
+        
+#         print(f"User {email} score: {score}, next difficulty: {next_difficulty}")
+        
+#         # If there are remaining questions, potentially adjust their difficulty
+#         remaining_q_count = len(user_data["questions"]) - user_data["question_count"]
+#         if remaining_q_count > 0:
+#             # Find appropriate difficulty questions for next selection
+#             difficulty_questions = [q for q in user_data["questions"] 
+#                                    if q.get("difficulty") == next_difficulty and 
+#                                    user_data["questions"].index(q) >= user_data["question_count"]]
+            
+#             if difficulty_questions:
+#                 # Reorder remaining questions to prioritize new difficulty level
+#                 current_index = user_data["question_count"]
+#                 next_questions = user_data["questions"][current_index:]
+#                 next_questions.sort(key=lambda q: 0 if q.get("difficulty") == next_difficulty else 1)
+#                 user_data["questions"] = user_data["questions"][:current_index] + next_questions
+
+#         # Add metadata to the evaluation
+#         evaluation.update({
+#             "question": question,
+#             "user_answer": user_answer,
+#             "code_solution": code_solution,
+#             "difficulty": question_details.get("difficulty", "Medium"),
+#             "ideal_answer": question_details.get("ideal_answer", ""),
+#             "timestamp": datetime.datetime.utcnow(),
+#             "verified": False  # Initial verification status
+#         })
+
+#         print(f"Storing evaluation data for user {email}")
+#         # Store the evaluation in the database without waiting for verification
+#         store_evaluation_in_db(email, question, evaluation, user_answer, code_solution, overAllEmotion, question_details)
+
+#         print(f"Sending feedback to user {email}")
+#         # Send feedback to the user
+#         socketio.emit('tech_answer_feedback', {
+#             'technical_feedback': evaluation.get("technical_feedback", []),
+#             'score': evaluation.get("score", 0),
+#             'strengths': evaluation.get("strengths", []),
+#             'improvement_areas': evaluation.get("improvement_areas", []),
+#             'misconceptions': evaluation.get("misconceptions", []),
+#             'learning_resources': evaluation.get("learning_resources", []),
+#             'next_difficulty': next_difficulty
+#         })
+
+#         # Start asynchronous verification process
+#         # This runs in the background without blocking the main flow
+#         socketio.start_background_task(
+#             verify_evaluation, 
+#             email, 
+#             question, 
+#             evaluation
+#         )
+
+#     except Exception as e:
+#         print(f"Error processing technical answer: {e}")
+#         traceback.print_exc()  # Add full stack trace for debugging
+#         socketio.emit('tech_error', {'message': f'An error occurred processing your answer: {str(e)}'})
 
 @socketio.on('send_tech_answer')
 def process_tech_answer(data):
@@ -1110,7 +1352,7 @@ def process_tech_answer(data):
         question = data.get('techQuestion')
         user_answer = data.get('answer')
         email = data.get('email')
-        code_solution = data.get('codeSolution', '')  # Optional code solution
+        code_solution = data.get('codeSolution', '')
         overAllEmotion = data.get('overAllEmotion')
             
         # Validate required data
@@ -1121,15 +1363,22 @@ def process_tech_answer(data):
 
         print(f"Processing answer for user {email}")
 
-        # Get the question details from cache
+        # Get the user data from cache
         user_data = user_tech_questions_cache.get(email, None)
         if not user_data:
             print(f"Session expired for user {email}")
             socketio.emit('tech_error', {'message': 'Session expired. Please refresh the page.'})
             return
 
-        # Find the question in the user's session data
-        question_details = next((q for q in user_data.get("questions", []) if q.get("question") == question), None)
+        # Find question details - first check last_question for efficiency
+        question_details = None
+        if user_data["last_question"] and user_data["last_question"].get("question") == question:
+            question_details = user_data["last_question"]
+        else:
+            # Search in selected questions if not found in last_question
+            question_details = next((q for q in user_data["selected_questions"] 
+                                  if q.get("question") == question), None)
+        
         if not question_details:
             print(f"Question not found for user {email}")
             socketio.emit('tech_error', {'message': 'Question not found in session.'})
@@ -1154,21 +1403,6 @@ def process_tech_answer(data):
         user_data["current_difficulty"] = next_difficulty
         
         print(f"User {email} score: {score}, next difficulty: {next_difficulty}")
-        
-        # If there are remaining questions, potentially adjust their difficulty
-        remaining_q_count = len(user_data["questions"]) - user_data["question_count"]
-        if remaining_q_count > 0:
-            # Find appropriate difficulty questions for next selection
-            difficulty_questions = [q for q in user_data["questions"] 
-                                   if q.get("difficulty") == next_difficulty and 
-                                   user_data["questions"].index(q) >= user_data["question_count"]]
-            
-            if difficulty_questions:
-                # Reorder remaining questions to prioritize new difficulty level
-                current_index = user_data["question_count"]
-                next_questions = user_data["questions"][current_index:]
-                next_questions.sort(key=lambda q: 0 if q.get("difficulty") == next_difficulty else 1)
-                user_data["questions"] = user_data["questions"][:current_index] + next_questions
 
         # Add metadata to the evaluation
         evaluation.update({
@@ -1178,7 +1412,7 @@ def process_tech_answer(data):
             "difficulty": question_details.get("difficulty", "Medium"),
             "ideal_answer": question_details.get("ideal_answer", ""),
             "timestamp": datetime.datetime.utcnow(),
-            "verified": False  # Initial verification status
+            "verified": False
         })
 
         print(f"Storing evaluation data for user {email}")
@@ -1198,7 +1432,6 @@ def process_tech_answer(data):
         })
 
         # Start asynchronous verification process
-        # This runs in the background without blocking the main flow
         socketio.start_background_task(
             verify_evaluation, 
             email, 
@@ -1208,7 +1441,7 @@ def process_tech_answer(data):
 
     except Exception as e:
         print(f"Error processing technical answer: {e}")
-        traceback.print_exc()  # Add full stack trace for debugging
+        traceback.print_exc()
         socketio.emit('tech_error', {'message': f'An error occurred processing your answer: {str(e)}'})
 
 # Helper function to store evaluation in DB (extracted from the original function)
@@ -1448,82 +1681,203 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
-        return redirect(request.url)
-
+        return jsonify({"error": "No file part"}), 400
+    
     file = request.files["file"]
     role = request.form["role"]
     email = request.form["email"]
-
+    jobType = request.form["jobType"]
+    
     if file.filename == "":
-        return redirect(request.url)
-
+        return jsonify({"error": "No selected file"}), 400
+    
     if file and allowed_file(file.filename):
         filename = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
         file.save(filename)
-
-        # Resume Processing
-        (
-            score,
-            match_hard,
-            missing_hard,
-            match_soft,
-            missing_soft,
-            word_count,
-            sections,
-            hs,
-            ss,
-            wc,
-            sc,
-            corrections,
-            resume_text_format 
-        ) = ats.processing(file.filename, 1, role)
-        user_collection.find_one_and_update({'email':email},{'$set':{"resume_text_format":resume_text_format}})
-
-        struct = f"{int(sc)}%"
-        hsp = f"{int(hs)}%"
-        ssp = f"{int(ss)}%"
-        wcp = f"{int(wc)}%"
-
+        
+        # Resume Processing from ATS
+        (score, match_hard, missing_hard, match_soft, missing_soft, 
+         word_count, sections, hs, ss, wc, sc, corrections, resume_text_format) = ats.processing(file.filename, 1, role, jobType)
+        
+        user_collection.find_one_and_update({'email': email}, {'$set': {"resume_text_format": resume_text_format}})
+        
         # Generate new filename with "-1" appended
         base_name, extension = os.path.splitext(file.filename)
-        pdfFileName = f"{base_name}-1{extension}"
-
+        pdfFileName = f"{base_name}{extension}"
+        
         # Convert skills to a unique list
         unique_skills = list(set(match_hard))
-
-        # Update user record in MongoDB
+        
+        # Create initial response data
+        ats_response = {
+            "final": int(score),
+            "struct": int(sc),
+            "hsp": int(hs),
+            "ssp": int(ss),
+            "wcp": int(wc),
+            "sections": sections,
+            "match_hard": unique_skills,
+            "missing_hard": missing_hard,
+            "match_soft": list(set(match_soft)),
+            "missing_soft": missing_soft,
+            "word_count": word_count,
+            "pdfFileName": pdfFileName,
+            "corrections": corrections
+        }
+        
+        # Send to LLM for optimization
+        llm_optimized = send_to_llm(ats_response, role, jobType)
+        
+        # Update user record in MongoDB with optimized results
         user_collection.update_one(
             {"email": email},
             {
-                "$set": {"resumeFile": pdfFileName},  # Update resume filename
-                "$addToSet": {"technicalSkills": {"$each": unique_skills}}  # Add skills without duplicates
+                "$set": {
+                    "resumeFile": pdfFileName,
+                    "technicalSkills": llm_optimized.get("match_hard", unique_skills),
+                    "resume_analysis_data": llm_optimized
+                }
             }
         )
+        
+        return jsonify(llm_optimized), 200
+    
+    return jsonify({"error": "Invalid file format! Allowed formats: pdf, docx"}), 400
 
-        return render_template(
-            "result.html",
-            final=int(score),
-            struct=struct,
-            hsp=hsp,
-            ssp=ssp,
-            wcp=wcp,
-            sections=sections,
-            match_hard=unique_skills,
-            missing_hard=missing_hard,
-            match_soft=list(set(match_soft)),
-            missing_soft=missing_soft,
-            word_count=word_count,
-            pdfFileName=pdfFileName,
-            corrections=corrections
+def send_to_llm(ats_response, role, jobType):
+    """
+    Send ATS results to LLM service for optimization and return the improved results.
+    """
+    try:
+        # Create the optimization prompt that matches your LLM's expected format
+        prompt = f"""
+You are a resume analysis expert. I need you to optimize the following ATS (Applicant Tracking System) scan results.
+
+The original ATS results are:
+```json
+{json.dumps(ats_response, indent=2)}
+```
+
+Job Role: {role}
+Job Type: {jobType}
+
+Please optimize the results following these rules:
+1. If a skill appears in both match_hard and missing_hard lists, remove it from missing_hard
+1. the imporatnat thing is if the supporting skills is already in matching then remove the missing some related skill for eg if node js is in matching and django in missing no need to keep it in missing because its supporting skill is already in match
+2. And also cross check the skills with job role if something is not correct then you can skip them
+2. If the job role is not technical (jobType is not "Tech"), don't consider hard skills
+3. For non-technical roles:
+   - Set hsp (hard skills percentage) to 0
+   - Recalculate final score: final = (ssp * 0.4 + wcp * 0.3 + struct * 0.3)
+4. For technical roles:
+   - Remove duplicates but keep original formula: final = (hsp * 0.3 + ssp * 0.3 + wcp * 0.2 + struct * 0.2)
+5. Ensure all percentages are integers
+6. Please Edit the correction array because it is consider the Nouns also as mistake like ullas koshti which is noun some empty mistakes 
+also some city name company name just keep skills because it should be in fix naming convention so please check it 
+
+Return ONLY a valid JSON object with exactly the same structure as the input, with no additional text or explanation.
+"""
+        
+        # Call your Node.js LLM service at port 2000
+        response = requests.post(
+            "http://localhost:2000/gemini-prompt",
+            json={"prompt": prompt},
+            headers={"Content-Type": "application/json"},
+            timeout=30
         )
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            
+            # Extract the LLM's response text
+            llm_response_text = response_data.get("response", "")
+            
+            print(llm_response_text)
+            # Try to extract JSON from the response text
+            try:
+                # First try: see if the entire response is valid JSON
+                optimized_data = json.loads(llm_response_text)
+                return optimized_data
+            except json.JSONDecodeError:
+                # Second try: look for JSON block in markdown code blocks
+                import re
+                json_match = re.search(r'```(?:json)?\s*([\s\S]*?)\s*```', llm_response_text)
+                if json_match:
+                    try:
+                        return json.loads(json_match.group(1))
+                    except:
+                        pass
+                
+                # Third try: look for anything that looks like JSON
+                json_pattern = re.search(r'(\{[\s\S]*\})', llm_response_text)
+                if json_pattern:
+                    try:
+                        return json.loads(json_pattern.group(1))
+                    except:
+                        pass
+            
+            # If we've reached here, we couldn't extract valid JSON, so implement a fallback
+            # Apply basic optimization rules directly
+            return optimize_response_fallback(ats_response, role, jobType)
+        else:
+            # If LLM service returns an error, log it and use fallback
+            print(f"LLM service error: {response.status_code}, {response.text}")
+            return optimize_response_fallback(ats_response, role, jobType)
+            
+    except Exception as e:
+        # If any error occurs, log it and use fallback
+        print(f"Error communicating with LLM service: {str(e)}")
+        return optimize_response_fallback(ats_response, role, jobType)
 
-    return "Invalid file format! Allowed formats: pdf, docx"
+def optimize_response_fallback(ats_response, role, jobType):
+    """
+    Fallback function to optimize response if LLM service fails
+    """
+    # Create a copy to avoid modifying the original
+    result = ats_response.copy()
+    
+    # Remove duplicates from missing_hard if they exist in match_hard
+    if "match_hard" in result and "missing_hard" in result:
+        result["missing_hard"] = [skill for skill in result["missing_hard"] 
+                                 if skill not in result["match_hard"]]
+    
+    # Check if job is technical
+    is_technical = jobType.lower() == "tech"
+    
+    if not is_technical:
+        # For non-tech roles
+        original_hsp = result.get("hsp", 0)
+        result["hsp"] = 0
+        
+        # Recalculate final score
+        ssp = result.get("ssp", 0)
+        wcp = result.get("wcp", 0)
+        struct = result.get("struct", 0)
+        result["final"] = int((ssp * 0.4 + wcp * 0.3 + struct * 0.3))
+    else:
+        # For tech roles, recalculate with the tech formula
+        hsp = result.get("hsp", 0)
+        ssp = result.get("ssp", 0)
+        wcp = result.get("wcp", 0)
+        struct = result.get("struct", 0)
+        result["final"] = int((hsp * 0.3 + ssp * 0.3 + wcp * 0.2 + struct * 0.2))
+    
+    # Ensure all values are integers
+    for key in ["final", "struct", "hsp", "ssp", "wcp"]:
+        if key in result:
+            result[key] = int(result[key])
+    
+    return result
+
+def allowed_file(filename):
+    """
+    Check if the uploaded file has an allowed extension.
+    """
+    ALLOWED_EXTENSIONS = {'pdf', 'docx'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 # **********************************************************************************************************************************
 # **********************************************************************************************************************************
 # ********************************************************** ats end    ******************************************************************

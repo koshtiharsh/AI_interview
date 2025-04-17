@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Menu, BarChart2, FileText, Award, Briefcase, User, ArrowRight, Star, Code, CheckCircle, Zap, PlayCircle, Database, Sparkles, Lightbulb, PieChart, Activity, Flame, Target, Globe, Layers, Cpu, Gauge, } from 'lucide-react';
+import { Brain, Menu, BarChart2, FileText, Award, Briefcase, User, ArrowRight, Star, Code, CheckCircle, Zap, PlayCircle, Database, Sparkles, Lightbulb, PieChart, Activity, Flame, Target, Globe, Layers, Cpu, Gauge, BrainCircuit, } from 'lucide-react';
 import Navbar from './Navbar';
 import EmotionChart from './EmotionGraph';
+
 
 const AIInterviewHomepage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -103,7 +104,7 @@ const AIInterviewHomepage = () => {
               <div className="sm:text-center lg:text-left">
                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                   <span className="block xl:inline">Ace your next interview with</span>
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 xl:inline"> AI-powered coaching</span>
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 xl:inline"> AI-powered Career Counselor</span>
                 </h1>
                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                   Practice with our AI interviewer, get personalized feedback on your resume, discover job recommendations, and plan your career path—all in one platform.
@@ -115,7 +116,7 @@ const AIInterviewHomepage = () => {
                     </a>
                   </div>
                   <div className="mt-0 sm:mt-0 sm:ml-3">
-                    <a href="https://youtu.be/z8Yumo9hybA?si=1rAeuk508y0Vhonr" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition-colors duration-200">
+                    <a href="https://youtu.be/uDmUbdV_Ovo?si=HUqZiIwW0HKh5bjK" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition-colors duration-200">
                       <PlayCircle className="mr-2 h-5 w-5" /> Watch demo
                     </a>
                   </div>
@@ -138,10 +139,10 @@ const AIInterviewHomepage = () => {
               <div className="mt-12 text-center w-full px-6">
                 <div className="flex flex-col space-y-4">
                   <div className="px-8 py-3 mx-auto max-w-xs bg-blue-50 rounded-lg border border-blue-100 mb-3 text-sm text-left text-gray-600">
-                    How would you handle a difficult customer?
+                    Describe a challenge you faced during a project and how you overcame it.
                   </div>
                   <div className="px-8 py-3 mx-auto max-w-xs bg-violet-50 rounded-lg border border-violet-100 text-sm text-left text-gray-600">
-                    When faced with a challenging customer, I first...
+                    I faced a major challenge when the admin dashboard...
                   </div>
                   <div className="animate-pulse flex items-center space-x-2 px-8 py-3 mx-auto max-w-xs bg-gradient-to-r from-blue-50 to-violet-50 rounded-lg border border-blue-100 text-sm text-left text-gray-500">
                     <span className="inline-block w-3 h-3 bg-blue-400 rounded-full"></span>
@@ -257,8 +258,7 @@ const AIInterviewHomepage = () => {
                 </div>
                 <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Job Recommendations</p>
                 <div className="mt-2 ml-16 text-base text-gray-500">
-                  Receive personalized job recommendations based on your skills, experience, and career goals, with AI matching your profile to the perfect opportunities.
-                </div>
+                  Receive personalized job recommendations fetched via intelligent APIs, precisely tailored to your skills, experience, career goals, and industry preferences.</div>
                 <div className="mt-4 ml-16">
                   <a href="/careerpath" className="text-blue-600 hover:text-blue-500 inline-flex items-center text-sm font-medium">
                     Find jobs <ArrowRight className="ml-1 h-4 w-4" />
@@ -628,7 +628,7 @@ const AIInterviewHomepage = () => {
             <div className="col-span-1">
               <div className="flex items-center">
                 <div className="h-10 w-10 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg flex items-center justify-center transform transition-all duration-300 hover:scale-110 hover:rotate-3">
-                  <span className="text-white font-bold text-lg">AI</span>
+                  <span className="text-white font-bold text-lg"><BrainCircuit /></span>
                 </div>
                 <span className="ml-3 text-xl font-bold text-white">InterviewXpert</span>
               </div>

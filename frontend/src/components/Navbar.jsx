@@ -3,6 +3,8 @@ import { useResolvedPath } from 'react-router-dom'
 
 import logo from '../assets/logo-final.png'
 import { context } from '../context/Context'
+import { User } from "lucide-react";
+
 
 const Navbar = () => {
 
@@ -47,19 +49,14 @@ const Navbar = () => {
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a> */}
 
-          {session && (
-            <a href="/userprofile" className="relative font-medium text-md text-slate-500  transition duration-300">
-              Profile
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
-            </a>
-          )}
+
           <a href="/resume" className="relative font-medium text-md text-slate-500  transition duration-300">
             Resume Analyzer
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           {
-            localStorage.getItem('resumeresult') ? <a href="/resume/result" target='_blank' className="relative font-medium text-md text-slate-500  transition duration-300">
-              ResumeMetrics
+            localStorage.getItem('resumeresult') ? <a href="/resume/resumereport" target='_blank' className="relative font-medium text-md text-slate-500  transition duration-300">
+              Resume Metrics
               <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
             </a> : ''
           }
@@ -72,7 +69,7 @@ const Navbar = () => {
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           <a href="/hrfeedback" className="relative font-medium text-md text-slate-500  transition duration-300">
-            PerformanceReview
+            Performance Review
             <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
           </a>
           <a href="/careerpath" className="relative font-medium text-md text-slate-500  transition duration-300">
@@ -100,7 +97,15 @@ const Navbar = () => {
             Logout
           </button>
         )}
+        {session && (
+          <a href="/userprofile" className="relative font-medium text-md text-slate-500  transition duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 border border-[#7c3aed] transition-all duration-300 hover:bg-slate-200">
+              <User size={26} className="text-[#7c3aed]" />
 
+            </div>
+            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-black transition-all duration-300 hover:w-full"></span>
+          </a>
+        )}
         {/* Responsive Hamburger Menu */}
         <button className="md:hidden p-2 focus:outline-none">
           {/* Icon for a hamburger menu */}

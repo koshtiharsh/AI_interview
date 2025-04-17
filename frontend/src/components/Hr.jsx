@@ -23,7 +23,7 @@ function Hr() {
   });
 
 
-  const {start, setStart} = useContext(context)
+  const {start, setStart,hrQuestion} = useContext(context)
 
   const [model, setModel] = useState(false)
   // Ref to track video stream status
@@ -67,7 +67,7 @@ function Hr() {
       </div>
       </div>}
       <Navbar />
-      {check == false ? <div className='loaderDiv'>
+      {hrQuestion ===null ? <div className='loaderDiv'>
         <img className='loader' src={loader} alt="" />
         <p>Setting Up for You...</p>
       </div> : ''}

@@ -219,7 +219,7 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
     const videoRef = useRef(null);
     const isVideoActive = useRef(false);
     const [lightingWarning, setLightingWarning] = useState('');
-    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion, email, overAllEmotion, setOverAllEmotion } = useContext(context);
+    const { hrQuestion, transcriptCleared, ts, emotion, setEmotion, email, overAllEmotion, setOverAllEmotion, interimTranscript, setInterimTranscript } = useContext(context);
 
     // useEffect(() => {
 
@@ -392,7 +392,7 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
 
     return (
         <>
-            <div className={`${styles}  h-[370px] bg-gray-100 rounded-lg p-2 ml-10 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
+            <div className={`${styles}  h-[350px] bg-gray-100 rounded-lg p-2 ml-10 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
                 <video ref={videoRef} className=" h-auto rounded-md p-2 overflow-hidden" autoPlay muted />
                 {lightingWarning && (
                     <div className="mt-2 p-2 bg-yellow-100 text-yellow-800 rounded-md text-center">
@@ -412,6 +412,9 @@ function FaceEmotionDetection({ socketRef, feedback, setFeedback, show, setEmoti
                 <div className="p-3 bg-gray-300 border rounded-lg cursor-pointer" >
                     {transcriptCleared ? '' : ts}
                 </div>
+                {interimTranscript && (
+                    <div className="text-gray-500 italic">{interimTranscript}</div>
+                )}
             </div>
         </>
     );

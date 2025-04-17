@@ -11,7 +11,7 @@ export default function Context({ children }) {
   const [tech_stack, set_tech_stack] = useState('html, css, javascript');
   const [userData, setUserData] = useState(null);
   const [showCustomJobRole, setShowCustomJobRole] = useState(false);
-
+  const [interimTranscript, setInterimTranscript] = useState("");
 
   useEffect(() => {
 
@@ -142,12 +142,9 @@ export default function Context({ children }) {
   const [ans, setAns] = useState("notset");
   const [start, setStart] = useState(false);
   const [prevTs, setPrevTs] = useState(0);
-  const [htmlContent, setHtmlContent] = useState(() => {
-    const saveData = localStorage.getItem("resumeresult");
-    return saveData ? JSON.parse(saveData) : "";
-  });
+  const [htmlContent, setHtmlContent] = useState({})
   const [transcriptCleared, setTranscriptCleared] = useState(false);
-  const [hrQuestion, setHrQuestion] = useState("");
+  const [hrQuestion, setHrQuestion] = useState(null);
   const [ts, setTs] = useState("");
   const [emotion, setEmotion] = useState("");
   console.log(userData)
@@ -175,6 +172,7 @@ export default function Context({ children }) {
     overAllEmotion, setOverAllEmotion,
     tech_stack, set_tech_stack,
     userData,
+    interimTranscript, setInterimTranscript,
   };
 
   return <context.Provider value={values}>{children}</context.Provider>;

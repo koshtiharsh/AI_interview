@@ -167,7 +167,7 @@ function Emotion({ socketRef }) {
 
     return (
         <>
-            <div className={`${styles}  h-[370px] bg-gray-100 rounded-lg p-2 ml-10 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
+            <div className={`${styles}  h-[300px] bg-gray-100 rounded-lg p-2 ml-10 flex flex-col items-center justify-center mt-4 border-l-[6px]  border-blue-500`}>
                 <video ref={videoRef} className=" h-auto rounded-md p-2 overflow-hidden" autoPlay muted />
                 {lightingWarning && (
                     <div className="mt-2 p-2 bg-yellow-100 text-yellow-800 rounded-md text-center">

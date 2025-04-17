@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { AlertCircle, Code, ChevronDown, ChevronUp, Mic, MicOff } from 'lucide-react';
+import { AlertCircle, Code, ChevronDown, ChevronUp, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import io from 'socket.io-client';
 import Emotion from './Emotion';
 import { context } from '../context/Context';
@@ -19,16 +19,19 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
     const [showAnswerSection, setShowAnswerSection] = useState(true);
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState('');
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [speechEnabled, setSpeechEnabled] = useState(true);
 
     const { overAllEmotion, setOverAllEmotion, email, tech_stack } = useContext(context)
 
     // Track when we're transitioning between questions
     const [isTransitioning, setIsTransitioning] = useState(false);
 
-    // Use useRef for socket connection and SpeechRecognition
+    // Use useRef for socket connection, SpeechRecognition, and SpeechSynthesis
     const socketRef = useRef(null);
     const socketInitialized = useRef(false);
     const recognitionRef = useRef(null);
+    const speechSynthesisRef = useRef(null);
 
     // Initialize speech recognition
     useEffect(() => {
@@ -72,17 +75,93 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
             console.log('Speech recognition not supported in this browser');
         }
 
+        // Initialize speech synthesis
+        if ('speechSynthesis' in window) {
+            speechSynthesisRef.current = window.speechSynthesis;
+        } else {
+            console.log('Text-to-speech not supported in this browser');
+            setSpeechEnabled(false);
+        }
+
         return () => {
             if (recognitionRef.current) {
                 recognitionRef.current.stop();
             }
+            if (speechSynthesisRef.current) {
+                speechSynthesisRef.current.cancel();
+            }
         };
     }, []);
 
-    // Auto-start speech recognition for non-coding questions
+    // Function to read the question aloud
+    const speakQuestion = (text) => {
+        if (!speechSynthesisRef.current || !speechEnabled) return;
+
+        // Cancel any ongoing speech
+        speechSynthesisRef.current.cancel();
+
+        // Create a new speech utterance
+        const utterance = new SpeechSynthesisUtterance(text);
+
+        // Set speech properties
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+
+        // Add event listeners
+        utterance.onstart = () => {
+            setIsSpeaking(true);
+            // Disable mic while speaking
+            if (isListening && recognitionRef.current) {
+                recognitionRef.current.stop();
+                setIsListening(false);
+            }
+        };
+
+        utterance.onend = () => {
+            setIsSpeaking(false);
+            // Enable mic automatically after speech ends for non-coding questions
+            if (currentQuestion && !currentQuestion.code_snippet && recognitionRef.current) {
+                recognitionRef.current.start();
+                setIsListening(true);
+            }
+        };
+
+        utterance.onerror = (event) => {
+            console.error('Speech synthesis error:', event);
+            setIsSpeaking(false);
+        };
+
+        // Speak the text
+        speechSynthesisRef.current.speak(utterance);
+    };
+
+    // Toggle speech synthesis
+    const toggleSpeech = () => {
+        if (isSpeaking) {
+            if (speechSynthesisRef.current) {
+                speechSynthesisRef.current.cancel();
+                setIsSpeaking(false);
+            }
+        } else if (currentQuestion) {
+            speakQuestion(currentQuestion.question);
+        }
+    };
+
+    // Auto-start speech synthesis when a new question is loaded
     useEffect(() => {
-        if (currentQuestion && !currentQuestion.code_snippet && recognitionRef.current && !isListening) {
-            // Auto-start speech recognition
+        if (currentQuestion && !isTransitioning && !loading && speechEnabled) {
+            // Small delay to ensure the UI has updated
+            setTimeout(() => {
+                speakQuestion(currentQuestion.question);
+            }, 500);
+        }
+    }, [currentQuestion, isTransitioning, loading]);
+
+    // Auto-start speech recognition for non-coding questions after speech ends
+    useEffect(() => {
+        if (currentQuestion && !currentQuestion.code_snippet && recognitionRef.current && !isListening && !isSpeaking) {
+            // Only auto-start if we're not currently speaking
             try {
                 recognitionRef.current.start();
                 setIsListening(true);
@@ -90,12 +169,18 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                 console.error('Failed to start speech recognition:', error);
             }
         }
-    }, [currentQuestion]);
+    }, [currentQuestion, isSpeaking]);
 
     // Manual toggle for speech recognition
     const toggleListening = () => {
         if (!recognitionRef.current) {
             alert('Speech recognition is not supported in your browser.');
+            return;
+        }
+
+        // Don't allow mic to be turned on while speaking
+        if (isSpeaking) {
+            alert('Please wait until the question has been read completely.');
             return;
         }
 
@@ -111,7 +196,6 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
 
     // Initialize socket and request first question
     useEffect(() => {
-
         if (email) {
             // Connect to socket.io server
             const socketURL = 'http://localhost:5000'; // Update with your actual backend URL
@@ -149,12 +233,11 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                 setError(null);
 
                 if (data.tech_interview_finished) {
-                    setInterviewComplete(true)
+                    setInterviewComplete(true);
                 }
                 // Automatically show code editor if the question has a code snippet
                 if (data.code_snippet) {
                     setShowCodeEditor(true);
-
 
                     // Stop speech recognition if it's a coding question
                     if (isListening) {
@@ -168,7 +251,7 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                 console.log('Received feedback:', data);
                 console.log(`Current question: ${questionNumber}, Total questions: ${totalQuestions}`);
                 setSubmitting(false);
-                setOverAllEmotion([])
+                setOverAllEmotion([]);
                 // More explicit condition with debug info
                 if (questionNumber >= totalQuestions) {
                     console.log('Setting interview complete to true');
@@ -207,6 +290,10 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                     recognitionRef.current.stop();
                     setIsListening(false);
                 }
+                if (speechSynthesisRef.current) {
+                    speechSynthesisRef.current.cancel();
+                    setIsSpeaking(false);
+                }
             };
         }
     }, [email]);
@@ -222,10 +309,14 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
         setTranscript('');
         setSubmitting(false);
 
-        // Stop speech recognition when transitioning questions
+        // Stop both speech recognition and speech synthesis when transitioning questions
         if (isListening && recognitionRef.current) {
             recognitionRef.current.stop();
             setIsListening(false);
+        }
+        if (speechSynthesisRef.current) {
+            speechSynthesisRef.current.cancel();
+            setIsSpeaking(false);
         }
 
         if (socketRef.current && socketRef.current.connected) {
@@ -265,6 +356,11 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
         if (isListening && recognitionRef.current) {
             recognitionRef.current.stop();
             setIsListening(false);
+        }
+        // Stop speech synthesis if it's active
+        if (isSpeaking && speechSynthesisRef.current) {
+            speechSynthesisRef.current.cancel();
+            setIsSpeaking(false);
         }
 
         setSubmitting(true);
@@ -324,10 +420,19 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
         }
     };
 
-    useEffect(() => {
+    async function handleResetInterview() {
+        if (email) {
+            const res = await fetch(`http://localhost:5000/reset_tech_interview/${email}`, {
+                method: "POST"
+            });
+            window.location.href = "/techfeedback";
+        }
+    }
 
-        if (questionNumber > totalQuestions) setInterviewComplete(true)
-    }, [questionNumber])
+    useEffect(() => {
+        if (questionNumber > totalQuestions) setInterviewComplete(true);
+    }, [questionNumber]);
+
     if (interviewComplete) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -345,7 +450,7 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                         </p>
                         <button
                             className="px-6 py-3 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            onClick={() => window.location.href = `/tech_interview_complete?email=${email}`}
+                            onClick={() => handleResetInterview()}
                         >
                             View Results
                         </button>
@@ -358,18 +463,8 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
     return (
         <>
             <Navbar />
-            <div className="min-h-screen bg-gray-100 py-2 mt-4">
+            <div className="min-h-screen bg-gray-100 py-2 mt-2">
                 <div className="max-w-7xl mx-auto px-2">
-                    {/* Header */}
-                    {/* <div className="mb-6 bg-white p-6 rounded-lg shadow">
-                    <h1 className="text-2xl font-bold text-gray-800">Technical Interview Simulation</h1>
-                    <p className="text-gray-600">
-                        Role: <span className="font-medium">{tech_role}</span> •
-                        Stack: <span className="font-medium">{tech_stack}</span> •
-                        Email: <span className="font-medium">{email}</span>
-                    </p>
-                </div> */}
-
                     {/* Progress Bar */}
                     <div className="mb-6 bg-white p-6 rounded-lg shadow">
                         <div className="flex justify-between text-sm text-gray-600 mb-2">
@@ -413,11 +508,6 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                             <div className="space-y-6">
                                 {/* Pre-Question Section */}
                                 <div className="bg-white rounded-lg shadow p-6">
-                                    {/* <h3 className="text-lg font-medium text-gray-800 mb-4">Upcoming Question</h3>
-                                <p className="text-gray-700">
-                                    This section will show details related to upcoming questions or additional context before you attempt the question.
-                                </p> */}
-
                                     <Emotion socketRef={socketRef} />
                                 </div>
 
@@ -426,11 +516,28 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                     <div className="bg-white rounded-lg shadow p-6">
                                         <div className="flex justify-between items-start mb-4">
                                             <h2 className="text-xl font-semibold text-gray-800">Question {questionNumber}</h2>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(currentQuestion.difficulty)}`}>
-                                                {currentQuestion.difficulty}
-                                            </span>
+                                            <div className="flex items-center space-x-2">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(currentQuestion.difficulty)}`}>
+                                                    {currentQuestion.difficulty}
+                                                </span>
+                                                <button
+                                                    className={`p-2 rounded-full ${isSpeaking ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'} hover:opacity-80 focus:outline-none`}
+                                                    onClick={toggleSpeech}
+                                                    title={isSpeaking ? "Stop Speaking" : "Read Question Aloud"}
+                                                    disabled={!speechEnabled}
+                                                >
+                                                    {isSpeaking ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                                                </button>
+                                            </div>
                                         </div>
                                         <p className="text-gray-700 text-lg">{currentQuestion.question}</p>
+                                        {isSpeaking && (
+                                            <div className="mt-3 text-sm text-blue-600 flex items-center">
+                                                <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
+                                                Reading question aloud...
+                                                <span className="ml-1 font-medium">(Input disabled)</span>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -446,9 +553,10 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                                 {!currentQuestion.code_snippet && (
                                                     <div className="flex items-center">
                                                         <button
-                                                            className={`p-2 rounded-full ${isListening ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'} hover:opacity-80 focus:outline-none`}
+                                                            className={`p-2 rounded-full ${isListening ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'} hover:opacity-80 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed`}
                                                             onClick={toggleListening}
                                                             title={isListening ? "Stop Voice Recognition" : "Start Voice Recognition"}
+                                                            disabled={isSpeaking}
                                                         >
                                                             {isListening ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
                                                         </button>
@@ -456,28 +564,16 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                                 )}
                                             </div>
 
-                                            {/* Code snippet if present
-                                        {currentQuestion.code_snippet && (
-                                            <div className="bg-gray-50 p-4 rounded-md mb-4 overflow-x-auto border border-gray-200">
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <h3 className="text-sm font-medium text-gray-500">Code Snippet</h3>
-                                                </div>
-                                                <pre className="text-sm text-gray-800 font-mono">
-                                                    <code>{currentQuestion.code_snippet}</code>
-                                                </pre>
-                                            </div>
-                                        )} */}
-
                                             {/* Textual Answer Section */}
                                             {(!currentQuestion.code_snippet || currentQuestion.code_snippet === '') && (
                                                 <div className="mb-4 relative">
                                                     <textarea
-                                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none disabled:bg-gray-100 disabled:text-gray-500"
                                                         rows="8"
                                                         value={answer}
                                                         onChange={(e) => setAnswer(e.target.value)}
-                                                        placeholder="Type your answer here or start speaking..."
-                                                        disabled={submitting}
+                                                        placeholder={isSpeaking ? "Please wait until the question has been read completely..." : "Type your answer here or start speaking..."}
+                                                        disabled={submitting || isSpeaking}
                                                     ></textarea>
 
                                                     {isListening && (
@@ -489,9 +585,10 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
 
                                                     <div className="mt-4">
                                                         <button
-                                                            className={`flex items-center ${showCodeEditor ? 'text-blue-600' : 'text-gray-600'} hover:text-blue-700 focus:outline-none px-3 py-1 rounded-md border ${showCodeEditor ? 'border-blue-200 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`}
+                                                            className={`flex items-center ${showCodeEditor ? 'text-blue-600' : 'text-gray-600'} hover:text-blue-700 focus:outline-none px-3 py-1 rounded-md border ${showCodeEditor ? 'border-blue-200 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'} disabled:opacity-50 disabled:cursor-not-allowed`}
                                                             onClick={() => setShowCodeEditor(!showCodeEditor)}
                                                             type="button"
+                                                            disabled={isSpeaking}
                                                         >
                                                             <Code className="w-4 h-4 mr-1" />
                                                             {showCodeEditor ? 'Hide Code Editor' : 'Add Code Solution'}
@@ -513,12 +610,12 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                                             <span className="text-xs font-medium text-gray-600">code.js</span>
                                                         </div>
                                                         <textarea
-                                                            className="w-full px-4 py-3 bg-gray-50 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none border-none"
+                                                            className="w-full px-4 py-3 bg-gray-50 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none border-none disabled:bg-gray-100 disabled:text-gray-500"
                                                             rows="10"
                                                             value={codeSolution}
                                                             onChange={(e) => setCodeSolution(e.target.value)}
-                                                            placeholder={currentQuestion.code_snippet ? "// Write your implementation here" : "// Add your code solution here..."}
-                                                            disabled={submitting}
+                                                            placeholder={isSpeaking ? "Please wait until the question has been read completely..." : (currentQuestion.code_snippet ? "// Write your implementation here" : "// Add your code solution here...")}
+                                                            disabled={submitting || isSpeaking}
                                                         ></textarea>
                                                     </div>
                                                 </div>
@@ -529,12 +626,12 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                                 <div className="mt-4">
                                                     <h4 className="text-md font-medium text-gray-700 mb-2">Explanation (optional)</h4>
                                                     <textarea
-                                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none disabled:bg-gray-100 disabled:text-gray-500"
                                                         rows="4"
                                                         value={answer}
                                                         onChange={(e) => setAnswer(e.target.value)}
-                                                        placeholder="Explain your approach and solution..."
-                                                        disabled={submitting}
+                                                        placeholder={isSpeaking ? "Please wait until the question has been read completely..." : "Explain your approach and solution..."}
+                                                        disabled={submitting || isSpeaking}
                                                     ></textarea>
                                                 </div>
                                             )}
@@ -543,7 +640,7 @@ const TechnicalInterview = ({ tech_role = "Software Engineer" }) => {
                                                 <button
                                                     className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200"
                                                     onClick={submitAnswer}
-                                                    disabled={submitting}
+                                                    disabled={submitting || isSpeaking}
                                                     type="button"
                                                 >
                                                     {submitting ? 'Submitting...' : 'Submit Answer'}

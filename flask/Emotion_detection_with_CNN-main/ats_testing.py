@@ -126,6 +126,8 @@ Job Type: {jobType}
 
 Please optimize the results following these rules:
 1. If a skill appears in both match_hard and missing_hard lists, remove it from missing_hard
+1. the imporatnat thing is if the supporting skills is already in matching then remove the missing some related skill for eg if node js is in matching and django in missing no need to keep it in missing because its supporting skill is already in match
+2. And also cross check the skills with job role if something is not correct then you can skip them
 2. If the job role is not technical (jobType is not "Tech"), don't consider hard skills
 3. For non-technical roles:
    - Set hsp (hard skills percentage) to 0
@@ -133,13 +135,15 @@ Please optimize the results following these rules:
 4. For technical roles:
    - Remove duplicates but keep original formula: final = (hsp * 0.3 + ssp * 0.3 + wcp * 0.2 + struct * 0.2)
 5. Ensure all percentages are integers
+6. Please Edit the correction array because it is consider the Nouns also as mistake like ullas koshti which is noun some empty mistakes 
+also some city name company name just keep skills because it should be in fix naming convention so please check it 
 
 Return ONLY a valid JSON object with exactly the same structure as the input, with no additional text or explanation.
 """
         
         # Call your Node.js LLM service at port 2000
         response = requests.post(
-            "http://localhost:2000/prompt",
+            "http://localhost:2000/gemini-prompt",
             json={"prompt": prompt},
             headers={"Content-Type": "application/json"},
             timeout=30
@@ -151,6 +155,7 @@ Return ONLY a valid JSON object with exactly the same structure as the input, wi
             # Extract the LLM's response text
             llm_response_text = response_data.get("response", "")
             
+            print(llm_response_text)
             # Try to extract JSON from the response text
             try:
                 # First try: see if the entire response is valid JSON
